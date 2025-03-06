@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<head>
+    <!-- MAPS API KEY: AIzaSyCZXzMrcSSxzL-dxxA7-TrT_EwyaoHLluI -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZXzMrcSSxzL-dxxA7-TrT_EwyaoHLluI&libraries=places&callback=initMap" async defer></script>
+
+    
+    <script src="reservation.js" defer></script>
+</head>
+<body>
+
+    <h2>Car Reservation</h2>
+    
+    <form id="reservation-form">
+        <fieldset>
+            <legend>Pickup & Return Locations</legend>
+            
+            <label for="pickup-location">Pickup Location:</label>
+            <input type="text" id="pickup-location" name="pickup-location" placeholder="Select Pickup Location" readonly required>
+            <div id="pickup-map" style="width: 100%; height: 300px;"></div>
+
+            <label for="return-location">Return Location:</label>
+            <input type="text" id="return-location" name="return-location" placeholder="Select Return Location" readonly required>
+            <div id="return-map" style="width: 100%; height: 300px;"></div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Driver Information</legend>
+            
+            <label for="driver-name">Driver Name:</label>
+            <input type="text" id="driver-name" name="driver-name" required>
+
+            <label for="driver-age">Driver Age:</label>
+            <input type="number" id="driver-age" name="driver-age" min="18" max="75" required>
+        </fieldset>
+
+        <fieldset>
+            <legend>Reservation Details</legend>
+            
+            <label for="pickup-datetime">Pickup Date & Time:</label>
+            <input type="datetime-local" id="pickup-datetime" name="pickup-datetime" required>
+
+            <label for="drop-datetime">Drop Date & Time:</label>
+            <input type="datetime-local" id="drop-datetime" name="drop-datetime" required>
+        </fieldset>
+
+        <button type="submit">Reserve</button>
+    </form>
+
+    <div id="message-box"></div>
+
+</body>
+</html>
