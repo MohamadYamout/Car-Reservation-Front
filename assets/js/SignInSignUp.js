@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
             localStorage.setItem('current-user', email);
             messageBox.innerText = 'Login Successful! Redirecting...';
             setTimeout(() => {
-                window.location.href = '/Reservation/reservation.html';
+                window.location.href = '/index.html';
             }, 1500);
         } else {
             messageBox.innerText = 'Invalid Credentials!';
