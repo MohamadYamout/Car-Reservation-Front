@@ -1,0 +1,174 @@
+<html>
+<head>
+    <script src="../assets/js/carGroupsData.js"></script>
+<script src="../assets/js/filtercars.js"></script>
+</head>
+<body>
+  <!-- Filter Panel -->
+  <div id="filterPanel">
+    <h2>Filter Cars</h2>
+    <div class="filter-row">
+      <label for="engineType">Engine Type</label>
+      <select id="engineType">
+        <option value="">All</option>
+        <option value="2000 cc">2000 cc</option>
+        <option value="Electric Motor">Electric Motor</option>
+        <option value="1800 cc + Electric Motor">1800 cc + Electric Motor</option>
+        <option value="2000 cc + Electric Motor">2000 cc + Electric Motor</option>
+        <option value="1600 cc + Electric Motor">1600 cc + Electric Motor</option>
+        <option value="2500 cc">2500 cc</option>
+        <option value="3000 cc">3000 cc</option>
+        <option value="3500 cc">3500 cc</option>
+        <option value="3600 cc">3600 cc</option>
+        <option value="3400 cc">3400 cc</option>
+        <option value="4000 cc">4000 cc</option>
+      </select>
+    </div>
+    <div class="filter-row">
+      <label for="fuelType">Fuel Type</label>
+      <select id="fuelType">
+        <option value="">All</option>
+        <option value="Gasoline">Gasoline</option>
+        <option value="Diesel">Diesel</option>
+        <option value="Electric">Electric</option>
+        <option value="Hybrid">Hybrid</option>
+      </select>
+    </div>
+    <div class="filter-row">
+      <label for="gearbox">Gearbox</label>
+      <select id="gearbox">
+        <option value="">All</option>
+        <option value="Automatic">Automatic</option>
+        <option value="Manual">Manual</option>
+        <option value="CVT">CVT</option>
+        <option value="Single-speed">Single-speed</option>
+      </select>
+    </div>
+    <div class="filter-row">
+      <label for="driveType">Drive Type</label>
+      <select id="driveType">
+        <option value="">All</option>
+        <option value="All-Wheel Drive (AWD)">All-Wheel Drive (AWD)</option>
+        <option value="Front-Wheel Drive (FWD)">Front-Wheel Drive (FWD)</option>
+        <option value="Rear-Wheel Drive (RWD)">Rear-Wheel Drive (RWD)</option>
+        <option value="Four-Wheel Drive">Four-Wheel Drive</option>
+      </select>
+    </div>
+    <div class="filter-row">
+      <label for="ac">AC</label>
+      <select id="ac">
+        <option value="">All</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+    </div>
+    <div class="filter-row">
+      <label for="electricWindows">Electric Windows</label>
+      <select id="electricWindows">
+        <option value="">All</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+    </div>
+    <div class="filter-row">
+      <label for="doors">Number of Doors</label>
+      <select id="doors">
+        <option value="">All</option>
+        <option value="2">2</option>
+        <option value="4">4</option>
+      </select>
+    </div>
+    <div class="filter-row">
+      <label for="passengers">Passengers</label>
+      <select id="passengers">
+        <option value="">All</option>
+        <option value="2">2</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="7">7</option>
+        <option value="15">15</option>
+      </select>
+    </div>
+    <div class="filter-row">
+      <label for="horsepower">Horsepower</label>
+      <select id="horsepower">
+        <option value="">All</option>
+        <option value="200">200 HP</option>
+        <option value="200-250">200-250 HP</option>
+        <option value="250-300">250-300 HP</option>
+        <option value="300+">300+ HP</option>
+      </select>
+    </div>
+    <div class="filter-row">
+      <label for="torque">Torque</label>
+      <select id="torque">
+        <option value="">All</option>
+        <option value="300">300 Nm</option>
+        <option value="300-350">300-350 Nm</option>
+        <option value="350-400">350-400 Nm</option>
+        <option value="400+">400+ Nm</option>
+      </select>
+    </div>
+    <div class="filter-row">
+      <label for="rangePerCharge">Range Per Charge</label>
+      <select id="rangePerCharge">
+        <option value="">All</option>
+        <option value="240 km">240 km</option>
+        <option value="260 km">260 km</option>
+        <option value="383 km">383 km</option>
+        <option value="400 km">400 km</option>
+      </select>
+    </div>
+    <div class="filter-row">
+      <label for="chargingTime">Charging Time</label>
+      <select id="chargingTime">
+        <option value="">All</option>
+        <option value="Fast Charging (80% in 30 min)">Fast Charging (80% in 30 min)</option>
+        <option value="Fast Charging (80% in 40 min)">Fast Charging (80% in 40 min)</option>
+      </select>
+    </div>
+    <div class="filter-row">
+      <label for="safetyFeatures">Safety Features</label>
+      <select id="safetyFeatures">
+        <option value="">All</option>
+        <option value="ABS, Airbags, Lane Assist">ABS, Airbags, Lane Assist</option>
+        <option value="Autopilot, Collision Avoidance">Autopilot, Collision Avoidance</option>
+        <option value="ABS, Airbags">ABS, Airbags</option>
+        <option value="ABS, Airbags, Stability Control">ABS, Airbags, Stability Control</option>
+      </select>
+    </div>
+    <div class="filter-row">
+      <label for="entertainmentSystem">Entertainment System</label>
+      <select id="entertainmentSystem">
+        <option value="">All</option>
+        <option value="10-inch Touchscreen, Bluetooth">10-inch Touchscreen, Bluetooth</option>
+        <option value="7-inch Touchscreen, Bluetooth">7-inch Touchscreen, Bluetooth</option>
+        <option value="12-inch Touchscreen, Wireless Charging">12-inch Touchscreen, Wireless Charging</option>
+        <option value="8-inch Touchscreen, Apple CarPlay">8-inch Touchscreen, Apple CarPlay</option>
+        <option value="Premium Sound System">Premium Sound System</option>
+        <option value="Standard Audio">Standard Audio</option>
+        <option value="Infotainment System">Infotainment System</option>
+      </select>
+    </div>
+    <div class="filter-row">
+      <label for="interiorMaterial">Interior Material</label>
+      <select id="interiorMaterial">
+        <option value="">All</option>
+        <option value="Leather Seats">Leather Seats</option>
+        <option value="Cloth Seats">Cloth Seats</option>
+        <option value="Fabric Seats">Fabric Seats</option>
+        <option value="Leather">Leather</option>
+        <option value="Vinyl">Vinyl</option>
+        <option value="Alcantara">Alcantara</option>
+      </select>
+    </div>
+    <button id="filterBtn">Filter</button>
+  </div>
+
+  <!-- Filtered Results -->
+  <div id="filteredCarsContainer"></div>
+
+</body>
+</html>
+
+
