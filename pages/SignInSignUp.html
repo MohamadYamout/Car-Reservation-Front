@@ -1,75 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
     <title>Sign In / Sign Up - CarReserve</title>
-    <link rel="stylesheet" href="../assets/css/SignInSignUp.css">
-    <script src="../assets/js/SignInSignUp.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="../assets/css/SignInSignUp.css" />
+    <script src="../assets/js/SignInSignUp.js" defer></script>
 </head>
+
 <body>
     <div class="auth-container">
         <div class="auth-header">
-            <h1>Welcome to CarReserve</h1>
+            <h1>Welcome to <br><strong>CarReserve</strong></h1>
             <p>Please sign in or create an account to continue</p>
         </div>
 
+        <!-- Sign Up Form -->
         <div id="signup-form" class="auth-form">
             <h2>Sign Up</h2>
-            <div class="form-group">
-                <label for="signup-email">Email Address</label>
-                <input type="email" id="signup-email" placeholder="Enter your email">
+
+            <div class="input-icon">
+                <i class="fa fa-user"></i>
+                <input type="text" id="signup-firstname" placeholder="First Name" />
             </div>
-            <div class="form-group">
-                <label for="signup-password">Password</label>
-                <input type="password" id="signup-password" placeholder="Create a password">
+
+            <div class="input-icon">
+                <i class="fa fa-user"></i>
+                <input type="text" id="signup-lastname" placeholder="Last Name" />
             </div>
-            <button class="auth-btn" onclick="signUp()">Create Account</button>
+
+            <div class="input-icon">
+                <i class="fa fa-phone"></i>
+                <input type="tel" id="signup-phone" placeholder="Phone Number" />
+            </div>
+
+            <div class="input-icon">
+                <i class="fa fa-envelope"></i>
+                <input type="email" id="signup-email" placeholder="Email Address" />
+            </div>
+
+            <div class="input-icon">
+                <i class="fa fa-lock"></i>
+                <input type="password" id="signup-password" placeholder="Password" />
+            </div>
+
+            <div class="input-icon">
+                <i class="fa fa-lock"></i>
+                <input type="password" id="signup-confirm-password" placeholder="Confirm Password" />
+            </div>
+
+            <button onclick="signUp()">Create Account</button>
+            <div id="signup-message-box" class="message-box"></div>
         </div>
 
-        <div id="signin-form" class="auth-form">
+        <!-- Sign In Form -->
+        <div id="signin-form" class="auth-form hidden">
             <h2>Sign In</h2>
-            <div class="form-group">
-                <label for="signin-email">Email Address</label>
-                <input type="email" id="signin-email" placeholder="Enter your email">
+
+            <div class="input-icon">
+                <i class="fa fa-envelope"></i>
+                <input type="email" id="signin-email" placeholder="Email Address" />
             </div>
-            <div class="form-group">
-                <label for="signin-password">Password</label>
-                <input type="password" id="signin-password" placeholder="Enter your password">
+
+            <div class="input-icon">
+                <i class="fa fa-lock"></i>
+                <input type="password" id="signin-password" placeholder="Password" />
             </div>
-            <button class="auth-btn" onclick="signIn()">Sign In</button>
+
+            <button onclick="signIn()">Sign In</button>
+            <div id="signin-message-box" class="message-box"></div>
         </div>
 
-        <div class="auth-divider">
-            <span>or</span>
-        </div>
+        <div class="auth-divider"><span>or</span></div>
 
         <div class="auth-switch">
-            <a href="#" onclick="toggleAuth()">Already have an account? Sign in</a>
+            <span id="toggle-text">Already have an account? </span>
+            <a href="#" id="switch-link">Sign In</a>
         </div>
+
+
     </div>
-
-    <div id="message-box"></div>
-
-    <script>
-        // Initial state
-        const signUpForm = document.getElementById('signup-form');
-        const signInForm = document.getElementById('signin-form');
-        const switchText = document.querySelector('.auth-switch a');
-        
-        function toggleAuth() {
-            if (signUpForm.style.display !== 'none') {
-                signUpForm.style.display = 'none';
-                signInForm.style.display = 'block';
-                switchText.textContent = "Don't have an account? Sign up";
-            } else {
-                signUpForm.style.display = 'block';
-                signInForm.style.display = 'none';
-                switchText.textContent = "Already have an account? Sign in";
-            }
-        }
-    </script>
 </body>
+
 </html>
-
-
