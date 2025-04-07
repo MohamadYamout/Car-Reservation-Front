@@ -45,11 +45,7 @@ body {
 }
 
 .auth-form.hidden {
-  visibility: hidden;
-  height: 0;
-  overflow: hidden;
-  opacity: 0;
-  position: absolute;
+  display: none;
 }
 
 h1 {
@@ -118,18 +114,23 @@ a:hover {
   text-decoration: underline;
 }
 
-#message-box {
+.message-box {
   margin-top: 10px;
   text-align: center;
-  font-weight: 500;
+  font-size: 16px;
+  display: none;
 }
 
-.success {
-  color: green;
+.message-box.success {
+  display: block;
+  color: #2d6a4f;
+  font-weight: bold;
 }
 
-.error {
-  color: #e74c3c;
+.message-box.error {
+  display: block;
+  color: #a94442;
+  font-weight: bold;
 }
 
 .auth-divider {

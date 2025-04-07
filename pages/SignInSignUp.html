@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="../assets/css/SignInSignUp.css" />
-    <script src="SignInSignUp.js" defer></script>
+    <script src="../assets/js/SignInSignUp.js" defer></script>
 </head>
 
 <body>
@@ -52,6 +52,7 @@
             </div>
 
             <button onclick="signUp()">Create Account</button>
+            <div id="signup-message-box" class="message-box"></div>
         </div>
 
         <!-- Sign In Form -->
@@ -69,6 +70,7 @@
             </div>
 
             <button onclick="signIn()">Sign In</button>
+            <div id="signin-message-box" class="message-box"></div>
         </div>
 
         <div class="auth-divider"><span>or</span></div>
@@ -78,7 +80,7 @@
             <a href="#" id="switch-link">Sign In</a>
         </div>
 
-        <div id="message-box"></div>
+
     </div>
 </body>
 

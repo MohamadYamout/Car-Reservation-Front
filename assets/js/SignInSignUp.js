@@ -5,27 +5,39 @@ document.addEventListener("DOMContentLoaded", function () {
   const signInForm = document.getElementById("signin-form");
   const switchLink = document.getElementById("switch-link");
   const toggleText = document.getElementById("toggle-text");
-  const messageBox = document.getElementById("message-box");
+  const signupMessageBox = document.getElementById("signup-message-box");
+  const signinMessageBox = document.getElementById("signin-message-box");
 
+  // Toggle between forms
   switchLink.addEventListener("click", function (e) {
     e.preventDefault();
     isSignUpVisible = !isSignUpVisible;
 
-    if (isSignUpVisible) {
-      signUpForm.classList.remove("hidden");
-      signInForm.classList.add("hidden");
-      switchLink.textContent = "Sign In";
-      toggleText.textContent = "Already have an account? ";
-    } else {
-      signUpForm.classList.add("hidden");
-      signInForm.classList.remove("hidden");
-      switchLink.textContent = "Sign Up";
-      toggleText.textContent = "Don't have an account? ";
-    }
+    signUpForm.classList.toggle("hidden", !isSignUpVisible);
+    signInForm.classList.toggle("hidden", isSignUpVisible);
 
-    messageBox.innerText = "";
-    messageBox.className = "";
+    switchLink.textContent = isSignUpVisible ? "Sign In" : "Sign Up";
+    toggleText.textContent = isSignUpVisible
+      ? "Already have an account? "
+      : "Don't have an account? ";
+
+    // Clear messages on switch
+    signupMessageBox.className = "message-box";
+    signupMessageBox.style.display = "none";
+    signupMessageBox.innerText = "";
+
+    signinMessageBox.className = "message-box";
+    signinMessageBox.style.display = "none";
+    signinMessageBox.innerText = "";
   });
+
+  // Message display function
+  function showMessage(type, text, context) {
+    const box = context === "signup" ? signupMessageBox : signinMessageBox;
+    box.className = `message-box ${type}`;
+    box.innerText = text;
+    box.style.display = "block";
+  }
 
   function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -53,41 +65,38 @@ document.addEventListener("DOMContentLoaded", function () {
       !lastName ||
       !phone
     ) {
-      messageBox.className = "error";
-      messageBox.innerText = "Please fill all fields.";
+      showMessage("error", "Please fill all fields.", "signup");
       return;
     }
 
     if (!isValidEmail(email)) {
-      messageBox.className = "error";
-      messageBox.innerText = "Invalid email address.";
+      showMessage("error", "Invalid email address.", "signup");
       return;
     }
 
     if (!isStrongPassword(password)) {
-      messageBox.className = "error";
-      messageBox.innerText =
-        "Password must be 8+ chars, 1 uppercase, 1 number, 1 special character.";
+      showMessage(
+        "error",
+        "Password must be 8+ chars, 1 uppercase, 1 number, 1 special character.",
+        "signup"
+      );
       return;
     }
 
     if (password !== confirmPassword) {
-      messageBox.className = "error";
-      messageBox.innerText = "Passwords do not match.";
+      showMessage("error", "Passwords do not match.", "signup");
       return;
     }
 
     if (localStorage.getItem(email)) {
-      messageBox.className = "error";
-      messageBox.innerText = "This email is already registered.";
+      showMessage("error", "This email is already registered.", "signup");
       return;
     }
 
     const user = { firstName, lastName, phone, email, password };
     localStorage.setItem(email, JSON.stringify(user));
 
-    messageBox.className = "success";
-    messageBox.innerText = "Sign Up Successful! Please log in.";
+    showMessage("success", "Sign Up Successful! Please log in.", "signup");
   };
 
   window.signIn = function () {
@@ -96,21 +105,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const stored = localStorage.getItem(email);
     if (!stored) {
-      messageBox.className = "error";
-      messageBox.innerText = "Account not found.";
+      showMessage("error", "Account not found.", "signin");
       return;
     }
 
     const user = JSON.parse(stored);
     if (user.password !== password) {
-      messageBox.className = "error";
-      messageBox.innerText = "Incorrect password.";
+      showMessage("error", "Incorrect password.", "signin");
       return;
     }
 
     localStorage.setItem("current-user", email);
-    messageBox.className = "success";
-    messageBox.innerText = "Login successful! Redirecting...";
+    showMessage("success", "Login successful! Redirecting...", "signin");
+
     setTimeout(() => {
       window.location.href = "/index.html";
     }, 1500);
