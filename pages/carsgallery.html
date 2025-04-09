@@ -1,18 +1,112 @@
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Gallery - CarReserve</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/carsgallery.css">
     <script src="../assets/js/carGroupsData.js"></script>
-  <script src="../assets/js/carsgallery.js"></script>
+    <script src="../assets/js/carsgallery.js"></script>
 </head>
 <body>
-  <h1>Gallery of Cars</h1>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">CarReserve</div>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../index.html#features">Features</a></li>
+                    <li><a href="../index.html#about">About</a></li>
+                    <li><a href="../index.html#testimonials">Testimonials</a></li>
+                    <li><a href="../index.html#contact">Contact</a></li>
+                    <li class="user-menu">
+                        <a href="#" class="user-profile">
+                            <i class="fas fa-user-circle"></i>
+                            <span>Profile</span>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="profile.html"><i class="fas fa-user"></i> My Profile</a>
+                            <a href="history.html"><i class="fas fa-history"></i> Reservation History</a>
+                            <a href="#" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </li>
+                </ul>
+                <div class="menu-btn">☰</div>
+            </nav>
+        </div>
+    </header>
 
-  <!-- Drop-down to select a car group -->
-  <label for="selectGroup">Select Group: </label>
-  <select id="selectGroup">
-    <!-- Options will be added dynamically from the JS file -->
-  </select>
+    <div class="container">
+        <h1>Gallery of Cars</h1>
 
-  <div id="carGalleryContainer" style="margin-top:20px;"></div>
+        <!-- Drop-down to select a car group -->
+        <label for="selectGroup">Select Group: </label>
+        <select id="selectGroup">
+            <!-- Options will be added dynamically from the JS file -->
+        </select>
 
+        <div id="carGalleryContainer" style="margin-top:20px;"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>CarReserve</h3>
+                    <p>The easiest way to book your next car rental for business or pleasure.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="../index.html#features">Features</a></li>
+                        <li><a href="../index.html#about">About</a></li>
+                        <li><a href="../index.html#testimonials">Testimonials</a></li>
+                        <li><a href="../index.html#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Economy Cars</a></li>
+                        <li><a href="#">Luxury Vehicles</a></li>
+                        <li><a href="#">SUVs & Minivans</a></li>
+                        <li><a href="#">Special Offers</a></li>
+                        <li><a href="#">Corporate Accounts</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Info</h3>
+                    <ul class="footer-links">
+                        <li>123 Reservation Road</li>
+                        <li>Carville, CV 12345</li>
+                        <li>Phone: (123) 456-7890</li>
+                        <li>Email: info@carreserve.com</li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 CarReserve. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.menu-btn').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+    </script>
 </body>
 </html>

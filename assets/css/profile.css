@@ -1,0 +1,230 @@
+/* Import base styles */
+@import url('landing.css');
+
+/* Profile Section */
+.profile-section {
+    padding: 120px 0 80px;
+    background-color: #f8f9fa;
+}
+
+.profile-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    gap: 40px;
+}
+
+/* Profile Picture Section */
+.profile-picture-section {
+    text-align: center;
+    padding: 20px;
+}
+
+.profile-picture {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #4a6cf7;
+}
+
+.profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.upload-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.profile-picture:hover .upload-overlay {
+    opacity: 1;
+}
+
+.upload-overlay label {
+    color: white;
+    cursor: pointer;
+    text-align: center;
+}
+
+.upload-overlay i {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.upload-overlay span {
+    display: block;
+    font-size: 0.9rem;
+}
+
+.profile-picture-section h2 {
+    font-size: 1.8rem;
+    color: #222;
+    margin-bottom: 5px;
+}
+
+.member-since {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* User Information Section */
+.user-info-section {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.user-info-section h3 {
+    font-size: 1.5rem;
+    color: #222;
+    margin-bottom: 20px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.info-item label {
+    display: block;
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.info-item p {
+    color: #222;
+    font-size: 1.1rem;
+}
+
+.edit-btn {
+    background-color: #4a6cf7;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.edit-btn:hover {
+    background-color: #3451d3;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Reviews Section */
+.reviews-section {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.reviews-section h3 {
+    font-size: 1.5rem;
+    color: #222;
+    margin-bottom: 20px;
+}
+
+.reviews-grid {
+    display: grid;
+    gap: 20px;
+}
+
+.review-card {
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.car-info h4 {
+    font-size: 1.2rem;
+    color: #222;
+    margin-bottom: 5px;
+}
+
+.car-info p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.rating {
+    color: #ffc107;
+}
+
+.review-text {
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .profile-content {
+        gap: 30px;
+    }
+
+    .profile-picture {
+        width: 120px;
+        height: 120px;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .rating {
+        margin-top: 5px;
+    }
+}
+
+@media (max-width: 576px) {
+    .profile-section {
+        padding: 100px 0 60px;
+    }
+
+    .user-info-section,
+    .reviews-section {
+        padding: 20px;
+    }
+
+    .edit-btn {
+        width: 100%;
+    }
+} 
