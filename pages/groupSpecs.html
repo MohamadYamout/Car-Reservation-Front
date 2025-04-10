@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Group Specifications</title>
+  <!-- Because this page is inside the "pages" folder, we use "../assets/..." to access the assets -->
+  <script src="../assets/js/groupSpecs.js" defer></script>
+</head>
+<body>
+  <!-- Header with Navbar -->
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">CarReserve</div>
+        <ul class="nav-links">
+          <!-- Link paths adjusted so that from the /pages folder, we go up one level for home -->
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="reservation.html">Reservation</a></li>
+          <!-- Additional navigation links can be added here -->
+        </ul>
+        <div class="menu-btn">☰</div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Group Specifications Section -->
+  <section class="group-specs">
+    <div class="container">
+      <h2 id="groupTitle">Group Specifications</h2>
+      <!-- Container for displaying group specs in a grid -->
+      <div id="groupSpecsContainer" class="specs-grid"></div>
+      <!-- Reserve Now Option: When clicked, directs the user to the reservation page -->
+      <div class="reserve-now">
+        <a href="reservation.html" class="btn">Reserve Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2023 CarReserve. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Example mobile menu toggle script
+    document.querySelector('.menu-btn').addEventListener('click', function() {
+      document.querySelector('.nav-links').classList.toggle('active');
+    });
+  </script>
+</body>
+</html>
+

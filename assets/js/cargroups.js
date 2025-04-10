@@ -1,5 +1,6 @@
 // -------------------- PART A: FILTER ALL CARS -------------------- //
 let allCars = []; // We'll store ALL cars from the DB here
+let carReserved = false; // Global flag to track if a car has been reserved
 
 // 1. Fetch all cars from the database once, on DOMContentLoaded
 function fetchAllCars() {
@@ -30,6 +31,7 @@ function applyFilters() {
   const maxDoors = parseInt(document.getElementById("maxDoors").value) || null;
   const minPassengers = parseInt(document.getElementById("minPassengers").value) || null;
   const maxPassengers = parseInt(document.getElementById("maxPassengers").value) || null;
+  const gearboxSelect = document.getElementById("gearboxSelect").value; // new gearbox filter
   const acSelect = document.getElementById("acSelect").value; // "yes", "no", or ""
   const windowsSelect = document.getElementById("windowsSelect").value; // "yes", "no", or ""
 
@@ -57,11 +59,14 @@ function applyFilters() {
     if (minPassengers !== null && car.passengers < minPassengers) return false;
     if (maxPassengers !== null && car.passengers > maxPassengers) return false;
 
-    // 4) AC filtering
+    // 4) Gearbox filtering
+    if (gearboxSelect && car.gearbox !== gearboxSelect) return false;
+
+    // 5) AC filtering
     if (acSelect === "yes" && !car.hasAC) return false;
     if (acSelect === "no" && car.hasAC) return false;
 
-    // 5) Electric windows filtering
+    // 6) Electric windows filtering
     if (windowsSelect === "yes" && !car.electricWindows) return false;
     if (windowsSelect === "no" && car.electricWindows) return false;
 
@@ -106,13 +111,83 @@ function displayFilteredCars(cars) {
     infoDiv.appendChild(price);
 
     carCard.appendChild(infoDiv);
+
+    // Reserve Car button with inline error message
+    const reserveBtn = document.createElement("button");
+    reserveBtn.classList.add("btn", "reserve-btn");
+    reserveBtn.textContent = "Reserve Car";
+    reserveBtn.setAttribute("data-selected", "false"); // initial state
+
+    // Inline error message element (hidden by default)
+    const inlineError = document.createElement("span");
+    inlineError.classList.add("error-msg");
+    inlineError.style.color = "red";
+    inlineError.style.marginLeft = "10px";
+    inlineError.style.display = "none";
+
+    reserveBtn.addEventListener("click", function(event) {
+      event.stopPropagation(); // Prevent parent element click events
+
+      // Clear any previous error message display
+      inlineError.style.display = "none";
+      inlineError.textContent = "";
+
+      const isSelected = reserveBtn.getAttribute("data-selected") === "true";
+
+      // Enforce single car reservation: if not selected and a car is already reserved,
+      // show an inline error message and return.
+      if (!isSelected && carReserved) {
+        inlineError.textContent = "You have already reserved a car. Cancel your selection first.";
+        inlineError.style.display = "inline";
+        return;
+      }
+
+      const payload = { carId: isSelected ? null : car._id };
+
+      fetch("http://localhost:5000/api/reservations/selectCar", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("token")
+        },
+        body: JSON.stringify(payload)
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Failed to update reservation");
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (isSelected) {
+            reserveBtn.textContent = "Reserve Car";
+            reserveBtn.setAttribute("data-selected", "false");
+            carReserved = false;
+            localStorage.removeItem("reservedCarId");
+            localStorage.removeItem("reservationId");
+          } else {
+            reserveBtn.textContent = "Car Selected (Cancel Selection)";
+            reserveBtn.setAttribute("data-selected", "true");
+            carReserved = true;
+            // Store reserved car and reservation id in localStorage
+            localStorage.setItem("reservedCarId", car._id);
+            localStorage.setItem("reservationId", data._id); // Assuming data contains the reservation document
+          }
+        })
+        .catch(error => {
+          console.error("Error updating reservation:", error);
+        });
+    });
+    carCard.appendChild(reserveBtn);
+    carCard.appendChild(inlineError);
+
     container.appendChild(carCard);
   });
 }
 
 // -------------------- PART B: GROUP-BASED LOGIC -------------------- //
 
-// Hard-coded group specs for demonstration (optional)
+// Hard-coded group specs for demonstration
 const groupSpecsData = {
   "SUV": {
     "Engine Size (cc)": "2000 cc",
@@ -121,7 +196,7 @@ const groupSpecsData = {
     "Fuel Type": "Gasoline",
     "Gearbox": "Automatic",
     "AC": "Yes",
-    "Electric Windows": "Yes",
+    "Electric Windows": "Yes"
   },
   "Electric": {
     "Engine Type": "Electric Motor",
@@ -131,17 +206,17 @@ const groupSpecsData = {
     "Fuel Type": "Electric",
     "Gearbox": "Automatic",
     "AC": "Yes",
-    "Electric Windows": "Yes",
+    "Electric Windows": "Yes"
   },
   "Hybrid": {
-    "Engine Size (cc)": "1800 + Electric",
+    "Engine Size (cc)": "1800 cc + Electric",
     "Horsepower": "220 HP",
     "Number of Doors": 4,
     "Number of Passengers": 5,
     "Fuel Type": "Hybrid",
     "Gearbox": "Automatic",
     "AC": "Yes",
-    "Electric Windows": "Yes",
+    "Electric Windows": "Yes"
   },
   "Convertible": {
     "Engine Size (cc)": "2500 cc",
@@ -150,7 +225,7 @@ const groupSpecsData = {
     "Fuel Type": "Gasoline",
     "Gearbox": "Automatic",
     "AC": "Yes",
-    "Electric Windows": "Yes",
+    "Electric Windows": "Yes"
   },
   "Truck": {
     "Engine Size (cc)": "3500 cc",
@@ -159,7 +234,7 @@ const groupSpecsData = {
     "Fuel Type": "Gasoline",
     "Gearbox": "Automatic",
     "AC": "Yes",
-    "Electric Windows": "No",
+    "Electric Windows": "No"
   },
   "Sedan": {
     "Engine Size (cc)": "2000 cc",
@@ -168,9 +243,8 @@ const groupSpecsData = {
     "Fuel Type": "Gasoline",
     "Gearbox": "Automatic",
     "AC": "Yes",
-    "Electric Windows": "Yes",
-  },
-  // Extend as needed...
+    "Electric Windows": "Yes"
+  }
 };
 
 // Fetch the distinct car groups and build the group select UI
@@ -224,7 +298,7 @@ function loadCarGroups() {
     });
 }
 
-// Show the chosen group's specs (hard-coded from groupSpecsData)
+// Show the chosen group's specs (using hard-coded data)
 function showGroupSpecs(groupName) {
   const specsContainer = document.getElementById("groupSpecsContainer");
   specsContainer.innerHTML = "";
@@ -282,6 +356,71 @@ function loadCarsByGroup(groupName) {
         infoDiv.appendChild(price);
 
         carCard.appendChild(infoDiv);
+
+        // Reserve Car button with toggle functionality and inline error message.
+        const reserveBtn = document.createElement("button");
+        reserveBtn.classList.add("btn", "reserve-btn");
+        reserveBtn.textContent = "Reserve Car";
+        reserveBtn.setAttribute("data-selected", "false");
+
+        const inlineError = document.createElement("span");
+        inlineError.classList.add("error-msg");
+        inlineError.style.color = "red";
+        inlineError.style.marginLeft = "10px";
+        inlineError.style.display = "none";
+
+        reserveBtn.addEventListener("click", function(event) {
+          event.stopPropagation();
+
+          inlineError.style.display = "none";
+          inlineError.textContent = "";
+
+          const isSelected = reserveBtn.getAttribute("data-selected") === "true";
+          if (!isSelected && carReserved) {
+            inlineError.textContent = "You have already reserved a car. Cancel your selection first.";
+            inlineError.style.display = "inline";
+            return;
+          }
+
+          const payload = { carId: isSelected ? null : car._id };
+
+          fetch("http://localhost:3000/api/reservations/selectCar", {
+            // Use the same port as your backend, adjust if necessary (here using http://localhost:5000 if needed)
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer " + localStorage.getItem("token")
+            },
+            body: JSON.stringify(payload)
+          })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error("Failed to update reservation");
+              }
+              return response.json();
+            })
+            .then(data => {
+              if (isSelected) {
+                reserveBtn.textContent = "Reserve Car";
+                reserveBtn.setAttribute("data-selected", "false");
+                carReserved = false;
+                localStorage.removeItem("reservedCarId");
+                localStorage.removeItem("reservationId");
+              } else {
+                reserveBtn.textContent = "Car Selected (Cancel Selection)";
+                reserveBtn.setAttribute("data-selected", "true");
+                carReserved = true;
+                localStorage.setItem("reservedCarId", car._id);
+                localStorage.setItem("reservationId", data._id);
+              }
+            })
+            .catch(error => {
+              console.error("Error updating reservation:", error);
+            });
+        });
+        carCard.appendChild(reserveBtn);
+        carCard.appendChild(inlineError);
+
         galleryContainer.appendChild(carCard);
       });
     })
@@ -290,15 +429,27 @@ function loadCarsByGroup(groupName) {
     });
 }
 
-// DOMContentLoaded => Initialize everything
+// On DOMContentLoaded, initialize filtering, group-based functionality, and the Next button
 window.addEventListener("DOMContentLoaded", () => {
-  // PART A (filtering)
   fetchAllCars();
   initFilterForm();
-
-  // PART B (groups)
   loadCarGroups();
+
+  const nextBtn = document.getElementById("nextBtn");
+  const nextError = document.getElementById("nextError");
+  nextBtn.addEventListener("click", function() {
+    if (!carReserved) {
+      nextError.textContent = "Please reserve a car before proceeding.";
+    } else {
+      nextError.textContent = "";
+      window.location.href = "order.html";
+    }
+  });
 });
+
+
+
+
 
 
 

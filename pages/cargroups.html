@@ -40,6 +40,15 @@
       <input type="number" id="maxPassengers" name="maxPassengers" min="1" max="15" />
       <br /><br />
 
+      <!-- Gearbox Filter -->
+      <label for="gearboxSelect">Gearbox:</label>
+      <select id="gearboxSelect" name="gearboxSelect">
+        <option value="">Any</option>
+        <option value="Automatic">Automatic</option>
+        <option value="Manual">Manual</option>
+      </select>
+      <br /><br />
+
       <!-- Boolean Specs (AC, Electric Windows) -->
       <label for="acSelect">AC:</label>
       <select id="acSelect" name="acSelect">
@@ -75,9 +84,26 @@
 
   <hr />
 
+  <!-- SECTION 3: AVAILABLE CARS (Group-based) -->
   <section>
     <h2>Available Cars</h2>
     <div id="carGalleryContainer"></div>
   </section>
+
+  <hr />
+
+  <!-- SECTION 4: NEXT BUTTON -->
+  <section id="nextSection">
+    <div class="container">
+      <button id="nextBtn" class="btn">Next</button>
+      <!-- Error message displayed in red next to the button -->
+      <span id="nextError" style="color: red; margin-left: 10px;"></span>
+    </div>
+  </section>
 </body>
 </html>
+
+
+
+
+

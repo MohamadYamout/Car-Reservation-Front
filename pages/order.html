@@ -4,18 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CarReserve - Order Page</title>
-  <link rel="stylesheet" href="assets/css/landing.css">
+  <script src="../assets/js/order.js" defer></script>
 </head>
 <body>
-  <!-- Header (from landing page) -->
+  <!-- Header (reused from landing page) -->
   <header>
     <div class="container">
       <nav>
         <div class="logo">CarReserve</div>
         <ul class="nav-links">
-          <!-- You can adjust these links to point to your landing page if needed -->
           <li><a href="../index.html">Home</a></li>
-          <li><a href="reservation.html">Order</a></li>
+          <li><a href="reservation.html">Reservation</a></li>
+          <li><a href="order.html">Order</a></li>
           <li><a href="checkout.html">Checkout</a></li>
           <li><a href="bookings.html">Bookings</a></li>
           <li><a href="invoices.html">Invoices</a></li>
@@ -27,133 +27,85 @@
       </nav>
     </div>
   </header>
-
+  
   <!-- Main Content -->
   <main>
-    <h1>Car Reservation Order Page</h1>
+    <h1>Extra Services</h1>
+    
+    <!-- Display the reserved car's daily rate, fetched via order.js -->
+    <p>Daily Rate: $<span id="dailyRateDisplay">0.00</span></p>
+    
+    <!-- Extra Services Form (Spec 10 options) -->
+    <form id="extraServicesForm">
+      <fieldset>
+        <legend>Extra Services</legend>
+        <input type="checkbox" id="chauffeur" name="services" value="Chauffeur">
+        <label for="chauffeur">Chauffeur (+$50)</label><br>
 
-    <!-- Car Selection and Extra Services Form -->
-    <section>
-      <h2>Add a Car</h2>
-      <form id="addCarForm">
-        <label for="carGroup">Car Group:</label>
-        <select id="carGroup" required>
-          <option value="">--Select Group--</option>
-          <option value="SUV">SUV</option>
-          <option value="Electric">Electric</option>
-          <option value="Hybrid">Hybrid</option>
-          <option value="Convertible">Convertible</option>
-          <option value="Bus">Bus</option>
-        </select>
-        <br><br>
+        <input type="checkbox" id="babySeat" name="services" value="Baby Seat">
+        <label for="babySeat">Baby Seat (+$20)</label><br>
 
-        <!-- Daily rate display (auto-assigned) -->
-        <p>Daily Rate (auto-assigned): <span id="dailyRateDisplay">-</span></p>
+        <input type="checkbox" id="satNav" name="services" value="Satellite Navigator">
+        <label for="satNav">Satellite Navigator (+$15)</label><br>
+      </fieldset>
+      
+      <fieldset>
+        <legend>Insurance Options (choose one)</legend>
+        <input type="radio" id="fullIns" name="insurance" value="Full Insurance" required>
+        <label for="fullIns">Full Insurance (+$30)</label><br>
 
-        <fieldset>
-          <legend>Extra Services</legend>
-          <input type="checkbox" id="chauffeur" name="service" value="Chauffeur">
-          <label for="chauffeur">Chauffeur (+$50)</label><br>
+        <input type="radio" id="tires" name="insurance" value="Tires and Windscreen">
+        <label for="tires">Tires and Windscreen (+$20)</label><br>
 
-          <input type="checkbox" id="babySeat" name="service" value="Baby Seat">
-          <label for="babySeat">Baby Seat (+$20)</label><br>
+        <input type="radio" id="addDriver" name="insurance" value="Additional Driver Insurance">
+        <label for="addDriver">Additional Driver Insurance (+$25)</label><br>
+      </fieldset>
+      
+      <fieldset>
+        <legend>Fuel Options (choose one)</legend>
+        <input type="radio" id="fuelPrepaid" name="fuel" value="Fuel Prepaid" required>
+        <label for="fuelPrepaid">Fuel Prepaid (+$40)</label><br>
 
-          <input type="checkbox" id="navigator" name="service" value="Satellite Navigator">
-          <label for="navigator">Satellite Navigator (+$15)</label><br>
-
-          <p>Insurance Options (choose one):</p>
-          <input type="radio" id="fullIns" name="insurance" value="Full Insurance">
-          <label for="fullIns">Full Insurance (+$30)</label><br>
-
-          <input type="radio" id="tires" name="insurance" value="Tires and Windscreen">
-          <label for="tires">Tires and Windscreen (+$20)</label><br>
-
-          <input type="radio" id="addDriver" name="insurance" value="Additional Driver Insurance">
-          <label for="addDriver">Insurance for additional driver (+$25)</label><br>
-
-          <p>Fuel Options (choose one):</p>
-          <input type="radio" id="fuelPrepaid" name="fuel" value="Fuel Prepaid">
-          <label for="fuelPrepaid">Fuel Prepaid (+$40)</label><br>
-
-          <input type="radio" id="fuelReturn" name="fuel" value="Fuel Pay on Return">
-          <label for="fuelReturn">Fuel Pay on Return (+$30)</label><br>
-
-          <input type="checkbox" id="gps" name="service" value="GPS">
-          <label for="gps">GPS (+$10)</label><br>
-        </fieldset>
-        <br>
-        <button type="submit" class="btn">Add Car</button>
-      </form>
-    </section>
-
+        <input type="radio" id="fuelReturn" name="fuel" value="Fuel Pay on Return">
+        <label for="fuelReturn">Fuel Pay on Return (+$30)</label><br>
+      </fieldset>
+      
+      <fieldset>
+        <legend>GPS</legend>
+        <input type="checkbox" id="gps" name="gps" value="GPS">
+        <label for="gps">GPS (+$10)</label><br>
+      </fieldset>
+      
+      <button type="submit" class="btn">Add Extra Services</button>
+    </form>
+    
     <!-- Order Summary Section -->
     <section>
       <h2>Order Summary</h2>
       <div id="orderSummary">
-        <!-- List of selected cars will be appended here -->
+        <!-- List of selected extra services will be displayed here -->
       </div>
-      <h3>Total Price: $<span id="totalPrice">0</span></h3>
+      <h3>Total Price: $<span id="totalPrice">0.00</span></h3>
       <button onclick="location.href='checkout.html'" class="btn">Proceed to Checkout</button>
     </section>
-
-    <!-- User Reviews Section -->
-    <section>
-      <h2>User Reviews</h2>
-      <div id="reviewSection">
-        <!-- Three random reviews appear here -->
-      </div>
-      <button id="prevReview" class="btn">Previous</button>
-      <button id="nextReview" class="btn">Next</button>
-    </section>
-
-    <!-- Submit New Review Section -->
-    <section>
-      <h2>Submit a Review</h2>
-      <form id="reviewForm">
-        <label for="reviewerName">Your Name:</label>
-        <input type="text" id="reviewerName" required><br>
-        <label for="reviewRating">Rating (1-5):</label>
-        <input type="number" id="reviewRating" min="1" max="5" required><br>
-        <label for="reviewComment">Comment:</label><br>
-        <textarea id="reviewComment" rows="4" cols="50" required></textarea><br>
-        <button type="submit" class="btn">Submit Review</button>
-      </form>
-    </section>
-
-    <!-- Statistics Section -->
-    <section>
-      <h2>Statistics</h2>
-      <p>Most Popular Car: <span id="popularCar">N/A</span></p>
-      <p>Average Daily Rental Fee: $<span id="avgDailyFee">0</span></p>
-    </section>
   </main>
-
-  <!-- Footer (from landing page) -->
+  
+  <!-- Footer -->
   <footer>
     <div class="container">
       <div class="footer-content">
         <div class="footer-column">
-          <h3>CarReserve</h3>
-          <p>The easiest way to book your next car rental for business or pleasure.</p>
-        </div>
-        <div class="footer-column">
           <h3>Quick Links</h3>
           <ul class="footer-links">
-            <li><a href="landing.html#home">Home</a></li>
-            <li><a href="landing.html#features">Features</a></li>
-            <li><a href="landing.html#about">About</a></li>
-            <li><a href="landing.html#testimonials">Testimonials</a></li>
-            <li><a href="landing.html#contact">Contact</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h3>Services</h3>
-          <ul class="footer-links">
-            <li><a href="#">Economy Cars</a></li>
-            <li><a href="#">Luxury Vehicles</a></li>
-            <li><a href="#">SUVs & Minivans</a></li>
-            <li><a href="#">Special Offers</a></li>
-            <li><a href="#">Corporate Accounts</a></li>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="reservation.html">Reservation</a></li>
+            <li><a href="order.html">Order</a></li>
+            <li><a href="checkout.html">Checkout</a></li>
+            <li><a href="bookings.html">Bookings</a></li>
+            <li><a href="invoices.html">Invoices</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="chat.html">Chat</a></li>
           </ul>
         </div>
         <div class="footer-column">
@@ -171,14 +123,12 @@
       </div>
     </div>
   </footer>
-
-  <!-- Mobile Menu Toggle and Script Reference -->
+  
+  <!-- Mobile menu toggle script -->
   <script>
     document.querySelector('.menu-btn').addEventListener('click', function() {
       document.querySelector('.nav-links').classList.toggle('active');
     });
   </script>
-  <!-- External script for Order Page functionality -->
-  <script src="order.js"></script>
 </body>
 </html>

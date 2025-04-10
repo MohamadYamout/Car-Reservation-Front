@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Car Reservation Service</title>
   <link rel="stylesheet" href="assets/css/landing.css">
+  <!-- Include the JavaScript files for group logic and random cars -->
+  <script src="assets/js/cargroups.js" defer></script>
+  <script src="assets/js/randomCars.js" defer></script>
 </head>
 <body>
   <!-- Header with Updated Navbar -->
@@ -13,7 +16,6 @@
       <nav>
         <div class="logo">CarReserve</div>
         <ul class="nav-links">
-          <!-- For in-page sections, use hash (#); for separate pages, use full page links -->
           <li><a href="#home">Home</a></li>
           <li><a href="pages/reservation.html">Reservation</a></li>
           <li><a href="order.html">Order</a></li>
@@ -43,6 +45,15 @@
           <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Luxury car">
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Featured Cars Section (Random Cars from Different Groups) -->
+  <section class="random-cars">
+    <div class="container">
+      <h2>Featured Cars</h2>
+      <!-- This container will be populated by randomCars.js -->
+      <div id="randomCarsContainer" class="random-cars-container"></div>
     </div>
   </section>
 
@@ -83,7 +94,7 @@
         <div class="about-text">
           <h2>About CarReserve</h2>
           <p>Founded in 2020, CarReserve has quickly become a leading car reservation service. We're dedicated to providing exceptional service and making the car booking process as seamless as possible.</p>
-          <p>Our mission is to revolutionize the car rental industry by leveraging technology to create a more efficient and customer-friendly experience. With operations in over 50 cities, we're continuously expanding to meet your travel needs.</p>
+          <p>Our mission is to revolutionize the car rental industry by leveraging technology to create a more efficient and customer-friendly experience.</p>
           <a href="#contact" class="btn">Contact Us</a>
         </div>
       </div>
@@ -230,4 +241,6 @@
   </script>
 </body>
 </html>
+
+
 
