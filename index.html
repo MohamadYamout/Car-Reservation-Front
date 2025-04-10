@@ -1,224 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Reservation Service</title>
-    <link rel="stylesheet" href="assets/css/landing.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Reservation Service</title>
+  <link rel="stylesheet" href="assets/css/landing.css">
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">CarReserve</div>
-                <ul class="nav-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-                <div class="menu-btn">☰</div>
-            </nav>
-        </div>
-    </header>
+  <!-- Header with Updated Navbar -->
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">CarReserve</div>
+        <ul class="nav-links">
+          <!-- For in-page sections, use hash (#); for separate pages, use full page links -->
+          <li><a href="#home">Home</a></li>
+          <li><a href="pages/reservation.html">Reservation</a></li>
+          <li><a href="order.html">Order</a></li>
+          <li><a href="checkout.html">Checkout</a></li>
+          <li><a href="bookings.html">Bookings</a></li>
+          <li><a href="invoices.html">Invoices</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#testimonials">Testimonials</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="chat.html">Chat</a></li>
+        </ul>
+        <div class="menu-btn">☰</div>
+      </nav>
+    </div>
+  </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>Reserve Your Car with Ease</h1>
-                    <p>Our car reservation service makes it simple to book the perfect vehicle for your needs. Whether you're traveling for business or pleasure, we have the right car for you.</p>
-                    <a href="pages/SignInSignUp.html" class="btn">Book Now</a>
-                </div>
-                <div class="hero-image">
-                    <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Luxury car">
-                </div>
-            </div>
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1>Reserve Your Car with Ease</h1>
+          <p>Our car reservation service makes it simple to book the perfect vehicle for your needs. Whether you're traveling for business or pleasure, we have the right car for you.</p>
+          <a href="pages/reservation.html" class="btn">Book Now</a>
         </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="container">
-            <div class="section-header">
-                <h2>Why Choose Us</h2>
-                <p>We provide a seamless car reservation experience with premium features that set us apart.</p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🚗</div>
-                    <h3>Wide Selection</h3>
-                    <p>Choose from a diverse fleet of vehicles ranging from economy to luxury cars.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Fast Booking</h3>
-                    <p>Our streamlined reservation process takes just minutes to complete.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">💰</div>
-                    <h3>Best Rates</h3>
-                    <p>Competitive pricing with no hidden fees or surprises at checkout.</p>
-                </div>
-            </div>
+        <div class="hero-image">
+          <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Luxury car">
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- About Section -->
-    <section class="about" id="about">
-        <div class="container">
-            <div class="about-content">
-                <div class="about-image">
-                    <img src="https://images.unsplash.com/photo-1560861947-e7b2c3b773fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Our service">
-                </div>
-                <div class="about-text">
-                    <h2>About CarReserve</h2>
-                    <p>Founded in 2020, CarReserve has quickly become a leading car reservation service. We're dedicated to providing exceptional service and making the car booking process as seamless as possible.</p>
-                    <p>Our mission is to revolutionize the car rental industry by leveraging technology to create a more efficient and customer-friendly experience. With operations in over 50 cities, we're continuously expanding to meet your travel needs.</p>
-                    <a href="#contact" class="btn">Contact Us</a>
-                </div>
-            </div>
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <h2>Why Choose Us</h2>
+        <p>We provide a seamless car reservation experience with premium features that set us apart.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🚗</div>
+          <h3>Wide Selection</h3>
+          <p>Choose from a diverse fleet of vehicles ranging from economy to luxury cars.</p>
         </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="testimonials" id="testimonials">
-        <div class="container">
-            <div class="section-header">
-                <h2>What Our Customers Say</h2>
-                <p>Don't just take our word for it - hear what our satisfied customers have to say about our service.</p>
-            </div>
-            <div class="testimonial-grid">
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"The booking process was incredibly simple, and the car was exactly as described. I'll definitely be using CarReserve for all my future trips!"</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar"></div>
-                        <div class="author-info">
-                            <h4>Jane Doe</h4>
-                            <p>Business Traveler</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"I was impressed by the variety of vehicles available and the competitive rates. The customer service team was also very helpful when I needed to modify my reservation."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar"></div>
-                        <div class="author-info">
-                            <h4>John Smith</h4>
-                            <p>Family Vacationer</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"As someone who travels frequently, I appreciate the consistency and reliability of CarReserve. Their mobile app makes it easy to manage my bookings on the go."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar"></div>
-                        <div class="author-info">
-                            <h4>Sarah Johnson</h4>
-                            <p>Frequent Traveler</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Fast Booking</h3>
+          <p>Our streamlined reservation process takes just minutes to complete.</p>
         </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <div class="section-header">
-                <h2>Contact Us</h2>
-                <p>Have questions or ready to make a reservation? Get in touch with us today.</p>
-            </div>
-            <div class="contact-form">
-                <form action="#" method="POST">
-                    <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone">
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" required></textarea>
-                    </div>
-                    <button type="submit" class="btn form-submit">Send Message</button>
-                </form>
-            </div>
+        <div class="feature-card">
+          <div class="feature-icon">💰</div>
+          <h3>Best Rates</h3>
+          <p>Competitive pricing with no hidden fees or surprises at checkout.</p>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>CarReserve</h3>
-                    <p>The easiest way to book your next car rental for business or pleasure.</p>
-                </div>
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#testimonials">Testimonials</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Services</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Economy Cars</a></li>
-                        <li><a href="#">Luxury Vehicles</a></li>
-                        <li><a href="#">SUVs & Minivans</a></li>
-                        <li><a href="#">Special Offers</a></li>
-                        <li><a href="#">Corporate Accounts</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Contact Info</h3>
-                    <ul class="footer-links">
-                        <li>123 Reservation Road</li>
-                        <li>Carville, CV 12345</li>
-                        <li>Phone: (123) 456-7890</li>
-                        <li>Email: info@carreserve.com</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 CarReserve. All rights reserved.</p>
-            </div>
+  <!-- About Section -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-content">
+        <div class="about-image">
+          <img src="https://images.unsplash.com/photo-1560861947-e7b2c3b773fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Our service">
         </div>
-    </footer>
+        <div class="about-text">
+          <h2>About CarReserve</h2>
+          <p>Founded in 2020, CarReserve has quickly become a leading car reservation service. We're dedicated to providing exceptional service and making the car booking process as seamless as possible.</p>
+          <p>Our mission is to revolutionize the car rental industry by leveraging technology to create a more efficient and customer-friendly experience. With operations in over 50 cities, we're continuously expanding to meet your travel needs.</p>
+          <a href="#contact" class="btn">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <script>
-        // Mobile menu toggle
-        document.querySelector('.menu-btn').addEventListener('click', function() {
-            document.querySelector('.nav-links').classList.toggle('active');
+  <!-- Testimonials Section -->
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <h2>What Our Customers Say</h2>
+        <p>Don't just take our word for it - hear what our satisfied customers have to say about our service.</p>
+      </div>
+      <div class="testimonial-grid">
+        <div class="testimonial-card">
+          <p class="testimonial-text">"The booking process was incredibly simple, and the car was exactly as described. I'll definitely be using CarReserve for all my future trips!"</p>
+          <div class="testimonial-author">
+            <div class="author-avatar"></div>
+            <div class="author-info">
+              <h4>Jane Doe</h4>
+              <p>Business Traveler</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-text">"I was impressed by the variety of vehicles available and the competitive rates. The customer service team was also very helpful when I needed to modify my reservation."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar"></div>
+            <div class="author-info">
+              <h4>John Smith</h4>
+              <p>Family Vacationer</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-text">"As someone who travels frequently, I appreciate the consistency and reliability of CarReserve. Their mobile app makes it easy to manage my bookings on the go."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar"></div>
+            <div class="author-info">
+              <h4>Sarah Johnson</h4>
+              <p>Frequent Traveler</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <h2>Contact Us</h2>
+        <p>Have questions or ready to make a reservation? Get in touch with us today.</p>
+      </div>
+      <div class="contact-form">
+        <form action="#" method="POST">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone">
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required></textarea>
+          </div>
+          <button type="submit" class="btn form-submit">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3>CarReserve</h3>
+          <p>The easiest way to book your next car rental for business or pleasure.</p>
+        </div>
+        <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="pages/reservation.html">Reservation</a></li>
+            <li><a href="order.html">Order</a></li>
+            <li><a href="checkout.html">Checkout</a></li>
+            <li><a href="bookings.html">Bookings</a></li>
+            <li><a href="invoices.html">Invoices</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="chat.html">Chat</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Services</h3>
+          <ul class="footer-links">
+            <li><a href="#">Economy Cars</a></li>
+            <li><a href="#">Luxury Vehicles</a></li>
+            <li><a href="#">SUVs & Minivans</a></li>
+            <li><a href="#">Special Offers</a></li>
+            <li><a href="#">Corporate Accounts</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Contact Info</h3>
+          <ul class="footer-links">
+            <li>123 Reservation Road</li>
+            <li>Carville, CV 12345</li>
+            <li>Phone: (123) 456-7890</li>
+            <li>Email: info@carreserve.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2023 CarReserve. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.querySelector('.menu-btn').addEventListener('click', function() {
+      document.querySelector('.nav-links').classList.toggle('active');
+    });
+    // Smooth scrolling for in-page navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector('.nav-links').classList.remove('active');
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
         });
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                
-                document.querySelector('.nav-links').classList.remove('active');
-                
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
+      });
+    });
+  </script>
 </body>
 </html>
+

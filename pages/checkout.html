@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CarReserve - Checkout</title>
+  <link rel="stylesheet" href="assets/css/landing.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">CarReserve</div>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="checkout.html">Checkout</a></li>
+          <li><a href="bookings.html">Bookings</a></li>
+          <li><a href="invoices.html">Invoices</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="chat.html">Chat</a></li>
+        </ul>
+        <div class="menu-btn">☰</div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <h1>Checkout</h1>
+    
+    <!-- Order Summary Display -->
+    <section id="orderDisplay">
+      <h2>Your Rental Order</h2>
+      <div id="orderDetails"></div>
+      <h3>Total Price: $<span id="orderTotal">0</span></h3>
+    </section>
+
+    <!-- Personal Information Form -->
+    <section>
+      <h2>Personal Information</h2>
+      <form id="personalInfoForm">
+        <label for="custName">Name:</label>
+        <input type="text" id="custName" required><br>
+        <label for="custEmail">Email:</label>
+        <input type="email" id="custEmail" required><br>
+        <label for="custPhone">Phone:</label>
+        <input type="tel" id="custPhone" required><br>
+      </form>
+    </section>
+
+    <!-- Payment Method -->
+    <section>
+      <h2>Payment Method</h2>
+      <form id="paymentForm">
+        <input type="radio" id="cc" name="payment" value="Credit Card" required>
+        <label for="cc">Credit Card</label><br>
+        <input type="radio" id="payAtLoc" name="payment" value="Pay at location">
+        <label for="payAtLoc">Pay at Location</label><br>
+      </form>
+    </section>
+
+    <!-- Discount Coupon -->
+    <section>
+      <h2>Discount Coupon</h2>
+      <input type="text" id="couponCode" placeholder="Enter coupon code">
+      <button id="applyCoupon">Apply Coupon</button>
+      <p id="couponMsg"></p>
+    </section>
+
+    <!-- Transaction Options -->
+    <section>
+      <h2>Transaction Options</h2>
+      <button id="saveTransaction">Save Transaction</button>
+      <button id="completeTransaction">Complete Transaction</button>
+      <button id="cancelTransaction">Cancel Transaction</button>
+      <button id="requestQuotation">Request Quotation</button>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3>CarReserve</h3>
+          <p>The easiest way to book your next car rental for business or pleasure.</p>
+        </div>
+        <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="checkout.html">Checkout</a></li>
+            <li><a href="bookings.html">Bookings</a></li>
+            <li><a href="invoices.html">Invoices</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="chat.html">Chat</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Services</h3>
+          <ul class="footer-links">
+            <li><a href="#">Economy Cars</a></li>
+            <li><a href="#">Luxury Vehicles</a></li>
+            <li><a href="#">SUVs & Minivans</a></li>
+            <li><a href="#">Special Offers</a></li>
+            <li><a href="#">Corporate Accounts</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Contact Info</h3>
+          <ul class="footer-links">
+            <li>123 Reservation Road</li>
+            <li>Carville, CV 12345</li>
+            <li>Phone: (123) 456-7890</li>
+            <li>Email: info@carreserve.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2023 CarReserve. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile Menu Toggle -->
+  <script>
+    document.querySelector('.menu-btn').addEventListener('click', function() {
+      document.querySelector('.nav-links').classList.toggle('active');
+    });
+  </script>
+  <script src="checkout.js"></script>
+</body>
+</html>
