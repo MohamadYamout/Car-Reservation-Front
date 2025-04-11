@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Message display function
   function showMessage(type, text, context) {
     const box = context === "signup" ? signupMessageBox : signinMessageBox;
-    box.className = `message-box ${type}`; // sets class to, for example, "message-box error"
+    box.className = `message-box ${type}`; // e.g. "message-box error"
     box.innerText = text;
     box.style.display = "block";
   }
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
-  // Check password strength (8+ characters, including at least one uppercase, one number, and one special character)
+  // Check password strength (8+ characters, with at least one uppercase, one number, and one special character)
   function isStrongPassword(password) {
     return /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(password);
   }
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const confirmPassword = document.getElementById("signup-confirm-password").value.trim();
     const firstName = document.getElementById("signup-firstname").value.trim();
     const lastName = document.getElementById("signup-lastname").value.trim();
-    const phone = document.getElementById("signup-phone").value.trim();
+    const phone = document.getElementById("signup-phone").value.trim(); // Capture phone number
 
     if (!email || !password || !confirmPassword || !firstName || !lastName || !phone) {
       showMessage("error", "Please fill all fields.", "signup");
@@ -78,14 +78,14 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // Prepare the data payload.
+    // Prepare data payload including phone number
     const payload = {
       username: `${firstName} ${lastName}`,
       email,
-      password
+      password,
+      phone
     };
 
-    // Replace the URL below if your backend is hosted elsewhere.
     fetch("http://localhost:5000/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
           localStorage.setItem("current-user", JSON.stringify(data.user));
           showMessage("success", "Login successful! Redirecting...", "signin");
           setTimeout(() => {
-            window.location.href = "../index.html"; // Modify this if your home page path is different
+            window.location.href = "../index.html"; // Adjust if your home page path is different
           }, 1500);
         }
       })
@@ -144,4 +144,5 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   };
 });
+
 
