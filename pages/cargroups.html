@@ -15,7 +15,6 @@
   <section id="filterSection">
     <h2>All Available Cars</h2>
     <form id="filterForm">
-      <!-- Engine Size Range -->
       <label for="engineSizeRange">Engine Size Range:</label>
       <select id="engineSizeRange" name="engineSizeRange">
         <option value="">Any</option>
@@ -25,22 +24,16 @@
         <option value="3001+">3001+ cc</option>
       </select>
       <br /><br />
-
-      <!-- Number of Doors -->
       <label for="minDoors">Min Doors:</label>
       <input type="number" id="minDoors" name="minDoors" min="1" />
       <label for="maxDoors">Max Doors:</label>
       <input type="number" id="maxDoors" name="maxDoors" min="1" max="4" />
       <br /><br />
-
-      <!-- Number of Passengers -->
       <label for="minPassengers">Min Passengers:</label>
       <input type="number" id="minPassengers" name="minPassengers" min="1" />
       <label for="maxPassengers">Max Passengers:</label>
       <input type="number" id="maxPassengers" name="maxPassengers" min="1" max="15" />
       <br /><br />
-
-      <!-- Gearbox Filter -->
       <label for="gearboxSelect">Gearbox:</label>
       <select id="gearboxSelect" name="gearboxSelect">
         <option value="">Any</option>
@@ -48,15 +41,12 @@
         <option value="Manual">Manual</option>
       </select>
       <br /><br />
-
-      <!-- Boolean Specs (AC, Electric Windows) -->
       <label for="acSelect">AC:</label>
       <select id="acSelect" name="acSelect">
         <option value="">Any</option>
         <option value="yes">Yes</option>
         <option value="no">No</option>
       </select>
-
       <label for="windowsSelect">Electric Windows:</label>
       <select id="windowsSelect" name="windowsSelect">
         <option value="">Any</option>
@@ -64,7 +54,6 @@
         <option value="no">No</option>
       </select>
       <br /><br />
-
       <button type="submit">Filter</button>
     </form>
     <br />
@@ -96,14 +85,8 @@
   <section id="nextSection">
     <div class="container">
       <button id="nextBtn" class="btn">Next</button>
-      <!-- Error message displayed in red next to the button -->
       <span id="nextError" style="color: red; margin-left: 10px;"></span>
     </div>
   </section>
 </body>
 </html>
-
-
-
-
-

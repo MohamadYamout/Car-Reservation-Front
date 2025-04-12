@@ -7,7 +7,7 @@
   <script src="../assets/js/order.js" defer></script>
 </head>
 <body>
-  <!-- Header (reused from landing page) -->
+  <!-- Header -->
   <header>
     <div class="container">
       <nav>
@@ -27,70 +27,27 @@
       </nav>
     </div>
   </header>
-  
-  <!-- Main Content -->
+
   <main>
     <h1>Extra Services</h1>
     
-    <!-- Display the reserved car's daily rate, fetched via order.js -->
+    <!-- Overall daily rate display -->
     <p>Daily Rate: $<span id="dailyRateDisplay">0.00</span></p>
+
+    <!-- Container for reserved cars -->
+    <div id="lineItemsContainer"></div>
     
-    <!-- Extra Services Form (Spec 10 options) -->
-    <form id="extraServicesForm">
-      <fieldset>
-        <legend>Extra Services</legend>
-        <input type="checkbox" id="chauffeur" name="services" value="Chauffeur">
-        <label for="chauffeur">Chauffeur (+$50)</label><br>
-
-        <input type="checkbox" id="babySeat" name="services" value="Baby Seat">
-        <label for="babySeat">Baby Seat (+$20)</label><br>
-
-        <input type="checkbox" id="satNav" name="services" value="Satellite Navigator">
-        <label for="satNav">Satellite Navigator (+$15)</label><br>
-      </fieldset>
-      
-      <fieldset>
-        <legend>Insurance Options (choose one)</legend>
-        <input type="radio" id="fullIns" name="insurance" value="Full Insurance" required>
-        <label for="fullIns">Full Insurance (+$30)</label><br>
-
-        <input type="radio" id="tires" name="insurance" value="Tires and Windscreen">
-        <label for="tires">Tires and Windscreen (+$20)</label><br>
-
-        <input type="radio" id="addDriver" name="insurance" value="Additional Driver Insurance">
-        <label for="addDriver">Additional Driver Insurance (+$25)</label><br>
-      </fieldset>
-      
-      <fieldset>
-        <legend>Fuel Options (choose one)</legend>
-        <input type="radio" id="fuelPrepaid" name="fuel" value="Fuel Prepaid" required>
-        <label for="fuelPrepaid">Fuel Prepaid (+$40)</label><br>
-
-        <input type="radio" id="fuelReturn" name="fuel" value="Fuel Pay on Return">
-        <label for="fuelReturn">Fuel Pay on Return (+$30)</label><br>
-      </fieldset>
-      
-      <fieldset>
-        <legend>GPS</legend>
-        <input type="checkbox" id="gps" name="gps" value="GPS">
-        <label for="gps">GPS (+$10)</label><br>
-      </fieldset>
-      
-      <button type="submit" class="btn">Add Extra Services</button>
-    </form>
+    <!-- Total price display -->
+    <h3>Total Price: $<span id="totalPrice">0.00</span></h3>
     
-    <!-- Order Summary Section -->
-    <section>
-      <h2>Order Summary</h2>
-      <div id="orderSummary">
-        <!-- List of selected extra services will be displayed here -->
-      </div>
-      <h3>Total Price: $<span id="totalPrice">0.00</span></h3>
-      <button onclick="location.href='checkout.html'" class="btn">Proceed to Checkout</button>
-    </section>
+    <div style="display:flex; gap:10px;">
+      <!-- Instead of redirecting immediately, this button updates extras then redirects -->
+      <button type="button" id="proceedToCheckout">Proceed to Checkout</button>
+      <button type="button" id="confirmBookingBtn">Confirm Booking</button>
+      <button type="button" onclick="window.location.href='cargroups.html'">Add Another Car</button>
+    </div>
   </main>
-  
-  <!-- Footer -->
+
   <footer>
     <div class="container">
       <div class="footer-content">
@@ -124,7 +81,6 @@
     </div>
   </footer>
   
-  <!-- Mobile menu toggle script -->
   <script>
     document.querySelector('.menu-btn').addEventListener('click', function() {
       document.querySelector('.nav-links').classList.toggle('active');
