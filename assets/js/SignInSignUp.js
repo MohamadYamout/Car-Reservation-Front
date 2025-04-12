@@ -34,37 +34,31 @@ document.addEventListener("DOMContentLoaded", function () {
   // Message display function
   function showMessage(type, text, context) {
     const box = context === "signup" ? signupMessageBox : signinMessageBox;
-    box.className = `message-box ${type}`;
+    box.className = `message-box ${type}`; // e.g. "message-box error"
     box.innerText = text;
     box.style.display = "block";
   }
 
+  // Email validation using regex
   function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
+  // Check password strength (8+ characters, with at least one uppercase, one number, and one special character)
   function isStrongPassword(password) {
     return /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(password);
   }
 
+  // Sign Up: Use backend API (POST /api/auth/signup)
   window.signUp = function () {
     const email = document.getElementById("signup-email").value.trim();
     const password = document.getElementById("signup-password").value.trim();
-    const confirmPassword = document
-      .getElementById("signup-confirm-password")
-      .value.trim();
+    const confirmPassword = document.getElementById("signup-confirm-password").value.trim();
     const firstName = document.getElementById("signup-firstname").value.trim();
     const lastName = document.getElementById("signup-lastname").value.trim();
-    const phone = document.getElementById("signup-phone").value.trim();
+    const phone = document.getElementById("signup-phone").value.trim(); // Capture phone number
 
-    if (
-      !email ||
-      !password ||
-      !confirmPassword ||
-      !firstName ||
-      !lastName ||
-      !phone
-    ) {
+    if (!email || !password || !confirmPassword || !firstName || !lastName || !phone) {
       showMessage("error", "Please fill all fields.", "signup");
       return;
     }
@@ -75,11 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (!isStrongPassword(password)) {
-      showMessage(
-        "error",
-        "Password must be 8+ chars, 1 uppercase, 1 number, 1 special character.",
-        "signup"
-      );
+      showMessage("error", "Password must be 8+ chars, 1 uppercase, 1 number, 1 special character.", "signup");
       return;
     }
 
@@ -88,38 +78,71 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    if (localStorage.getItem(email)) {
-      showMessage("error", "This email is already registered.", "signup");
-      return;
-    }
+    // Prepare data payload including phone number
+    const payload = {
+      username: `${firstName} ${lastName}`,
+      email,
+      password,
+      phone
+    };
 
-    const user = { firstName, lastName, phone, email, password };
-    localStorage.setItem(email, JSON.stringify(user));
-
-    showMessage("success", "Sign Up Successful! Please log in.", "signup");
+    fetch("http://localhost:5000/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          showMessage("error", data.error || "Signup failed", "signup");
+        } else {
+          showMessage("success", "Sign Up Successful! Please log in.", "signup");
+          // Switch to sign in form after successful signup
+          setTimeout(() => {
+            switchLink.click();
+          }, 1500);
+        }
+      })
+      .catch((err) => {
+        console.error("Signup error:", err);
+        showMessage("error", "Signup failed. Please try again later.", "signup");
+      });
   };
 
+  // Sign In: Use backend API (POST /api/auth/login)
   window.signIn = function () {
     const email = document.getElementById("signin-email").value.trim();
     const password = document.getElementById("signin-password").value.trim();
 
-    const stored = localStorage.getItem(email);
-    if (!stored) {
-      showMessage("error", "Account not found.", "signin");
+    if (!email || !password) {
+      showMessage("error", "Please fill in both email and password.", "signin");
       return;
     }
 
-    const user = JSON.parse(stored);
-    if (user.password !== password) {
-      showMessage("error", "Incorrect password.", "signin");
-      return;
-    }
-
-    localStorage.setItem("current-user", email);
-    showMessage("success", "Login successful! Redirecting...", "signin");
-
-    setTimeout(() => {
-      window.location.href = "/index.html";
-    }, 1500);
+    fetch("http://localhost:5000/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          showMessage("error", data.error || "Login failed", "signin");
+        } else {
+          // Save the token and user details for further authenticated requests
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("current-user", JSON.stringify(data.user));
+          showMessage("success", "Login successful! Redirecting...", "signin");
+          setTimeout(() => {
+            window.location.href = "../index.html"; // Adjust if your home page path is different
+          }, 1500);
+        }
+      })
+      .catch((err) => {
+        console.error("Login error:", err);
+        showMessage("error", "Login failed. Please try again later.", "signin");
+      });
   };
 });
+
+

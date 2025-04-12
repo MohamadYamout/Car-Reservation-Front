@@ -1,175 +1,456 @@
-// SAMPLE DATA: Car groups and their full specs
-const carGroups = [
-    {
-      groupName: "SUV",
-      specs: {
-        "Engine Size": "2000 cc",
-        "Horsepower": "250 HP",
-        "Torque": "320 Nm",
-        "Number of Doors": 4,
-        "Passengers": 5,
-        "Fuel Type": "Gasoline",
-        "Gearbox": "Automatic",
-        "Drive Type": "All-Wheel Drive (AWD)",
-        "Fuel Consumption": "8.5 L/100km",
-        "AC": true,
-        "Electric Windows": true,
-        "Safety Features": "ABS, Airbags, Lane Assist",
-        "Entertainment System": "10-inch Touchscreen, Bluetooth",
-        "Interior Material": "Leather Seats"
-      }
-    },
-    {
-      groupName: "Electric",
-      specs: {
-        "Engine Type": "Electric Motor",
-        "Horsepower": "300 HP",
-        "Torque": "450 Nm",
-        "Number of Doors": 4,
-        "Passengers": 5,
-        "Fuel Type": "Electric",
-        "Gearbox": "Single-speed",
-        "Drive Type": "Rear-Wheel Drive (RWD)",
-        "Range Per Charge": "400 km",
-        "Charging Time": "Fast Charging (80% in 30 min)",
-        "AC": true,
-        "Electric Windows": true,
-        "Safety Features": "Autopilot, Collision Avoidance",
-        "Entertainment System": "12-inch Touchscreen, Wireless Charging",
-        "Interior Material": "Vegan Leather"
-      }
-    },
-    {
-      groupName: "Hybrid",
-      specs: {
-        "Engine Size": "1800 cc + Electric Motor",
-        "Horsepower": "220 HP",
-        "Torque": "280 Nm",
-        "Number of Doors": 4,
-        "Passengers": 5,
-        "Fuel Type": "Hybrid (Gasoline + Electric)",
-        "Gearbox": "Automatic",
-        "Drive Type": "Front-Wheel Drive (FWD)",
-        "Fuel Consumption": "5.2 L/100km",
-        "AC": true,
-        "Electric Windows": true,
-        "Safety Features": "Blind Spot Monitoring, Emergency Braking",
-        "Entertainment System": "Apple CarPlay, Android Auto",
-        "Interior Material": "Fabric + Synthetic Leather"
-      }
-    },
-    {
-      groupName: "Convertible",
-      specs: {
-        "Engine Size": "2500 cc",
-        "Horsepower": "350 HP",
-        "Torque": "400 Nm",
-        "Number of Doors": 2,
-        "Passengers": 2,
-        "Fuel Type": "Gasoline",
-        "Gearbox": "Automatic",
-        "Drive Type": "Rear-Wheel Drive (RWD)",
-        "Fuel Consumption": "10 L/100km",
-        "AC": true,
-        "Electric Windows": true,
-        "Roof Type": "Retractable Hardtop",
-        "Safety Features": "Roll Bars, Traction Control",
-        "Entertainment System": "Premium Bose Sound System",
-        "Interior Material": "Nappa Leather"
-      }
-    },
-    {
-      groupName: "Bus",
-      specs: {
-        "Engine Size": "4000 cc",
-        "Horsepower": "180 HP",
-        "Torque": "600 Nm",
-        "Number of Doors": 2,
-        "Passengers": 15,
-        "Fuel Type": "Diesel",
-        "Gearbox": "Manual",
-        "Drive Type": "Rear-Wheel Drive (RWD)",
-        "Fuel Consumption": "15 L/100km",
-        "AC": false,
-        "Electric Windows": false,
-        "Safety Features": "Seatbelts for All Seats, Stability Control",
-        "Entertainment System": "Microphone System, Overhead Speakers",
-        "Interior Material": "Cloth Seats"
-      }
-    },
-    {
-      groupName: "Pickup Truck",
-      specs: {
-        "Engine Size": "3000 cc",
-        "Horsepower": "400 HP",
-        "Torque": "650 Nm",
-        "Number of Doors": 2,
-        "Passengers": 4,
-        "Fuel Type": "Diesel",
-        "Gearbox": "Manual",
-        "Drive Type": "4x4 (Four-Wheel Drive)",
-        "Fuel Consumption": "12 L/100km",
-        "AC": false,
-        "Electric Windows": false,
-        "Towing Capacity": "5000 kg",
-        "Safety Features": "Rear Parking Sensors, Traction Control",
-        "Entertainment System": "Basic Radio + USB",
-        "Interior Material": "Vinyl Seats"
-      }
-    },
-    {
-      groupName: "Minivan",
-      specs: {
-        "Engine Size": "2200 cc",
-        "Horsepower": "200 HP",
-        "Torque": "300 Nm",
-        "Number of Doors": 4,
-        "Passengers": 7,
-        "Fuel Type": "Gasoline",
-        "Gearbox": "Automatic",
-        "Drive Type": "Front-Wheel Drive (FWD)",
-        "Fuel Consumption": "7.8 L/100km",
-        "AC": true,
-        "Electric Windows": true,
-        "Safety Features": "360° Camera, Adaptive Cruise Control",
-        "Entertainment System": "Rear Seat Screens, Bluetooth",
-        "Interior Material": "Soft Fabric + Leather Inserts"
+// -------------------- PART A: FILTER ALL CARS -------------------- //
+let allCars = []; // We'll store ALL cars from the DB here
+let carReserved = false; // Global flag to track if a car has been reserved
+
+// 1. Fetch all cars from the database once, on DOMContentLoaded
+function fetchAllCars() {
+  fetch('http://localhost:5000/api/cars')
+    .then(response => response.json())
+    .then(data => {
+      allCars = data; // Store all cars globally for filtering
+    })
+    .catch(error => {
+      console.error("Error fetching all cars:", error);
+    });
+}
+
+// 2. Initialize event listener for the filter form
+function initFilterForm() {
+  const filterForm = document.getElementById("filterForm");
+  filterForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    applyFilters();
+  });
+}
+
+// 3. Apply the filter logic to `allCars`
+function applyFilters() {
+  // Get references to the DOM elements
+  const engineSizeRange = document.getElementById("engineSizeRange").value;
+  const minDoors = parseInt(document.getElementById("minDoors").value) || null;
+  const maxDoors = parseInt(document.getElementById("maxDoors").value) || null;
+  const minPassengers = parseInt(document.getElementById("minPassengers").value) || null;
+  const maxPassengers = parseInt(document.getElementById("maxPassengers").value) || null;
+  const gearboxSelect = document.getElementById("gearboxSelect").value; // new gearbox filter
+  const acSelect = document.getElementById("acSelect").value; // "yes", "no", or ""
+  const windowsSelect = document.getElementById("windowsSelect").value; // "yes", "no", or ""
+
+  // Filter the cars based on the criteria
+  let filtered = allCars.filter(car => {
+    // 1) Engine size range filtering
+    if (engineSizeRange) {
+      const engineSize = car.engineSize || 0;
+      if (engineSizeRange === "0-1000") {
+        if (engineSize < 0 || engineSize > 1000) return false;
+      } else if (engineSizeRange === "1001-2000") {
+        if (engineSize < 1001 || engineSize > 2000) return false;
+      } else if (engineSizeRange === "2001-3000") {
+        if (engineSize < 2001 || engineSize > 3000) return false;
+      } else if (engineSizeRange === "3001+") {
+        if (engineSize < 3001) return false;
       }
     }
-  ];
-  
-  // Function to display the car groups on the webpage
-  window.addEventListener("DOMContentLoaded", () => {
-    const container = document.getElementById("carGroupsContainer");
-  
-    carGroups.forEach(group => {
-      // Create a block for each group
-      const groupDiv = document.createElement("div");
-      groupDiv.classList.add("car-group-card"); // Add a CSS class for styling
-  
-      // Group name
-      const title = document.createElement("h2");
-      title.textContent = group.groupName;
-      groupDiv.appendChild(title);
-  
-      // List common specs
-      const specsList = document.createElement("ul");
-  
-      for (let specName in group.specs) {
-        const listItem = document.createElement("li");
-  
-        // Format Boolean values properly
-        let displayValue = group.specs[specName];
-        if (typeof displayValue === "boolean") {
-          displayValue = displayValue ? "Yes" : "No"; // Convert true/false to Yes/No
-        }
-  
-        listItem.textContent = `${specName}: ${displayValue}`;
-        specsList.appendChild(listItem);
-      }
-  
-      groupDiv.appendChild(specsList);
-      container.appendChild(groupDiv);
-    });
+
+    // 2) Doors range filtering
+    if (minDoors !== null && car.doors < minDoors) return false;
+    if (maxDoors !== null && car.doors > maxDoors) return false;
+
+    // 3) Passengers range filtering
+    if (minPassengers !== null && car.passengers < minPassengers) return false;
+    if (maxPassengers !== null && car.passengers > maxPassengers) return false;
+
+    // 4) Gearbox filtering
+    if (gearboxSelect && car.gearbox !== gearboxSelect) return false;
+
+    // 5) AC filtering
+    if (acSelect === "yes" && !car.hasAC) return false;
+    if (acSelect === "no" && car.hasAC) return false;
+
+    // 6) Electric windows filtering
+    if (windowsSelect === "yes" && !car.electricWindows) return false;
+    if (windowsSelect === "no" && car.electricWindows) return false;
+
+    return true; // Passed all filters
   });
-  
+
+  displayFilteredCars(filtered);
+}
+
+// 4. Display the filtered cars in the #filteredCarsContainer
+function displayFilteredCars(cars) {
+  const container = document.getElementById("filteredCarsContainer");
+  container.innerHTML = ""; // Clear previous results
+
+  if (cars.length === 0) {
+    container.textContent = "No cars match your filters.";
+    return;
+  }
+
+  cars.forEach(car => {
+    const carCard = document.createElement("div");
+    carCard.classList.add("car-card");
+
+    // Car image
+    const imageElement = document.createElement("img");
+    imageElement.src = car.image || "placeholder-image.jpg";
+    imageElement.alt = `${car.brand} ${car.model}`;
+    carCard.appendChild(imageElement);
+
+    // Car info container
+    const infoDiv = document.createElement("div");
+    infoDiv.classList.add("car-info");
+
+    // Car title
+    const title = document.createElement("h3");
+    title.textContent = `${car.brand} ${car.model}`;
+    infoDiv.appendChild(title);
+
+    // Price
+    const price = document.createElement("p");
+    price.textContent = `$${car.dailyPrice} per day`;
+    infoDiv.appendChild(price);
+
+    carCard.appendChild(infoDiv);
+
+    // Reserve Car button with inline error message
+    const reserveBtn = document.createElement("button");
+    reserveBtn.classList.add("btn", "reserve-btn");
+    reserveBtn.textContent = "Reserve Car";
+    reserveBtn.setAttribute("data-selected", "false"); // initial state
+
+    // Inline error message element (hidden by default)
+    const inlineError = document.createElement("span");
+    inlineError.classList.add("error-msg");
+    inlineError.style.color = "red";
+    inlineError.style.marginLeft = "10px";
+    inlineError.style.display = "none";
+
+    reserveBtn.addEventListener("click", function(event) {
+      event.stopPropagation(); // Prevent parent element click events
+
+      // Clear any previous error message display
+      inlineError.style.display = "none";
+      inlineError.textContent = "";
+
+      const isSelected = reserveBtn.getAttribute("data-selected") === "true";
+
+      // Enforce single car reservation: if not selected and a car is already reserved,
+      // show an inline error message and return.
+      if (!isSelected && carReserved) {
+        inlineError.textContent = "You have already reserved a car. Cancel your selection first.";
+        inlineError.style.display = "inline";
+        return;
+      }
+
+      const payload = { carId: isSelected ? null : car._id };
+
+      fetch("http://localhost:5000/api/reservations/selectCar", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("token")
+        },
+        body: JSON.stringify(payload)
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Failed to update reservation");
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (isSelected) {
+            reserveBtn.textContent = "Reserve Car";
+            reserveBtn.setAttribute("data-selected", "false");
+            carReserved = false;
+            localStorage.removeItem("reservedCarId");
+            localStorage.removeItem("reservationId");
+          } else {
+            reserveBtn.textContent = "Car Selected (Cancel Selection)";
+            reserveBtn.setAttribute("data-selected", "true");
+            carReserved = true;
+            // Store reserved car and reservation id in localStorage
+            localStorage.setItem("reservedCarId", car._id);
+            localStorage.setItem("reservationId", data._id); // Assuming data contains the reservation document
+          }
+        })
+        .catch(error => {
+          console.error("Error updating reservation:", error);
+        });
+    });
+    carCard.appendChild(reserveBtn);
+    carCard.appendChild(inlineError);
+
+    container.appendChild(carCard);
+  });
+}
+
+// -------------------- PART B: GROUP-BASED LOGIC -------------------- //
+
+// Hard-coded group specs for demonstration
+const groupSpecsData = {
+  "SUV": {
+    "Engine Size (cc)": "2000 cc",
+    "Number of Doors": 4,
+    "Number of Passengers": 5,
+    "Fuel Type": "Gasoline",
+    "Gearbox": "Automatic",
+    "AC": "Yes",
+    "Electric Windows": "Yes"
+  },
+  "Electric": {
+    "Engine Type": "Electric Motor",
+    "Horsepower": "300 HP",
+    "Number of Doors": 4,
+    "Number of Passengers": 5,
+    "Fuel Type": "Electric",
+    "Gearbox": "Automatic",
+    "AC": "Yes",
+    "Electric Windows": "Yes"
+  },
+  "Hybrid": {
+    "Engine Size (cc)": "1800 cc + Electric",
+    "Horsepower": "220 HP",
+    "Number of Doors": 4,
+    "Number of Passengers": 5,
+    "Fuel Type": "Hybrid",
+    "Gearbox": "Automatic",
+    "AC": "Yes",
+    "Electric Windows": "Yes"
+  },
+  "Convertible": {
+    "Engine Size (cc)": "2500 cc",
+    "Number of Doors": 2,
+    "Number of Passengers": 2,
+    "Fuel Type": "Gasoline",
+    "Gearbox": "Automatic",
+    "AC": "Yes",
+    "Electric Windows": "Yes"
+  },
+  "Truck": {
+    "Engine Size (cc)": "3500 cc",
+    "Number of Doors": 2,
+    "Number of Passengers": 3,
+    "Fuel Type": "Gasoline",
+    "Gearbox": "Automatic",
+    "AC": "Yes",
+    "Electric Windows": "No"
+  },
+  "Sedan": {
+    "Engine Size (cc)": "2000 cc",
+    "Number of Doors": 4,
+    "Number of Passengers": 5,
+    "Fuel Type": "Gasoline",
+    "Gearbox": "Automatic",
+    "AC": "Yes",
+    "Electric Windows": "Yes"
+  }
+};
+
+// Fetch the distinct car groups and build the group select UI
+function loadCarGroups() {
+  fetch('http://localhost:5000/api/cars/groups')
+    .then(response => response.json())
+    .then(groups => {
+      const container = document.getElementById("carGroupsContainer");
+      container.innerHTML = ""; // Clear content
+
+      // Create the select
+      const selectEl = document.createElement("select");
+      selectEl.id = "carGroupSelect";
+
+      // Default option
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "";
+      defaultOption.textContent = "Select a car group";
+      selectEl.appendChild(defaultOption);
+
+      // Populate with group names
+      groups.forEach(groupName => {
+        const option = document.createElement("option");
+        option.value = groupName;
+        option.textContent = groupName;
+        selectEl.appendChild(option);
+      });
+
+      container.appendChild(selectEl);
+
+      // Container for group specs
+      const specsContainer = document.getElementById("groupSpecsContainer");
+      specsContainer.innerHTML = "";
+
+      // Handle select change
+      selectEl.addEventListener("change", function() {
+        const selectedGroup = this.value;
+        // Clear the gallery
+        document.getElementById("carGalleryContainer").innerHTML = "";
+
+        if (selectedGroup !== "") {
+          showGroupSpecs(selectedGroup);
+          loadCarsByGroup(selectedGroup);
+        } else {
+          specsContainer.innerHTML = "";
+        }
+      });
+    })
+    .catch(error => {
+      console.error("Error loading car groups:", error);
+    });
+}
+
+// Show the chosen group's specs (using hard-coded data)
+function showGroupSpecs(groupName) {
+  const specsContainer = document.getElementById("groupSpecsContainer");
+  specsContainer.innerHTML = "";
+
+  const specs = groupSpecsData[groupName];
+  if (!specs) {
+    specsContainer.textContent = "No specs available for this group.";
+    return;
+  }
+
+  const specsTitle = document.createElement("h3");
+  specsTitle.textContent = `${groupName} Common Specs`;
+  specsContainer.appendChild(specsTitle);
+
+  const ul = document.createElement("ul");
+  for (let key in specs) {
+    const li = document.createElement("li");
+    li.textContent = `${key}: ${specs[key]}`;
+    ul.appendChild(li);
+  }
+  specsContainer.appendChild(ul);
+}
+
+// Fetch and display cars from a specific group
+function loadCarsByGroup(groupName) {
+  fetch(`http://localhost:5000/api/cars/group/${encodeURIComponent(groupName)}`)
+    .then(response => response.json())
+    .then(cars => {
+      const galleryContainer = document.getElementById("carGalleryContainer");
+      galleryContainer.innerHTML = "";
+
+      if (cars.length === 0) {
+        galleryContainer.textContent = "No available cars in this group.";
+        return;
+      }
+
+      cars.forEach(car => {
+        const carCard = document.createElement("div");
+        carCard.classList.add("car-card");
+
+        const imageElement = document.createElement("img");
+        imageElement.src = car.image || "placeholder-image.jpg";
+        imageElement.alt = `${car.brand} ${car.model}`;
+        carCard.appendChild(imageElement);
+
+        const infoDiv = document.createElement("div");
+        infoDiv.classList.add("car-info");
+
+        const title = document.createElement("h3");
+        title.textContent = `${car.brand} ${car.model}`;
+        infoDiv.appendChild(title);
+
+        const price = document.createElement("p");
+        price.textContent = `$${car.dailyPrice} per day`;
+        infoDiv.appendChild(price);
+
+        carCard.appendChild(infoDiv);
+
+        // Reserve Car button with toggle functionality and inline error message.
+        const reserveBtn = document.createElement("button");
+        reserveBtn.classList.add("btn", "reserve-btn");
+        reserveBtn.textContent = "Reserve Car";
+        reserveBtn.setAttribute("data-selected", "false");
+
+        const inlineError = document.createElement("span");
+        inlineError.classList.add("error-msg");
+        inlineError.style.color = "red";
+        inlineError.style.marginLeft = "10px";
+        inlineError.style.display = "none";
+
+        reserveBtn.addEventListener("click", function(event) {
+          event.stopPropagation();
+
+          inlineError.style.display = "none";
+          inlineError.textContent = "";
+
+          const isSelected = reserveBtn.getAttribute("data-selected") === "true";
+          if (!isSelected && carReserved) {
+            inlineError.textContent = "You have already reserved a car. Cancel your selection first.";
+            inlineError.style.display = "inline";
+            return;
+          }
+
+          const payload = { carId: isSelected ? null : car._id };
+
+          fetch("http://localhost:3000/api/reservations/selectCar", {
+            // Use the same port as your backend, adjust if necessary (here using http://localhost:5000 if needed)
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer " + localStorage.getItem("token")
+            },
+            body: JSON.stringify(payload)
+          })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error("Failed to update reservation");
+              }
+              return response.json();
+            })
+            .then(data => {
+              if (isSelected) {
+                reserveBtn.textContent = "Reserve Car";
+                reserveBtn.setAttribute("data-selected", "false");
+                carReserved = false;
+                localStorage.removeItem("reservedCarId");
+                localStorage.removeItem("reservationId");
+              } else {
+                reserveBtn.textContent = "Car Selected (Cancel Selection)";
+                reserveBtn.setAttribute("data-selected", "true");
+                carReserved = true;
+                localStorage.setItem("reservedCarId", car._id);
+                localStorage.setItem("reservationId", data._id);
+              }
+            })
+            .catch(error => {
+              console.error("Error updating reservation:", error);
+            });
+        });
+        carCard.appendChild(reserveBtn);
+        carCard.appendChild(inlineError);
+
+        galleryContainer.appendChild(carCard);
+      });
+    })
+    .catch(error => {
+      console.error("Error fetching cars by group:", error);
+    });
+}
+
+// On DOMContentLoaded, initialize filtering, group-based functionality, and the Next button
+window.addEventListener("DOMContentLoaded", () => {
+  fetchAllCars();
+  initFilterForm();
+  loadCarGroups();
+
+  const nextBtn = document.getElementById("nextBtn");
+  const nextError = document.getElementById("nextError");
+  nextBtn.addEventListener("click", function() {
+    if (!carReserved) {
+      nextError.textContent = "Please reserve a car before proceeding.";
+    } else {
+      nextError.textContent = "";
+      window.location.href = "order.html";
+    }
+  });
+});
+
+
+
+
+
+
+
+
