@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CarReserve - Order Page</title>
+  <link rel="stylesheet" href="../assets/css/order.css">
   <script src="../assets/js/order.js" defer></script>
 </head>
 <body>
@@ -33,7 +34,9 @@
     <h1>Extra Services</h1>
     
     <!-- Display the reserved car's daily rate, fetched via order.js -->
-    <p>Daily Rate: $<span id="dailyRateDisplay">0.00</span></p>
+    <div class="rate-display">
+      <p>Daily Rate: <span class="price">$<span id="dailyRateDisplay">0.00</span></span></p>
+    </div>
     
     <!-- Extra Services Form (Spec 10 options) -->
     <form id="extraServicesForm">
@@ -76,16 +79,22 @@
         <label for="gps">GPS (+$10)</label><br>
       </fieldset>
       
-      <button type="submit" class="btn">Add Extra Services</button>
+      <div class="form-buttons">
+        <button type="submit" class="btn">Add Extra Services</button>
+        <button type="button" id="clearOptions" class="btn btn-secondary">Clear All Options</button>
+      </div>
     </form>
     
     <!-- Order Summary Section -->
-    <section>
+    <section class="order-summary">
       <h2>Order Summary</h2>
       <div id="orderSummary">
         <!-- List of selected extra services will be displayed here -->
+        <p class="empty-summary">No services selected yet</p>
       </div>
-      <h3>Total Price: $<span id="totalPrice">0.00</span></h3>
+      <div class="total-price">
+        <h3>Total Price: <span class="price">$<span id="totalPrice">0.00</span></span></h3>
+      </div>
       <button onclick="location.href='checkout.html'" class="btn">Proceed to Checkout</button>
     </section>
   </main>

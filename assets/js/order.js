@@ -164,6 +164,33 @@ document.addEventListener("DOMContentLoaded", function() {
         console.error("Error creating invoice:", error);
       });
   });
+
+  // Handle clear options button
+  const clearOptionsBtn = document.getElementById("clearOptions");
+  if (clearOptionsBtn) {
+    clearOptionsBtn.addEventListener("click", function() {
+      // Reset checkboxes
+      const checkboxes = extraServicesForm.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+      });
+      
+      // Reset radio buttons
+      const radioGroups = ["insurance", "fuel"];
+      radioGroups.forEach(group => {
+        const radios = extraServicesForm.querySelectorAll(`input[name="${group}"]`);
+        radios.forEach(radio => {
+          radio.checked = false;
+        });
+      });
+      
+      // Update order summary
+      updateSummary();
+      
+      // Also update the order summary section to show empty state
+      orderSummaryDiv.innerHTML = '<p class="empty-summary">No services selected yet</p>';
+    });
+  }
 });
 
   

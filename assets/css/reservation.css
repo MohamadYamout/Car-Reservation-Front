@@ -1,0 +1,142 @@
+/* Car Reservation Styling */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f5f5f5;
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h2 {
+  text-align: center;
+  margin: 30px 0;
+  color: #2c3e50;
+  font-size: 2.5rem;
+}
+
+form {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+fieldset {
+  margin-bottom: 25px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+legend {
+  padding: 0 10px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #3498db;
+}
+
+label {
+  display: block;
+  margin: 15px 0 5px;
+  font-weight: 500;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="datetime-local"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="datetime-local"]:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+input[readonly] {
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+#pickup-map,
+#return-map {
+  margin: 10px 0 20px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+button[type="submit"] {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 15px 25px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  border-radius: 5px;
+  display: block;
+  margin: 20px auto;
+  transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+  background-color: #2980b9;
+}
+
+#message-box {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 5px;
+  text-align: center;
+  display: none;
+}
+
+.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  display: block !important;
+}
+
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  display: block !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+  
+  form {
+    padding: 15px;
+  }
+  
+  fieldset {
+    padding: 15px;
+  }
+  
+  h2 {
+    font-size: 2rem;
+  }
+} 
