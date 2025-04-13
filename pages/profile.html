@@ -125,22 +125,13 @@
     </section>
 
     <script>
-        // Profile picture upload preview
-        document.getElementById('profile-upload').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('profile-img').src = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // Mobile menu toggle
-        document.querySelector('.menu-btn').addEventListener('click', function() {
-            document.querySelector('.nav-links').classList.toggle('active');
-        });
+      // The upload logic is handled in profile.js, which is included at the top.
+      // You can also add additional inline scripts here if needed.
+      
+      // Mobile menu toggle
+      document.querySelector('.menu-btn').addEventListener('click', function() {
+          document.querySelector('.nav-links').classList.toggle('active');
+      });
     </script>
 </body>
-</html> 
+</html>
