@@ -83,6 +83,7 @@
     text-align: center;
 }
 
+/* Existing status styles */
 .status-completed {
     background: #e6f4ea;
     color: #1e7e34;
@@ -96,6 +97,17 @@
 .status-cancelled {
     background: #ffebee;
     color: #c62828;
+}
+
+/* New status styles */
+.status-draft {
+    background: #fff3cd; /* A light yellow background */
+    color: #856404;      /* Dark golden text */
+}
+
+.status-inactive {
+    background: #e2e3e5; /* A neutral light grey background */
+    color: #6c757d;      /* Grey text */
 }
 
 .booking-actions {
@@ -296,4 +308,4 @@
     .booking-actions {
         border-top-color: #404040;
     }
-} 
+}

@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const lineItemsContainer = document.getElementById("lineItemsContainer");
   const dailyRateDisplay = document.getElementById("dailyRateDisplay");
   const totalPriceSpan = document.getElementById("totalPrice");
-  const confirmBookingBtn = document.getElementById("confirmBookingBtn");
   const proceedToCheckoutBtn = document.getElementById("proceedToCheckout");
 
   let draftReservation = null;
@@ -59,15 +58,44 @@ document.addEventListener("DOMContentLoaded", () => {
     lineItems.forEach((item, index) => {
       if (!item.carId) return;
       const carObj = item.carId;
+      
+      // Create a container div for each car.
       const itemDiv = document.createElement("div");
       itemDiv.style.border = "1px solid #ccc";
       itemDiv.style.padding = "10px";
       itemDiv.style.marginBottom = "10px";
 
+      // Create a container for the title and remove button.
+      const titleContainer = document.createElement("div");
+      titleContainer.style.display = "flex";
+      titleContainer.style.justifyContent = "space-between";
+      titleContainer.style.alignItems = "center";
+
       const heading = document.createElement("h3");
       heading.textContent = `${carObj.brand} ${carObj.model} - $${parseFloat(carObj.dailyPrice).toFixed(2)} / day`;
-      itemDiv.appendChild(heading);
+      heading.style.margin = "0";
+      titleContainer.appendChild(heading);
 
+      // Create the styled Remove (minus) button.
+      const removeBtn = document.createElement("button");
+      removeBtn.textContent = "−"; // Unicode minus sign
+      removeBtn.style.background = "#dc3545";   // Red color
+      removeBtn.style.color = "#ffffff";         // White text
+      removeBtn.style.border = "1px solid #dc3545";
+      removeBtn.style.borderRadius = "5px";
+      removeBtn.style.padding = "4px 8px";
+      removeBtn.style.fontSize = "1rem";
+      removeBtn.style.fontWeight = "bold";
+      removeBtn.style.cursor = "pointer";
+      removeBtn.title = "Remove this car";
+      removeBtn.addEventListener("click", () => {
+        removeCar(index, item._id);
+      });
+      titleContainer.appendChild(removeBtn);
+
+      itemDiv.appendChild(titleContainer);
+
+      // Extras Section.
       const extrasLabel = document.createElement("div");
       extrasLabel.textContent = "Extra Services:";
       itemDiv.appendChild(extrasLabel);
@@ -78,6 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
       extrasContainer.appendChild(createCheckbox("Satellite Navigator (+$15)", "satNav", item.extras.includes("Satellite Navigator"), index));
       itemDiv.appendChild(extrasContainer);
 
+      // Insurance Section.
       const insuranceLabel = document.createElement("div");
       insuranceLabel.textContent = "Insurance (choose one):";
       itemDiv.appendChild(insuranceLabel);
@@ -88,6 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
       insuranceContainer.appendChild(createRadio("Additional Driver Insurance (+$25)", "addDriver", item.insurance === "Additional Driver Insurance", index));
       itemDiv.appendChild(insuranceContainer);
 
+      // Fuel Section.
       const fuelLabel = document.createElement("div");
       fuelLabel.textContent = "Fuel (choose one):";
       itemDiv.appendChild(fuelLabel);
@@ -97,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
       fuelContainer.appendChild(createFuelRadio("Fuel Pay on Return (+$30)", "fuelReturn", item.fuel === "Fuel Pay on Return", index));
       itemDiv.appendChild(fuelContainer);
 
+      // GPS Section.
       const gpsDiv = document.createElement("div");
       const gpsCheckbox = document.createElement("input");
       gpsCheckbox.type = "checkbox";
@@ -113,6 +144,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
       lineItemsContainer.appendChild(itemDiv);
     });
+  }
+
+  // Remove car from reservation.
+  function removeCar(index, lineItemId) {
+    // Prevent removal if it would leave no cars reserved.
+    if (lineItems.length <= 1) {
+      alert("You must have at least one car reserved.");
+      return;
+    }
+    fetch("http://localhost:5000/api/reservations/selectCar", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
+      body: JSON.stringify({ reservationId, lineItemId })
+    })
+      .then(res => {
+        if (!res.ok) return res.json().then(errData => Promise.reject(errData));
+        return res.json();
+      })
+      .then(updatedReservation => {
+        // Update local draftReservation and lineItems from the updated reservation.
+        draftReservation = updatedReservation;
+        lineItems = updatedReservation.cars || [];
+        renderLineItems();
+        updateTotals();
+      })
+      .catch(err => {
+        console.error("Error removing car:", err);
+        alert("Failed to remove car. Please try again.");
+      });
   }
 
   // Helper functions.
@@ -230,64 +293,6 @@ document.addEventListener("DOMContentLoaded", () => {
     totalPriceSpan.textContent = overallTotal.toFixed(2);
   }
 
-  // Confirm Booking flow.
-  confirmBookingBtn.addEventListener("click", () => {
-    if (!draftReservation) {
-      alert("No draft reservation found!");
-      return;
-    }
-  
-    if (!confirm("Are you sure you want to finalize your booking?")) return;
-  
-    const lineItemsPayload = draftReservation.cars.map(item => ({
-      lineItemId: item._id,
-      extras: item.extras || [],
-      insurance: item.insurance || "",
-      fuel: item.fuel || "",
-      gps: !!item.gps
-    }));
-  
-    fetch("http://localhost:5000/api/reservations/updateLineItems", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + token
-      },
-      body: JSON.stringify({ reservationId, lineItems: lineItemsPayload })
-    })
-      .then(res => {
-        if (!res.ok) return res.json().then(errData => Promise.reject(errData));
-        return res.json();
-      })
-      .then(updatedReservation => {
-        const invoicePayload = {
-          reservationId: updatedReservation._id,
-          dailyRate: updatedReservation.calculatedDailyCost || 0,
-          extraCost: updatedReservation.calculatedExtras || 0
-        };
-        return fetch("http://localhost:5000/api/invoices", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token
-          },
-          body: JSON.stringify(invoicePayload)
-        });
-      })
-      .then(res => {
-        if (!res.ok) return res.json().then(errData => Promise.reject(errData));
-        return res.json();
-      })
-      .then(invoiceData => {
-        alert("Invoice generated and reservation finalized successfully!");
-        window.location.href = "index.html";
-      })
-      .catch(err => {
-        console.error("Error finalizing booking:", err);
-        alert("Error finalizing booking. Please try again.");
-      });
-  });
-  
   // Proceed to Checkout flow: update extras then redirect.
   function updateExtrasAndProceed() {
     if (!draftReservation) {
