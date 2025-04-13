@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const custNameInput = document.getElementById("custName");
   const custEmailInput = document.getElementById("custEmail");
   const custPhoneInput = document.getElementById("custPhone");
-  
+
   const couponMsg = document.getElementById("couponMsg");
   const saveTransactionBtn = document.getElementById("saveTransaction");
   const completeTransactionBtn = document.getElementById("completeTransaction");
@@ -15,6 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const requestQuotationBtn = document.getElementById("requestQuotation");
 
   let draftReservation = null;
+  let appliedCoupon = null; // To track which coupon has been applied
+  let baseOrderTotal = 0;   // To store the original order total before discount
 
   function fetchProfile() {
     fetch("http://localhost:5000/api/auth/profile", {
@@ -28,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(err => console.error("Error fetching profile:", err));
   }
-  
+
   function fetchReservation() {
     const reservationId = localStorage.getItem("reservationId");
     if (!reservationId) {
@@ -54,22 +56,22 @@ document.addEventListener("DOMContentLoaded", () => {
         orderDetailsDiv.innerHTML = "<p>Error fetching reservation details.</p>";
       });
   }
-  
+
   function displayOrder(reservation) {
     orderDetailsDiv.innerHTML = "";
     const pickup = new Date(reservation.pickupDateTime);
     const drop = new Date(reservation.dropoffDateTime);
     const diffTime = drop - pickup;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
-  
+
     let totalDailyPrice = 0;
     let overallExtras = 0;
-  
+
     reservation.cars.forEach((item, idx) => {
       if (!item.carId) return;
       const car = item.carId;
       totalDailyPrice += parseFloat(car.dailyPrice) || 0;
-  
+
       let extrasCost = 0;
       (item.extras || []).forEach(ex => {
         if (ex === "Chauffeur") extrasCost += 50;
@@ -83,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
       else if (item.fuel === "Fuel Pay on Return") extrasCost += 30;
       if (item.gps) extrasCost += 10;
       overallExtras += extrasCost;
-  
+
       orderDetailsDiv.innerHTML += `
         <strong>Car ${idx + 1}:</strong> ${car.brand} ${car.model} - Rate: $${parseFloat(car.dailyPrice).toFixed(2)} / day<br>
         Extras: ${item.extras && item.extras.length ? item.extras.join(", ") : "None"}<br>
@@ -92,28 +94,44 @@ document.addEventListener("DOMContentLoaded", () => {
         GPS: ${item.gps ? "Yes" : "No"}<br><hr>
       `;
     });
-  
+
     const dailyCost = totalDailyPrice * diffDays;
     const overallTotal = dailyCost + overallExtras;
+    baseOrderTotal = overallTotal; // Store the original order total once
     orderTotalSpan.textContent = overallTotal.toFixed(2);
-  
+
     reservation.calculatedDailyCost = dailyCost;
     reservation.calculatedExtras = overallExtras;
   }
-  
+
+  // Coupon event listener preventing multiple applications
   document.getElementById("applyCoupon").addEventListener("click", function() {
     const code = document.getElementById("couponCode").value.trim();
-    if (code === "DISCOUNT10") {
-      const currentTotal = parseFloat(orderTotalSpan.textContent) || 0;
-      const discount = currentTotal * 0.1;
-      const newTotal = currentTotal - discount;
-      orderTotalSpan.textContent = newTotal.toFixed(2);
-      couponMsg.textContent = "Coupon applied! 10% discount.";
-    } else {
-      couponMsg.textContent = "Invalid coupon code.";
+    
+    // If a coupon is already applied, do not allow further discount
+    if (appliedCoupon) {
+      couponMsg.textContent = "A coupon has already been applied.";
+      return;
     }
+
+    fetch("http://localhost:5000/api/coupons/" + code)
+      .then(res => res.json())
+      .then(data => {
+        if (data.discountPercentage) {
+          appliedCoupon = code; // Store the coupon code as applied
+          const discount = baseOrderTotal * (data.discountPercentage / 100);
+          const newTotal = baseOrderTotal - discount;
+          orderTotalSpan.textContent = newTotal.toFixed(2);
+          couponMsg.textContent = `Coupon applied! ${data.discountPercentage}% discount.`;
+        } else if (data.error) {
+          couponMsg.textContent = data.error;
+        }
+      })
+      .catch(err => {
+        couponMsg.textContent = "Error applying coupon.";
+      });
   });
-  
+
   // --- Save Transaction Button (incomplete draft) ---
   document.getElementById("saveTransaction").addEventListener("click", () => {
     const custName = custNameInput.value.trim();
@@ -123,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Please fill in your personal information before saving.");
       return;
     }
-  
+
     const lineItemsPayload = draftReservation.cars.map(item => ({
       lineItemId: item._id,
       extras: item.extras || [],
@@ -131,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
       fuel: item.fuel || "",
       gps: !!item.gps
     }));
-  
+
     fetch("http://localhost:5000/api/reservations/updateLineItems", {
       method: "PUT",
       headers: {
@@ -145,7 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return res.json();
       })
       .then(updatedReservation => {
-        // Send the final amount from the total displayed on the page.
         const invoicePayload = {
           reservationId: updatedReservation._id,
           dailyRate: updatedReservation.calculatedDailyCost || 0,
@@ -200,7 +217,6 @@ document.addEventListener("DOMContentLoaded", () => {
           return res.json();
         })
         .then(updatedReservation => {
-          // Create an invoice payload with the status "cancelled"
           const invoicePayload = {
             reservationId: updatedReservation._id,
             dailyRate: updatedReservation.calculatedDailyCost || 0,
@@ -242,9 +258,9 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Please fill in all personal and payment details.");
       return;
     }
-  
+
     if (!confirm("Are you sure you want to finalize your booking?")) return;
-  
+
     const lineItemsPayload = draftReservation.cars.map(item => ({
       lineItemId: item._id,
       extras: item.extras || [],
@@ -252,7 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
       fuel: item.fuel || "",
       gps: !!item.gps
     }));
-  
+
     fetch("http://localhost:5000/api/reservations/updateLineItems", {
       method: "PUT",
       headers: {
@@ -266,7 +282,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return res.json();
       })
       .then(updatedReservation => {
-        // Send the final amount from the total displayed on the page.
         const invoicePayload = {
           reservationId: updatedReservation._id,
           dailyRate: updatedReservation.calculatedDailyCost || 0,
@@ -288,6 +303,19 @@ document.addEventListener("DOMContentLoaded", () => {
         return res.json();
       })
       .then(invoiceData => {
+        // After successful invoice creation, mark the applied coupon as used (if any)
+        if (appliedCoupon) {
+          fetch("http://localhost:5000/api/coupons/use/" + appliedCoupon, {
+            method: "PUT"
+          })
+          .then(res => res.json())
+          .then(data => {
+            console.log(data.message || "Coupon marked as used.");
+          })
+          .catch(err => {
+            console.error("Error marking coupon as used:", err);
+          });
+        }
         alert("Invoice generated and reservation finalized successfully!");
         window.location.href = "index.html";
       })
@@ -296,12 +324,12 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Error finalizing booking. Please try again.");
       });
   });
-  
+
   document.getElementById("requestQuotation").addEventListener("click", () => {
     alert("Your quotation request has been sent. We will get back to you soon.");
     window.location.href = "index.html";
   });
-  
+
   fetchProfile();
   fetchReservation();
 });
