@@ -1,109 +1,186 @@
-// Mobile menu toggle
-document.querySelector('.menu-btn').addEventListener('click', function() {
-    document.querySelector('.nav-links').classList.toggle('active');
-});
+document.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("token");
+  const bookingGrid = document.getElementById("bookingGrid");
+  const noBookingsDiv = document.getElementById("noBookings");
 
-// Function to download invoice
-function downloadInvoice(invoiceId) {
-    // This is a placeholder function - implement actual invoice download logic
-    alert('Downloading invoice: ' + invoiceId);
-}
+  if (!token) {
+    alert("Please log in to view your booking history.");
+    window.location.href = "login.html";
+    return;
+  }
 
-// Function to format date
-function formatDate(date) {
-    return new Intl.DateTimeFormat('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-    }).format(new Date(date));
-}
+  // We'll store data from both reservations and invoices, then merge them.
+  let reservations = [];
+  let invoices = [];
 
-// Function to create a booking card
-function createBookingCard(booking) {
-    const card = document.createElement('div');
-    card.className = 'booking-card';
-    
-    card.innerHTML = `
-        <div class="booking-date">Booked on: ${formatDate(booking.bookingDate)}</div>
-        <div class="car-details">
-            <h3>${booking.carModel}</h3>
-            <p>Rental Period: ${formatDate(booking.startDate)} - ${formatDate(booking.endDate)}</p>
-        </div>
-        <span class="booking-status status-${booking.status.toLowerCase()}">${booking.status}</span>
-        <div class="booking-actions">
-            <span class="booking-price">$${booking.price.toFixed(2)}</span>
-            <a href="#" class="btn-invoice" onclick="downloadInvoice('${booking.invoiceId}')">Download Invoice</a>
-        </div>
-    `;
-    
-    return card;
-}
+  // 1. Fetch all reservations
+  fetch("http://localhost:5000/api/reservations/me", {
+    headers: { Authorization: "Bearer " + token },
+  })
+    .then((res) => res.json())
+    .then((reservationsData) => {
+      reservations = reservationsData || [];
+      // 2. Fetch all invoices
+      return fetch("http://localhost:5000/api/invoices/my-invoices", {
+        headers: { Authorization: "Bearer " + token },
+      });
+    })
+    .then((res) => res.json())
+    .then((invoicesData) => {
+      invoices = invoicesData || [];
+      renderHistory(reservations, invoices);
+    })
+    .catch((err) => {
+      console.error("Error fetching history:", err);
+      bookingGrid.style.display = "none";
+      noBookingsDiv.style.display = "block";
+      noBookingsDiv.innerHTML =
+        "<h3>Error Fetching Bookings</h3><p>Please try again later.</p>";
+    });
 
-// Function to fetch and display booking history
-async function loadBookingHistory() {
-    try {
-        // This is where you would typically fetch the booking history from your backend
-        // For now, we'll use sample data
-        const sampleBookings = [
-            {
-                bookingDate: '2024-04-05',
-                carModel: 'Tesla Model 3',
-                startDate: '2024-04-10',
-                endDate: '2024-04-15',
-                status: 'Active',
-                price: 450.00,
-                invoiceId: 'INV-2024-001'
-            },
-            {
-                bookingDate: '2024-03-15',
-                carModel: 'BMW 3 Series',
-                startDate: '2024-03-20',
-                endDate: '2024-03-25',
-                status: 'Completed',
-                price: 575.00,
-                invoiceId: 'INV-2024-002'
-            },
-            {
-                bookingDate: '2024-02-28',
-                carModel: 'Mercedes-Benz C-Class',
-                startDate: '2024-03-01',
-                endDate: '2024-03-03',
-                status: 'Cancelled',
-                price: 320.00,
-                invoiceId: 'INV-2024-003'
-            }
-        ];
-
-        const bookingGrid = document.getElementById('bookingGrid');
-        const noBookings = document.getElementById('noBookings');
-
-        // Clear existing content
-        bookingGrid.innerHTML = '';
-
-        if (sampleBookings.length === 0) {
-            noBookings.style.display = 'block';
-            bookingGrid.style.display = 'none';
-        } else {
-            noBookings.style.display = 'none';
-            bookingGrid.style.display = 'grid';
-            
-            // Add booking cards
-            sampleBookings.forEach(booking => {
-                bookingGrid.appendChild(createBookingCard(booking));
-            });
-        }
-    } catch (error) {
-        console.error('Error loading booking history:', error);
-        // Show error message to user
-        const bookingGrid = document.getElementById('bookingGrid');
-        bookingGrid.innerHTML = `
-            <div class="no-bookings">
-                <h3>Error Loading Bookings</h3>
-                <p>There was an error loading your booking history. Please try again later.</p>
-            </div>
-        `;
+  function renderHistory(reservations, invoices) {
+    if (!reservations.length) {
+      noBookingsDiv.style.display = "block";
+      bookingGrid.style.display = "none";
+      return;
     }
-}
+    noBookingsDiv.style.display = "none";
+    bookingGrid.style.display = "grid";
+    bookingGrid.innerHTML = "";
 
-// Load booking history when the page loads
-document.addEventListener('DOMContentLoaded', loadBookingHistory); 
+    reservations.forEach((reservation) => {
+      const carItem = reservation.cars && reservation.cars[0];
+      let carName = "Unknown Car";
+      if (carItem && carItem.carId) {
+        carName = `${carItem.carId.brand || ""} ${carItem.carId.model || ""}`.trim();
+      }
+
+      // Find matching invoice by reservationId.
+      const invoice = invoices.find(
+        (inv) => inv.reservationId === reservation._id
+      );
+      const amount = invoice ? invoice.amount : 0;
+      // Format pickup and dropoff dates
+      const pickupDate = new Date(reservation.pickupDateTime);
+      const dropoffDate = new Date(reservation.dropoffDateTime);
+
+      // Compute display status according to the new custom logic.
+      const displayStatus = getCustomDisplayStatus(invoice, pickupDate, dropoffDate);
+
+      // Also get the corresponding CSS class
+      const statusClass = getStatusClass(displayStatus);
+
+      // Build the booking card
+      const card = document.createElement("div");
+      card.classList.add("booking-card");
+      card.innerHTML = `
+        <div class="car-details">
+          <h3>${carName}</h3>
+          <p><strong>Pickup Location:</strong> ${reservation.pickupLocation || "N/A"}</p>
+          <p><strong>Dropoff Location:</strong> ${reservation.dropoffLocation || "N/A"}</p>
+          <p><strong>Driver:</strong> ${reservation.driverName || "N/A"}</p>
+        </div>
+        <div class="booking-date">
+          <p><strong>Pickup:</strong> ${pickupDate.toLocaleDateString()}</p>
+          <p><strong>Dropoff:</strong> ${dropoffDate.toLocaleDateString()}</p>
+        </div>
+        <div class="booking-status ${statusClass}">
+          ${displayStatus}
+        </div>
+        <div class="booking-actions">
+          <div class="booking-price">$${amount.toFixed(2)}</div>
+          <a href="downloadInvoice.html?id=${reservation._id}" class="btn-invoice">
+            Download Invoice
+          </a>
+        </div>
+      `;
+      bookingGrid.appendChild(card);
+    });
+  }
+
+  // Helper to compute display status
+  function getCustomDisplayStatus(invoice, pickupDate, dropoffDate) {
+    const now = new Date();
+
+    // If there is no invoice, assume an incomplete invoice.
+    if (!invoice) {
+      if (now < dropoffDate) {
+        return "Draft";
+      } else {
+        return "Cancelled";
+      }
+    }
+
+    // Process based on invoice.status
+    if (invoice.status === "cancelled") {
+      return "Cancelled";
+    }
+
+    if (invoice.status === "complete") {
+      // If current time is before pickup, label as Inactive
+      if (now < pickupDate) {
+        return "Inactive";
+      }
+      // If current time is between pickup and dropoff, label as Active
+      if (now >= pickupDate && now < dropoffDate) {
+        return "Active";
+      }
+      // If current time has passed the dropoff time, label as Completed
+      if (now >= dropoffDate) {
+        return "Completed";
+      }
+    }
+
+    if (invoice.status === "incomplete") {
+      // If current time is before dropoff, show "Draft"
+      if (now < dropoffDate) {
+        return "Draft";
+      } else {
+        // Update the database to mark the invoice as cancelled if now has passed dropoff
+        updateInvoiceStatus(invoice._id, "cancelled");
+        return "Cancelled";
+      }
+    }
+
+    // Fallback to Active if none of the above conditions apply.
+    return "Active";
+  }
+
+  // Helper to get the CSS class for the status
+  function getStatusClass(statusString) {
+    switch (statusString.toLowerCase()) {
+      case "completed":
+        return "status-completed";
+      case "cancelled":
+        return "status-cancelled";
+      case "draft":
+        return "status-draft";
+      case "inactive":
+        return "status-inactive";
+      case "active":
+        return "status-active";
+      default:
+        return "status-active"; // fallback
+    }
+  }
+
+  // Helper to update invoice status in the database
+  function updateInvoiceStatus(invoiceId, newStatus) {
+    fetch(`http://localhost:5000/api/invoices/${invoiceId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({ status: newStatus }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Invoice updated to", newStatus, data);
+        // Optionally, you may refresh or re-render the history to reflect the updated status.
+      })
+      .catch((err) => {
+        console.error("Error updating invoice:", err);
+      });
+  }
+});

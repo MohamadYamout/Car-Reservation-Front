@@ -34,7 +34,7 @@
     <section id="orderDisplay">
       <h2>Your Rental Order</h2>
       <div id="orderDetails"></div>
-      <h3>Total Price: $<span id="orderTotal">0</span></h3>
+      <h3>Total Price: $<span id="orderTotal">0.00</span></h3>
     </section>
 
     <!-- Personal Information Form -->
@@ -125,12 +125,11 @@
     </div>
   </footer>
 
-  <!-- Mobile Menu Toggle -->
   <script>
     document.querySelector('.menu-btn').addEventListener('click', function() {
       document.querySelector('.nav-links').classList.toggle('active');
     });
   </script>
-  <script src="checkout.js"></script>
+  <script src="../assets/js/checkout.js"></script>
 </body>
 </html>
