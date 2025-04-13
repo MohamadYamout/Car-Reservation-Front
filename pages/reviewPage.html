@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>All Reviews (Random Order)</title>
+  <style>
+    /* Basic styling; adjust as needed */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f8f8f8;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    .reviews-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .review-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+    }
+    /* Top container holds avatar and the author info (rating and name) */
+    .top-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 10px;
+    }
+    .author-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .author-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .top-info {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .rating-stars {
+      color: gold;
+      font-size: 1.1em;
+    }
+    .review-name {
+      margin: 0;
+      font-size: 1.2em;
+      color: #333;
+    }
+    .review-text {
+      font-size: 1.1em;
+      margin-bottom: 15px;
+      color: #555;
+    }
+    .review-date {
+      font-size: 0.85em;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>All Reviews (Random Order)</h1>
+  </header>
+  <main>
+    <div id="reviewsContainer" class="reviews-container">
+      <!-- Reviews will appear here -->
+    </div>
+  </main>
+  <!-- Ensure the script reference points to your JS file in your frontend repo -->
+  <script src="/assets/js/reviewPage.js"></script>
+</body>
+</html>
