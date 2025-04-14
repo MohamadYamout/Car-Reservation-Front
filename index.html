@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
   <script src="assets/js/randomCars.js" defer></script>
   <script src="assets/js/reviewList.js"></script>
 </head>
+
 <body>
   <!-- Header with Updated Navbar -->
   <header>
@@ -18,15 +20,14 @@
         <div class="logo">CarReserve</div>
         <ul class="nav-links">
           <li><a href="#home">Home</a></li>
-          <li><a href="pages/reservation.html">Reservation</a></li>
-          <li><a href="order.html">Order</a></li>
-          <li><a href="checkout.html">Checkout</a></li>
-          <li><a href="bookings.html">Bookings</a></li>
-          <li><a href="invoices.html">Invoices</a></li>
-          <li><a href="#about">About</a></li>
+          <li><a href="pages/reservation.html">Reserve a Car</a></li>
+          <li><a href="pages/cargroups.html">Car Groups</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="pages/reviewPage.html">Reviews</a></li>
+          <li><a href="pages/submitReview.html">Submit a Review</a></li>
           <li><a href="#testimonials">Testimonials</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li><a href="chat.html">Chat</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+          <li><a href="pages/profile.html">Profile</a></li>
         </ul>
         <div class="menu-btn">☰</div>
       </nav>
@@ -39,11 +40,14 @@
       <div class="hero-content">
         <div class="hero-text">
           <h1>Reserve Your Car with Ease</h1>
-          <p>Our car reservation service makes it simple to book the perfect vehicle for your needs. Whether you're traveling for business or pleasure, we have the right car for you.</p>
+          <p>Our car reservation service makes it simple to book the perfect vehicle for your needs. Whether you're
+            traveling for business or pleasure, we have the right car for you.</p>
           <a href="pages/reservation.html" class="btn">Book Now</a>
         </div>
         <div class="hero-image">
-          <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Luxury car">
+          <img
+            src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+            alt="Luxury car">
         </div>
       </div>
     </div>
@@ -90,12 +94,16 @@
     <div class="container">
       <div class="about-content">
         <div class="about-image">
-          <img src="https://images.unsplash.com/photo-1560861947-e7b2c3b773fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Our service">
+          <img
+            src="https://images.unsplash.com/photo-1560861947-e7b2c3b773fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+            alt="Our service">
         </div>
         <div class="about-text">
           <h2>About CarReserve</h2>
-          <p>Founded in 2020, CarReserve has quickly become a leading car reservation service. We're dedicated to providing exceptional service and making the car booking process as seamless as possible.</p>
-          <p>Our mission is to revolutionize the car rental industry by leveraging technology to create a more efficient and customer-friendly experience.</p>
+          <p>Founded in 2020, CarReserve has quickly become a leading car reservation service. We're dedicated to
+            providing exceptional service and making the car booking process as seamless as possible.</p>
+          <p>Our mission is to revolutionize the car rental industry by leveraging technology to create a more efficient
+            and customer-friendly experience.</p>
           <a href="#contact" class="btn">Contact Us</a>
         </div>
       </div>
@@ -111,7 +119,8 @@
       </div>
       <div class="testimonial-grid">
         <div class="testimonial-card">
-          <p class="testimonial-text">"The booking process was incredibly simple, and the car was exactly as described. I'll definitely be using CarReserve for all my future trips!"</p>
+          <p class="testimonial-text">"The booking process was incredibly simple, and the car was exactly as described.
+            I'll definitely be using CarReserve for all my future trips!"</p>
           <div class="testimonial-author">
             <div class="author-avatar"></div>
             <div class="author-info">
@@ -121,7 +130,8 @@
           </div>
         </div>
         <div class="testimonial-card">
-          <p class="testimonial-text">"I was impressed by the variety of vehicles available and the competitive rates. The customer service team was also very helpful when I needed to modify my reservation."</p>
+          <p class="testimonial-text">"I was impressed by the variety of vehicles available and the competitive rates.
+            The customer service team was also very helpful when I needed to modify my reservation."</p>
           <div class="testimonial-author">
             <div class="author-avatar"></div>
             <div class="author-info">
@@ -131,7 +141,8 @@
           </div>
         </div>
         <div class="testimonial-card">
-          <p class="testimonial-text">"As someone who travels frequently, I appreciate the consistency and reliability of CarReserve. Their mobile app makes it easy to manage my bookings on the go."</p>
+          <p class="testimonial-text">"As someone who travels frequently, I appreciate the consistency and reliability
+            of CarReserve. Their mobile app makes it easy to manage my bookings on the go."</p>
           <div class="testimonial-author">
             <div class="author-avatar"></div>
             <div class="author-info">
@@ -226,12 +237,12 @@
 
   <script>
     // Mobile menu toggle
-    document.querySelector('.menu-btn').addEventListener('click', function() {
+    document.querySelector('.menu-btn').addEventListener('click', function () {
       document.querySelector('.nav-links').classList.toggle('active');
     });
     // Smooth scrolling for in-page navigation
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
+      anchor.addEventListener('click', function (e) {
         e.preventDefault();
         document.querySelector('.nav-links').classList.remove('active');
         document.querySelector(this.getAttribute('href')).scrollIntoView({
@@ -241,7 +252,5 @@
     });
   </script>
 </body>
+
 </html>
-
-
-
