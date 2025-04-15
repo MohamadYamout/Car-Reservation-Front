@@ -1,4 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Dynamically set the minimum expiry year to the current year.
+  const currentYear = new Date().getFullYear();
+  const expiryYearInput = document.getElementById("expiryYear");
+  if (expiryYearInput) {
+    expiryYearInput.setAttribute("min", currentYear);
+  }
+
   const token = localStorage.getItem("token");
   const orderDetailsDiv = document.getElementById("orderDetails");
   const orderTotalSpan = document.getElementById("orderTotal");
@@ -14,6 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const cancelTransactionBtn = document.getElementById("cancelTransaction");
   const requestQuotationBtn = document.getElementById("requestQuotation");
 
+  // We'll store the fetched credit card (if any) in this variable.
+  let storedCard = null;
   let draftReservation = null;
   let appliedCoupon = null; // To track which coupon has been applied
   let baseOrderTotal = 0;   // To store the original order total before discount
@@ -97,28 +106,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const dailyCost = totalDailyPrice * diffDays;
     const overallTotal = dailyCost + overallExtras;
-    baseOrderTotal = overallTotal; // Store the original order total once
+    baseOrderTotal = overallTotal;
     orderTotalSpan.textContent = overallTotal.toFixed(2);
 
     reservation.calculatedDailyCost = dailyCost;
     reservation.calculatedExtras = overallExtras;
   }
 
-  // Coupon event listener preventing multiple applications
+  // Coupon event listener preventing multiple applications.
   document.getElementById("applyCoupon").addEventListener("click", function() {
     const code = document.getElementById("couponCode").value.trim();
-    
-    // If a coupon is already applied, do not allow further discount
     if (appliedCoupon) {
       couponMsg.textContent = "A coupon has already been applied.";
       return;
     }
-
     fetch("http://localhost:5000/api/coupons/" + code)
       .then(res => res.json())
       .then(data => {
         if (data.discountPercentage) {
-          appliedCoupon = code; // Store the coupon code as applied
+          appliedCoupon = code;
           const discount = baseOrderTotal * (data.discountPercentage / 100);
           const newTotal = baseOrderTotal - discount;
           orderTotalSpan.textContent = newTotal.toFixed(2);
@@ -130,6 +136,41 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch(err => {
         couponMsg.textContent = "Error applying coupon.";
       });
+  });
+
+  // Toggle credit card fields based on payment option selection.
+  const paymentForm = document.getElementById("paymentForm");
+  const creditCardSection = document.getElementById("creditCardSection");
+  paymentForm.addEventListener("change", function() {
+    const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
+    if (selectedPayment === "Credit Card") {
+      creditCardSection.style.display = "block";
+      // If the user hasn't already fetched his card, then fetch stored credit card details.
+      if (!storedCard) {
+        fetch("http://localhost:5000/api/creditcards/me", {
+          headers: { "Authorization": "Bearer " + token }
+        })
+          .then(res => {
+            if (res.ok) return res.json();
+            // If no card exists, simply resolve with null.
+            return null;
+          })
+          .then(cardData => {
+            if (cardData && cardData.creditCard) {
+              storedCard = cardData.creditCard;
+              // Pre-fill the credit card fields.
+              document.getElementById("cardHolderName").value = storedCard.cardHolderName || "";
+              document.getElementById("cardNumber").value = storedCard.cardNumber || "";
+              document.getElementById("expiryMonth").value = storedCard.expiryMonth || "";
+              document.getElementById("expiryYear").value = storedCard.expiryYear || "";
+              document.getElementById("cvv").value = storedCard.cvv || "";
+            }
+          })
+          .catch(err => console.error("Error fetching stored credit card:", err));
+      }
+    } else {
+      creditCardSection.style.display = "none";
+    }
   });
 
   // --- Save Transaction Button (incomplete draft) ---
@@ -163,6 +204,47 @@ document.addEventListener("DOMContentLoaded", () => {
         return res.json();
       })
       .then(updatedReservation => {
+        // Check if payment method is Credit Card.
+        const selectedPayment = document.querySelector('input[name="payment"]:checked')?.value;
+        let promiseChain;
+        if (selectedPayment === "Credit Card") {
+          // If a stored card exists, no need to save again.
+          if (storedCard) {
+            promiseChain = Promise.resolve(updatedReservation);
+          } else {
+            const cardHolderName = document.getElementById("cardHolderName").value.trim();
+            const cardNumber = document.getElementById("cardNumber").value.trim();
+            const expiryMonth = document.getElementById("expiryMonth").value;
+            const expiryYear = document.getElementById("expiryYear").value;
+            const cvv = document.getElementById("cvv").value.trim();
+            if (!cardHolderName || !cardNumber || !expiryMonth || !expiryYear || !cvv) {
+              alert("Please fill in all credit card details.");
+              throw new Error("Missing credit card details.");
+            }
+            promiseChain = fetch("http://localhost:5000/api/creditcards", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+              },
+              body: JSON.stringify({ cardHolderName, cardNumber, expiryMonth, expiryYear, cvv })
+            })
+              .then(res => {
+                if (!res.ok) return res.json().then(errData => Promise.reject(errData));
+                return res.json();
+              })
+              .then(cardResponse => {
+                console.log("Credit card saved:", cardResponse);
+                storedCard = cardResponse.creditCard; // store it for future reference
+                return updatedReservation;
+              });
+          }
+        } else {
+          promiseChain = Promise.resolve(updatedReservation);
+        }
+        return promiseChain;
+      })
+      .then(updatedReservation => {
         const invoicePayload = {
           reservationId: updatedReservation._id,
           dailyRate: updatedReservation.calculatedDailyCost || 0,
@@ -193,6 +275,118 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
+  // --- Complete Transaction Button (finalize booking with complete invoice) ---
+  document.getElementById("completeTransaction").addEventListener("click", () => {
+    const custName = custNameInput.value.trim();
+    const custEmail = custEmailInput.value.trim();
+    const custPhone = custPhoneInput.value.trim();
+    const paymentMethod = document.querySelector('input[name="payment"]:checked')?.value;
+    if (!custName || !custEmail || !custPhone || !paymentMethod) {
+      alert("Please fill in all personal and payment details.");
+      return;
+    }
+
+    if (!confirm("Are you sure you want to finalize your booking?")) return;
+
+    const lineItemsPayload = draftReservation.cars.map(item => ({
+      lineItemId: item._id,
+      extras: item.extras || [],
+      insurance: item.insurance || "",
+      fuel: item.fuel || "",
+      gps: !!item.gps
+    }));
+
+    fetch("http://localhost:5000/api/reservations/updateLineItems", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
+      body: JSON.stringify({ reservationId: draftReservation._id, lineItems: lineItemsPayload })
+    })
+      .then(res => {
+        if (!res.ok) return res.json().then(errData => Promise.reject(errData));
+        return res.json();
+      })
+      .then(updatedReservation => {
+        if (paymentMethod === "Credit Card") {
+          if (storedCard) {
+            return updatedReservation;
+          } else {
+            const cardHolderName = document.getElementById("cardHolderName").value.trim();
+            const cardNumber = document.getElementById("cardNumber").value.trim();
+            const expiryMonth = document.getElementById("expiryMonth").value;
+            const expiryYear = document.getElementById("expiryYear").value;
+            const cvv = document.getElementById("cvv").value.trim();
+            if (!cardHolderName || !cardNumber || !expiryMonth || !expiryYear || !cvv) {
+              alert("Please fill in all credit card details.");
+              throw new Error("Missing credit card details.");
+            }
+            return fetch("http://localhost:5000/api/creditcards", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+              },
+              body: JSON.stringify({ cardHolderName, cardNumber, expiryMonth, expiryYear, cvv })
+            })
+              .then(res => {
+                if (!res.ok) return res.json().then(errData => Promise.reject(errData));
+                return res.json();
+              })
+              .then(cardResponse => {
+                console.log("Credit card saved:", cardResponse);
+                storedCard = cardResponse.creditCard;
+                return updatedReservation;
+              });
+          }
+        } else {
+          return updatedReservation;
+        }
+      })
+      .then(updatedReservation => {
+        const invoicePayload = {
+          reservationId: updatedReservation._id,
+          dailyRate: updatedReservation.calculatedDailyCost || 0,
+          extraCost: updatedReservation.calculatedExtras || 0,
+          amount: parseFloat(orderTotalSpan.textContent) || 0,
+          status: "complete"
+        };
+        return fetch("http://localhost:5000/api/invoices", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify(invoicePayload)
+        });
+      })
+      .then(res => {
+        if (!res.ok) return res.json().then(errData => Promise.reject(errData));
+        return res.json();
+      })
+      .then(invoiceData => {
+        if (appliedCoupon) {
+          fetch("http://localhost:5000/api/coupons/use/" + appliedCoupon, {
+            method: "PUT"
+          })
+            .then(res => res.json())
+            .then(data => {
+              console.log(data.message || "Coupon marked as used.");
+            })
+            .catch(err => {
+              console.error("Error marking coupon as used:", err);
+            });
+        }
+        alert("Invoice generated and reservation finalized successfully!");
+        window.location.href = "index.html";
+      })
+      .catch(err => {
+        console.error("Error finalizing booking:", err);
+        alert("Error finalizing booking. Please try again.");
+      });
+  });
+
   // --- Cancel Transaction Button (save as cancelled) ---
   document.getElementById("cancelTransaction").addEventListener("click", () => {
     if (confirm("Are you sure you want to cancel this transaction?")) {
@@ -203,7 +397,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fuel: item.fuel || "",
         gps: !!item.gps
       }));
-      
+
       fetch("http://localhost:5000/api/reservations/updateLineItems", {
         method: "PUT",
         headers: {
@@ -246,83 +440,6 @@ document.addEventListener("DOMContentLoaded", () => {
           alert("Error cancelling transaction. Please try again.");
         });
     }
-  });
-
-  // --- Complete Transaction Button (finalize booking with complete invoice) ---
-  document.getElementById("completeTransaction").addEventListener("click", () => {
-    const custName = custNameInput.value.trim();
-    const custEmail = custEmailInput.value.trim();
-    const custPhone = custPhoneInput.value.trim();
-    const paymentMethod = document.querySelector('input[name="payment"]:checked')?.value;
-    if (!custName || !custEmail || !custPhone || !paymentMethod) {
-      alert("Please fill in all personal and payment details.");
-      return;
-    }
-
-    if (!confirm("Are you sure you want to finalize your booking?")) return;
-
-    const lineItemsPayload = draftReservation.cars.map(item => ({
-      lineItemId: item._id,
-      extras: item.extras || [],
-      insurance: item.insurance || "",
-      fuel: item.fuel || "",
-      gps: !!item.gps
-    }));
-
-    fetch("http://localhost:5000/api/reservations/updateLineItems", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + token
-      },
-      body: JSON.stringify({ reservationId: draftReservation._id, lineItems: lineItemsPayload })
-    })
-      .then(res => {
-        if (!res.ok) return res.json().then(errData => Promise.reject(errData));
-        return res.json();
-      })
-      .then(updatedReservation => {
-        const invoicePayload = {
-          reservationId: updatedReservation._id,
-          dailyRate: updatedReservation.calculatedDailyCost || 0,
-          extraCost: updatedReservation.calculatedExtras || 0,
-          amount: parseFloat(orderTotalSpan.textContent) || 0,
-          status: "complete"
-        };
-        return fetch("http://localhost:5000/api/invoices", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token
-          },
-          body: JSON.stringify(invoicePayload)
-        });
-      })
-      .then(res => {
-        if (!res.ok) return res.json().then(errData => Promise.reject(errData));
-        return res.json();
-      })
-      .then(invoiceData => {
-        // After successful invoice creation, mark the applied coupon as used (if any)
-        if (appliedCoupon) {
-          fetch("http://localhost:5000/api/coupons/use/" + appliedCoupon, {
-            method: "PUT"
-          })
-          .then(res => res.json())
-          .then(data => {
-            console.log(data.message || "Coupon marked as used.");
-          })
-          .catch(err => {
-            console.error("Error marking coupon as used:", err);
-          });
-        }
-        alert("Invoice generated and reservation finalized successfully!");
-        window.location.href = "index.html";
-      })
-      .catch(err => {
-        console.error("Error finalizing booking:", err);
-        alert("Error finalizing booking. Please try again.");
-      });
   });
 
   document.getElementById("requestQuotation").addEventListener("click", () => {

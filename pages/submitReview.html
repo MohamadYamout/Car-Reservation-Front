@@ -24,6 +24,12 @@
     .star.selected {
       color: gold;
     }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 10px;
+      box-sizing: border-box;
+    }
     textarea {
       width: 100%;
       height: 100px;
@@ -64,8 +70,12 @@
           <span class="star" data-value="4">&#9733;</span>
           <span class="star" data-value="5">&#9733;</span>
         </div>
-        <!-- The hidden input will store the numeric rating -->
+        <!-- Hidden input to store the numeric rating -->
         <input type="hidden" id="rating" name="rating" value="0" required>
+      </div>
+      <div>
+        <label for="title">Review Title:</label>
+        <input type="text" id="title" name="title" placeholder="Enter review title" required>
       </div>
       <div>
         <label for="comment">Your Review:</label>
