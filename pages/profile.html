@@ -1,137 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile - CarReserve</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/profile.css">
-    <script src="../assets/js/profile.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Profile - CarReserve</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/profile.css">
+  <script src="../assets/js/profile.js" defer></script>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">CarReserve</div>
-                <ul class="nav-links">
-                    <li><a href="../index.html">Home</a></li>
-                    <li><a href="carsgallery.html">Browse Cars</a></li>
-                    <li><a href="history.html">History</a></li>
-                    <li class="user-menu">
-                        <a href="#" class="user-profile">
-                            <i class="fas fa-user-circle"></i>
-                            <span>Profile</span>
-                        </a>
-                        <div class="dropdown-menu">
-                            <a href="profile.html" class="active"><i class="fas fa-user"></i> My Profile</a>
-                            <a href="history.html"><i class="fas fa-history"></i> Reservation History</a>
-                            <a href="#" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                        </div>
-                    </li>
-                </ul>
-                <div class="menu-btn">☰</div>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Profile Section -->
-    <section class="profile-section">
-        <div class="container">
-            <div class="profile-content">
-                <!-- Profile Picture Section -->
-                <div class="profile-picture-section">
-                    <div class="profile-picture">
-                        <img src="../assets/images/default-avatar.png" alt="Profile Picture" id="profile-img">
-                        <div class="upload-overlay">
-                            <label for="profile-upload">
-                                <i class="fas fa-camera"></i>
-                                <span>Change Photo</span>
-                            </label>
-                            <input type="file" id="profile-upload" accept="image/*" style="display: none;">
-                        </div>
-                    </div>
-                    <h2>John Doe</h2>
-                    <p class="member-since">Member since January 2024</p>
-                </div>
-
-                <!-- User Information Section -->
-                <div class="user-info-section">
-                    <h3>Personal Information</h3>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <label>Full Name</label>
-                            <p>John Doe</p>
-                        </div>
-                        <div class="info-item">
-                            <label>Email</label>
-                            <p>john.doe@example.com</p>
-                        </div>
-                        <div class="info-item">
-                            <label>Phone</label>
-                            <p>+1 (555) 123-4567</p>
-                        </div>
-                        <div class="info-item">
-                            <label>Address</label>
-                            <p>123 Main St, City, Country</p>
-                        </div>
-                    </div>
-                    <button class="btn edit-btn">Edit Information</button>
-                </div>
-
-                <!-- Reviews Section -->
-                <div class="reviews-section">
-                    <h3>My Reviews</h3>
-                    <div class="reviews-grid">
-                        <!-- Review Card 1 -->
-                        <div class="review-card">
-                            <div class="review-header">
-                                <div class="car-info">
-                                    <h4>Toyota Camry 2023</h4>
-                                    <p>Rented on Jan 15, 2024</p>
-                                </div>
-                                <div class="rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                            </div>
-                            <p class="review-text">"Great car, very comfortable and fuel-efficient. The pickup was smooth and the staff was very helpful."</p>
-                        </div>
-
-                        <!-- Review Card 2 -->
-                        <div class="review-card">
-                            <div class="review-header">
-                                <div class="car-info">
-                                    <h4>Honda Civic 2022</h4>
-                                    <p>Rented on Dec 20, 2023</p>
-                                </div>
-                                <div class="rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                </div>
-                            </div>
-                            <p class="review-text">"Good experience overall. The car was clean and well-maintained. Would rent again."</p>
-                        </div>
-                    </div>
-                </div>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">CarReserve</div>
+        <ul class="nav-links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="groupSpecs.html">Browse Cars</a></li>
+          <li><a href="history.html">History</a></li>
+          <li class="user-menu">
+            <a href="#" class="user-profile">
+              <i class="fas fa-user-circle"></i>
+              <span>Profile</span>
+            </a>
+            <div class="dropdown-menu">
+              <a href="profile.html" class="active"><i class="fas fa-user"></i> My Profile</a>
+              <a href="history.html"><i class="fas fa-history"></i> Reservation History</a>
+              <a href="#" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
-        </div>
-    </section>
+          </li>
+        </ul>
+        <div class="menu-btn">☰</div>
+      </nav>
+    </div>
+  </header>
 
-    <script>
-      // The upload logic is handled in profile.js, which is included at the top.
-      // You can also add additional inline scripts here if needed.
-      
-      // Mobile menu toggle
-      document.querySelector('.menu-btn').addEventListener('click', function() {
-          document.querySelector('.nav-links').classList.toggle('active');
-      });
-    </script>
+  <!-- Profile Section -->
+  <section class="profile-section">
+    <div class="container">
+      <div class="profile-content">
+        <!-- Profile Picture Section -->
+        <div class="profile-picture-section">
+          <div class="profile-picture">
+            <img src="../assets/images/default-avatar.png" alt="Profile Picture" id="profile-img">
+            <div class="upload-overlay">
+              <label for="profile-upload">
+                <i class="fas fa-camera"></i>
+                <span>Change Photo</span>
+              </label>
+              <input type="file" id="profile-upload" accept="image/*" style="display: none;">
+            </div>
+          </div>
+          <h2>John Doe</h2>
+          <p class="member-since">Member since January 2024</p>
+        </div>
+
+        <!-- User Information Section -->
+        <div class="user-info-section">
+          <h3>Personal Information</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <label>Full Name</label>
+              <p>John Doe</p>
+            </div>
+            <div class="info-item">
+              <label>Email</label>
+              <p>john.doe@example.com</p>
+            </div>
+            <div class="info-item">
+              <label>Phone</label>
+              <p>+1 (555) 123-4567</p>
+            </div>
+            <div class="info-item">
+              <label>Points</label>
+              <p>0</p>
+            </div>
+          </div>
+          <button class="btn edit-btn">Edit Information</button>
+        </div>
+
+        <!-- Reviews Section -->
+        <div class="reviews-section">
+          <h3>My Reviews</h3>
+          <div class="reviews-grid">
+            <!-- Review cards will be injected by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </body>
 </html>
