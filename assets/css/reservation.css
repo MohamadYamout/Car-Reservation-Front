@@ -122,6 +122,11 @@ button[type="submit"]:hover {
   display: block !important;
 }
 
+.error p {
+  color: #dc3545;
+  font-weight: 500;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   body {

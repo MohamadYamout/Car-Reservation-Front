@@ -67,44 +67,65 @@ function validateReservation() {
   const messageBox = document.getElementById("message-box");
   const selectedPickupBranch = branches.find(branch => branch.name === pickupInput.value);
   const selectedReturnBranch = branches.find(branch => branch.name === returnInput.value);
+  const currentDate = new Date();
 
   messageBox.innerHTML = "";
+  messageBox.classList.remove("error");
 
   if (!selectedPickupBranch) {
-    messageBox.innerHTML = "<p style='color:red;'>Please select a valid pickup location.</p>";
+    messageBox.innerHTML = "<p>Please select a valid pickup location.</p>";
+    messageBox.classList.add("error");
     return false;
   }
   
   if (!selectedReturnBranch) {
-    messageBox.innerHTML = "<p style='color:red;'>Please select a valid return location.</p>";
+    messageBox.innerHTML = "<p>Please select a valid return location.</p>";
+    messageBox.classList.add("error");
     return false;
   }
   
   if (driverAge < 18 || driverAge > 75) {
-    messageBox.innerHTML = "<p style='color:red;'>Driver age must be between 18 and 75.</p>";
+    messageBox.innerHTML = "<p>Driver age must be between 18 and 75.</p>";
+    messageBox.classList.add("error");
+    return false;
+  }
+  
+  if (pickupDate < currentDate) {
+    messageBox.innerHTML = "<p>Pickup date cannot be in the past. Please select a future date and time.</p>";
+    messageBox.classList.add("error");
+    return false;
+  }
+  
+  if (dropDate < currentDate) {
+    messageBox.innerHTML = "<p>Return date cannot be in the past. Please select a future date and time.</p>";
+    messageBox.classList.add("error");
     return false;
   }
   
   if (dropDate <= pickupDate) {
-    messageBox.innerHTML = "<p style='color:red;'>Drop-off date must be after pickup date.</p>";
+    messageBox.innerHTML = "<p>Drop-off date must be after pickup date.</p>";
+    messageBox.classList.add("error");
     return false;
   }
   
   const timeDifference = (dropDate - pickupDate) / (1000 * 60 * 60);
   if (timeDifference < 2) {
-    messageBox.innerHTML = "<p style='color:red;'>There must be at least a 2-hour gap between pickup and return time.</p>";
+    messageBox.innerHTML = "<p>There must be at least a 2-hour gap between pickup and return time.</p>";
+    messageBox.classList.add("error");
     return false;
   }
   
   const pickupHour = pickupDate.getHours();
   if (pickupHour < selectedPickupBranch.openHour || pickupHour >= selectedPickupBranch.closeHour) {
-    messageBox.innerHTML = `<p style='color:red;'>Pickup time must be between ${selectedPickupBranch.openHour}:00 and ${selectedPickupBranch.closeHour}:00.</p>`;
+    messageBox.innerHTML = `<p>Pickup time must be between ${selectedPickupBranch.openHour}:00 and ${selectedPickupBranch.closeHour}:00.</p>`;
+    messageBox.classList.add("error");
     return false;
   }
   
   const returnHour = dropDate.getHours();
   if (returnHour < selectedReturnBranch.openHour || returnHour >= selectedReturnBranch.closeHour) {
-    messageBox.innerHTML = `<p style='color:red;'>Return time must be between ${selectedReturnBranch.openHour}:00 and ${selectedReturnBranch.closeHour}:00.</p>`;
+    messageBox.innerHTML = `<p>Return time must be between ${selectedReturnBranch.openHour}:00 and ${selectedReturnBranch.closeHour}:00.</p>`;
+    messageBox.classList.add("error");
     return false;
   }
   
@@ -154,6 +175,8 @@ document.getElementById("reservation-form").addEventListener("submit", function(
     })
     .catch(err => {
       console.error("Error saving reservation:", err);
-      document.getElementById("message-box").innerHTML = "<p style='color:red;'>Error saving reservation. Please try again.</p>";
+      const messageBox = document.getElementById("message-box");
+      messageBox.innerHTML = "<p>Error saving reservation. Please try again.</p>";
+      messageBox.classList.add("error");
     });
 });
