@@ -50,16 +50,49 @@
       </form>
     </section>
 
-    <!-- Payment Method -->
-    <section>
-      <h2>Payment Method</h2>
-      <form id="paymentForm">
-        <input type="radio" id="cc" name="payment" value="Credit Card" required>
-        <label for="cc">Credit Card</label><br>
-        <input type="radio" id="payAtLoc" name="payment" value="Pay at location">
-        <label for="payAtLoc">Pay at Location</label><br>
-      </form>
-    </section>
+<!-- Payment Method -->
+<section>
+  <h2>Payment Method</h2>
+  <form id="paymentForm">
+    <input type="radio" id="cc" name="payment" value="Credit Card" required>
+    <label for="cc">Credit Card</label><br>
+    <input type="radio" id="payAtLoc" name="payment" value="Pay at location">
+    <label for="payAtLoc">Pay at Location</label><br>
+  </form>
+</section>
+
+<!-- Credit Card Payment Fields -->
+<section id="creditCardSection" style="display: none;">
+  <h2>Credit Card Details</h2>
+  <form id="creditCardForm">
+    <label for="cardHolderName">Card Holder Name:</label>
+    <input type="text" id="cardHolderName" required placeholder="e.g. John Doe"><br>
+    
+    <label for="cardNumber">Card Number:</label>
+    <input type="text" id="cardNumber" required
+           pattern="\d{13,19}" 
+           title="Enter a valid card number (13 to 19 digits). Only one Visa card is allowed."
+           placeholder="Enter 13-19 digit card number (Visa cards not repeated)"><br>
+    
+    <label for="expiryMonth">Expiry Month (MM):</label>
+    <input type="number" id="expiryMonth" required 
+           min="1" max="12" 
+           placeholder="01 to 12"
+           title="Enter a month between 1 and 12."><br>
+    
+    <label for="expiryYear">Expiry Year (YYYY):</label>
+    <input type="number" id="expiryYear" required 
+           placeholder="e.g. 2025 or later"
+           title="Enter a valid future year."><br>
+    
+    <label for="cvv">CVV:</label>
+    <input type="password" id="cvv" required
+           pattern="\d{3,4}"
+           title="CVV must be 3 or 4 digits."
+           placeholder="e.g. 123"><br>
+  </form>
+</section>
+
 
     <!-- Discount Coupon -->
     <section>

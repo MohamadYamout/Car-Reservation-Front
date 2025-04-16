@@ -102,7 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function getCustomDisplayStatus(invoice, pickupDate, dropoffDate) {
     const now = new Date();
 
-    // If there is no invoice, assume an incomplete invoice.
     if (!invoice) {
       if (now < dropoffDate) {
         return "Draft";
@@ -111,42 +110,33 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // Process based on invoice.status
     if (invoice.status === "cancelled") {
       return "Cancelled";
     }
 
     if (invoice.status === "complete") {
-      // If current time is before pickup, label as Inactive
       if (now < pickupDate) {
         return "Inactive";
       }
-      // If current time is between pickup and dropoff, label as Active
       if (now >= pickupDate && now < dropoffDate) {
         return "Active";
       }
-      // If current time has passed the dropoff time, label as Completed
       if (now >= dropoffDate) {
         return "Completed";
       }
     }
 
     if (invoice.status === "incomplete") {
-      // If current time is before dropoff, show "Draft"
       if (now < dropoffDate) {
         return "Draft";
       } else {
-        // Update the database to mark the invoice as cancelled if now has passed dropoff
         updateInvoiceStatus(invoice._id, "cancelled");
         return "Cancelled";
       }
     }
-
-    // Fallback to Active if none of the above conditions apply.
     return "Active";
   }
 
-  // Helper to get the CSS class for the status
   function getStatusClass(statusString) {
     switch (statusString.toLowerCase()) {
       case "completed":
@@ -160,11 +150,10 @@ document.addEventListener("DOMContentLoaded", () => {
       case "active":
         return "status-active";
       default:
-        return "status-active"; // fallback
+        return "status-active";
     }
   }
 
-  // Helper to update invoice status in the database
   function updateInvoiceStatus(invoiceId, newStatus) {
     fetch(`http://localhost:5000/api/invoices/${invoiceId}`, {
       method: "PUT",
@@ -177,7 +166,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((res) => res.json())
       .then((data) => {
         console.log("Invoice updated to", newStatus, data);
-        // Optionally, you may refresh or re-render the history to reflect the updated status.
       })
       .catch((err) => {
         console.error("Error updating invoice:", err);
