@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const token = localStorage.getItem("token");
   if (!token) {
     // If no token exists, redirect to sign in page
-    window.location.href = "signin.html"; // Adjust the path as necessary
+    window.location.href = "SignInSignUp.html"; // Adjust the path as necessary
     return;
   }
 

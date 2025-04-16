@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="../assets/css/chat.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body>
   <!-- Header -->
   <header>
@@ -35,7 +37,7 @@
         <h1>Chat with an Agent</h1>
         <p>Our support agents are here to help with your car rental inquiries</p>
       </div>
-      
+
       <div class="chat-box" id="chatLog">
         <!-- Agent welcome message -->
         <div class="message agent-message">
@@ -44,7 +46,7 @@
           </div>
           <div class="message-time">Just now</div>
         </div>
-        
+
         <!-- Typing indicator -->
         <div class="typing-indicator" id="typingIndicator">
           <span></span>
@@ -52,7 +54,7 @@
           <span></span>
         </div>
       </div>
-      
+
       <div class="chat-input-container">
         <input type="text" id="chatInput" class="chat-input" placeholder="Type your message here..." autocomplete="off">
         <button id="sendChat" class="send-button">
@@ -110,10 +112,11 @@
 
   <!-- Mobile Menu Toggle -->
   <script>
-    document.querySelector('.menu-btn').addEventListener('click', function() {
+    document.querySelector('.menu-btn').addEventListener('click', function () {
       document.querySelector('.nav-links').classList.toggle('active');
     });
   </script>
-  <script src="chat.js"></script>
+  <script src="../assets/js/chat.js"></script>
 </body>
+
 </html>
