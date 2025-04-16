@@ -7,7 +7,6 @@
   <title>Car Reservation Service</title>
   <link rel="stylesheet" href="assets/css/landing.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <!-- Include the JavaScript files for group logic and random cars -->
   <script src="assets/js/cargroups.js" defer></script>
   <script src="assets/js/randomCars.js" defer></script>
   <script src="assets/js/reviewList.js"></script>
@@ -15,7 +14,7 @@
 </head>
 
 <body>
-  <!-- Header with Updated Navbar -->
+  <!-- Header -->
   <header>
     <div class="container">
       <nav>
@@ -25,8 +24,6 @@
           <li><a href="pages/reservation.html">Reserve a Car</a></li>
           <li><a href="pages/cargroups.html">Car Groups</a></li>
           <li><a href="#about">About Us</a></li>
-          <li><a href="pages/reviewPage.html">Reviews</a></li>
-          <li><a href="pages/submitReview.html">Submit a Review</a></li>
           <li><a href="#testimonials">Testimonials</a></li>
           <li><a href="#contact">Contact Us</a></li>
           <li><a href="pages/chat.html">Chat</a></li>
@@ -42,15 +39,13 @@
     <div class="container">
       <div class="hero-content">
         <div class="hero-text">
-          <h1>Reserve Your Car with Ease</h1>
-          <p>Our car reservation service makes it simple to book the perfect vehicle for your needs. Whether you're
-            traveling for business or pleasure, we have the right car for you.</p>
+          <h1>Find the Perfect Car for Your Journey!</h1>
+          <p>Whether you're planning a weekend getaway, a business trip, or just need a reliable ride for the day, we
+            offer a wide range of vehicles to suit your needs.</p>
           <a href="pages/reservation.html" class="btn">Book Now</a>
         </div>
         <div class="hero-image">
-          <img
-            src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-            alt="Luxury car">
+          <img src="/assets/images/hero.png" alt="Luxury car">
         </div>
       </div>
     </div>
@@ -59,7 +54,7 @@
   <!-- Featured Cars Section (Random Cars from Different Groups) -->
   <section class="random-cars">
     <div class="container">
-      <h2>Featured Cars</h2>
+      <h2 style="margin-bottom: 20px; margin-top:50px;">Featured Cars</h2>
       <!-- This container will be populated by randomCars.js -->
       <div id="randomCarsContainer" class="random-cars-container"></div>
     </div>
@@ -68,7 +63,7 @@
   <!-- Most Popular Car Section -->
   <section class="popular-car">
     <div class="container">
-      <h2>Most Popular Car</h2>
+      <h2 style="margin-top: 120px;">Most Popular Car</h2>
       <!-- This container will be populated by assets/js/popularCar.js -->
       <div id="popularCarContainer"></div>
     </div>
@@ -106,9 +101,7 @@
     <div class="container">
       <div class="about-content">
         <div class="about-image">
-          <img
-            src="https://images.unsplash.com/photo-1560861947-e7b2c3b773fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-            alt="Our service">
+          <img src="assets/images/car-rental.jpg" alt="Our service">
         </div>
         <div class="about-text">
           <h2>About CarReserve</h2>
@@ -247,7 +240,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2023 CarReserve. All rights reserved.</p>
+        <p>&copy; 2025 CarReserve. All rights reserved.</p>
       </div>
     </div>
   </footer>
