@@ -89,9 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
         <div class="booking-actions">
           <div class="booking-price">$${amount.toFixed(2)}</div>
-          <a href="downloadInvoice.html?id=${reservation._id}" class="btn-invoice">
-            Download Invoice
-          </a>
         </div>
       `;
       bookingGrid.appendChild(card);
