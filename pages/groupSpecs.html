@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Group Specifications</title>
-  <!-- Because this page is inside the "pages" folder, we use "../assets/..." to access the assets -->
+  <link rel="stylesheet" href="../assets/css/review.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="../assets/js/groupSpecs.js" defer></script>
 </head>
+
 <body>
   <!-- Header with Navbar -->
   <header>
@@ -14,44 +17,93 @@
       <nav>
         <div class="logo">CarReserve</div>
         <ul class="nav-links">
-          <!-- Link paths adjusted so that from the /pages folder, we go up one level for home -->
           <li><a href="../index.html">Home</a></li>
-          <li><a href="reservation.html">Reservation</a></li>
-          <!-- Additional navigation links can be added here -->
+          <li><a href="reservation.html">Reserve a Car</a></li>
+          <li><a href="cargroups.html">Car Groups</a></li>
+          <li><a href="../index.html#about">About Us</a></li>
+          <li><a href="../index.html#testimonials">Testimonials</a></li>
+          <li><a href="../index.html#contact">Contact Us</a></li>
+          <li><a href="chat.html">Chat</a></li>
+          <li><a href="profile.html">Profile</a></li>
         </ul>
         <div class="menu-btn">☰</div>
       </nav>
     </div>
   </header>
 
-  <!-- Group Specifications Section -->
-  <section class="group-specs">
+  <!-- Main Group Specifications Section -->
+  <main>
     <div class="container">
-      <h2 id="groupTitle">Group Specifications</h2>
-      <!-- Container for displaying group specs in a grid -->
+      <h1 id="groupTitle">Group Specifications</h1>
       <div id="groupSpecsContainer" class="specs-grid"></div>
-      <!-- Reserve Now Option: When clicked, directs the user to the reservation page -->
-      <div class="reserve-now">
+      <div class="reserve-now" style="text-align: center; margin-top: 30px;">
         <a href="reservation.html" class="btn">Reserve Now</a>
       </div>
     </div>
-  </section>
+  </main>
 
   <!-- Footer -->
   <footer>
     <div class="container">
       <div class="footer-content">
-        <p>&copy; 2023 CarReserve. All rights reserved.</p>
+        <div class="footer-column">
+          <h3>CarReserve</h3>
+          <p>The easiest way to book your next car rental for business or pleasure.</p>
+        </div>
+        <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="../index.html#home">Home</a></li>
+            <li><a href="reservation.html">Reservation</a></li>
+            <li><a href="order.html">Order</a></li>
+            <li><a href="checkout.html">Checkout</a></li>
+            <li><a href="bookings.html">Bookings</a></li>
+            <li><a href="invoices.html">Invoices</a></li>
+            <li><a href="../index.html#about">About</a></li>
+            <li><a href="../index.html#testimonials">Testimonials</a></li>
+            <li><a href="../index.html#contact">Contact</a></li>
+            <li><a href="chat.html">Chat</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Services</h3>
+          <ul class="footer-links">
+            <li><a href="#">Economy Cars</a></li>
+            <li><a href="#">Luxury Vehicles</a></li>
+            <li><a href="#">SUVs & Minivans</a></li>
+            <li><a href="#">Special Offers</a></li>
+            <li><a href="#">Corporate Accounts</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Contact Info</h3>
+          <ul class="footer-links">
+            <li>123 Reservation Road</li>
+            <li>Carville, CV 12345</li>
+            <li>Phone: (123) 456-7890</li>
+            <li>Email: info@carreserve.com</li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Follow Us</h3>
+          <div class="social-links">
+            <a href="https://facebook.com" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://x.com" target="_blank" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="https://instagram.com" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 CarReserve. All rights reserved.</p>
       </div>
     </div>
   </footer>
 
   <script>
-    // Example mobile menu toggle script
-    document.querySelector('.menu-btn').addEventListener('click', function() {
-      document.querySelector('.nav-links').classList.toggle('active');
+    document.querySelector(".menu-btn").addEventListener("click", function () {
+      document.querySelector(".nav-links").classList.toggle("active");
     });
   </script>
 </body>
-</html>
 
+</html>
