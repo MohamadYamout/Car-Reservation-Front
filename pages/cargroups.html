@@ -2,91 +2,203 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Car Rental - Filter & Groups</title>
-  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="stylesheet" href="/assets/css/landing.css" />
+  <link rel="stylesheet" href="/assets/css/cargroup.css" />
   <script src="../assets/js/cargroups.js" defer></script>
 </head>
 <body>
+  <!-- Header -->
   <header>
-    <h1>Car Rental</h1>
+    <div class="container">
+      <nav>
+        <div class="logo">CarReserve</div>
+        <ul class="nav-links">
+          <li><a href="../index.html#home">Home</a></li>
+          <li><a href="reservation.html">Reserve a Car</a></li>
+          <li><a href="cargroups.html" class="active">Car Groups</a></li>
+          <li><a href="../index.html#about">About Us</a></li>
+          <li><a href="../index.html#testimonials">Testimonials</a></li>
+          <li><a href="../index.html#contact">Contact Us</a></li>
+          <li><a href="chat.html">Chat</a></li>
+          <li><a href="profile.html">Profile</a></li>
+        </ul>
+        <div class="menu-btn">☰</div>
+      </nav>
+    </div>
   </header>
 
-  <!-- SECTION 1: FILTER ALL CARS IRRESPECTIVE OF GROUP -->
-  <section id="filterSection">
-    <h2>All Available Cars</h2>
-    <form id="filterForm">
-      <label for="engineSizeRange">Engine Size Range:</label>
-      <select id="engineSizeRange" name="engineSizeRange">
-        <option value="">Any</option>
-        <option value="0-1000">0 - 1000 cc</option>
-        <option value="1001-2000">1001 - 2000 cc</option>
-        <option value="2001-3000">2001 - 3000 cc</option>
-        <option value="3001+">3001+ cc</option>
-      </select>
-      <br /><br />
-      <label for="minDoors">Min Doors:</label>
-      <input type="number" id="minDoors" name="minDoors" min="1" />
-      <label for="maxDoors">Max Doors:</label>
-      <input type="number" id="maxDoors" name="maxDoors" min="1" max="4" />
-      <br /><br />
-      <label for="minPassengers">Min Passengers:</label>
-      <input type="number" id="minPassengers" name="minPassengers" min="1" />
-      <label for="maxPassengers">Max Passengers:</label>
-      <input type="number" id="maxPassengers" name="maxPassengers" min="1" max="15" />
-      <br /><br />
-      <label for="gearboxSelect">Gearbox:</label>
-      <select id="gearboxSelect" name="gearboxSelect">
-        <option value="">Any</option>
-        <option value="Automatic">Automatic</option>
-        <option value="Manual">Manual</option>
-      </select>
-      <br /><br />
-      <label for="acSelect">AC:</label>
-      <select id="acSelect" name="acSelect">
-        <option value="">Any</option>
-        <option value="yes">Yes</option>
-        <option value="no">No</option>
-      </select>
-      <label for="windowsSelect">Electric Windows:</label>
-      <select id="windowsSelect" name="windowsSelect">
-        <option value="">Any</option>
-        <option value="yes">Yes</option>
-        <option value="no">No</option>
-      </select>
-      <br /><br />
-      <button type="submit">Filter</button>
-    </form>
-    <br />
-    <div id="filteredCarsContainer"></div>
-  </section>
+  <main>
+    <!-- FILTER ALL CARS IRRESPECTIVE OF GROUP -->
+    <section id="filterSection">
+      <div class="container">
+        <h2>Reserve A Car</h2>
+        <form id="filterForm">
+          <label for="engineSizeRange">Engine Size Range:</label>
+          <select id="engineSizeRange" name="engineSizeRange">
+            <option value="">Any</option>
+            <option value="0-1000">0 - 1000 cc</option>
+            <option value="1001-2000">1001 - 2000 cc</option>
+            <option value="2001-3000">2001 - 3000 cc</option>
+            <option value="3001+">3001+ cc</option>
+          </select>
 
-  <hr />
+          <div class="form-group inline">
+            <div>
+              <label for="minDoors">Min Doors:</label>
+              <input type="number" id="minDoors" name="minDoors" min="1" />
+            </div>
+            <div>
+              <label for="maxDoors">Max Doors:</label>
+              <input type="number" id="maxDoors" name="maxDoors" min="1" max="4" />
+            </div>
+          </div>
 
-  <!-- SECTION 2: SELECT A CAR GROUP & VIEW CARS IN THAT GROUP -->
-  <section>
-    <h2>Select a Car Group</h2>
-    <div id="carGroupsContainer"></div>
-  </section>
-  <section>
-    <div id="groupSpecsContainer"></div>
-  </section>
+          <div class="form-group inline">
+            <div>
+              <label for="minPassengers">Min Passengers:</label>
+              <input type="number" id="minPassengers" name="minPassengers" min="1" />
+            </div>
+            <div>
+              <label for="maxPassengers">Max Passengers:</label>
+              <input type="number" id="maxPassengers" name="maxPassengers" min="1" max="15" />
+            </div>
+          </div>
 
-  <hr />
+          <label for="gearboxSelect">Gearbox:</label>
+          <select id="gearboxSelect" name="gearboxSelect">
+            <option value="">Any</option>
+            <option value="Automatic">Automatic</option>
+            <option value="Manual">Manual</option>
+          </select>
 
-  <!-- SECTION 3: AVAILABLE CARS (Group-based) -->
-  <section>
-    <h2>Available Cars</h2>
-    <div id="carGalleryContainer"></div>
-  </section>
+          <label for="acSelect">AC:</label>
+          <select id="acSelect" name="acSelect">
+            <option value="">Any</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
 
-  <hr />
+          <label for="windowsSelect">Electric Windows:</label>
+          <select id="windowsSelect" name="windowsSelect">
+            <option value="">Any</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
 
-  <!-- SECTION 4: NEXT BUTTON -->
-  <section id="nextSection">
+          <button type="submit" class="btn">Filter</button>
+        </form>
+
+        <div id="filteredCarsContainer"></div>
+      </div>
+    </section>
+
+    <hr />
+
+    <!-- SECTION 2: SELECT A CAR GROUP & VIEW CARS IN THAT GROUP -->
+    <section>
+      <div class="container">
+        <h2>Select a Car Group</h2>
+        <div id="carGroupsContainer"></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div id="groupSpecsContainer"></div>
+      </div>
+    </section>
+
+    <hr />
+
+    <!-- SECTION 3: AVAILABLE CARS -->
+    <section>
+      <div class="container">
+        <h2>Available Cars</h2>
+        <div id="carGalleryContainer"></div>
+      </div>
+    </section>
+
+    <hr />
+
+    <!-- SECTION 4: NEXT BUTTON -->
+    <section id="nextSection">
+      <div class="container">
+        <button id="nextBtn" class="btn">Next</button>
+        <span id="nextError" style="color: red; margin-left: 10px;"></span>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Copied from index.html -->
+  <footer>
     <div class="container">
-      <button id="nextBtn" class="btn">Next</button>
-      <span id="nextError" style="color: red; margin-left: 10px;"></span>
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3>CarReserve</h3>
+          <p>The easiest way to book your next car rental for business or pleasure.</p>
+        </div>
+        <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="../index.html#home">Home</a></li>
+            <li><a href="reservation.html">Reservation</a></li>
+            <li><a href="order.html">Order</a></li>
+            <li><a href="checkout.html">Checkout</a></li>
+            <li><a href="bookings.html">Bookings</a></li>
+            <li><a href="invoices.html">Invoices</a></li>
+            <li><a href="../index.html#about">About</a></li>
+            <li><a href="../index.html#testimonials">Testimonials</a></li>
+            <li><a href="../index.html#contact">Contact</a></li>
+            <li><a href="chat.html">Chat</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Services</h3>
+          <ul class="footer-links">
+            <li><a href="#">Economy Cars</a></li>
+            <li><a href="#">Luxury Vehicles</a></li>
+            <li><a href="#">SUVs & Minivans</a></li>
+            <li><a href="#">Special Offers</a></li>
+            <li><a href="#">Corporate Accounts</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Contact Info</h3>
+          <ul class="footer-links">
+            <li>123 Reservation Road</li>
+            <li>Carville, CV 12345</li>
+            <li>Phone: (123) 456-7890</li>
+            <li>Email: info@carreserve.com</li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Follow Us</h3>
+          <div class="social-links">
+            <a href="https://facebook.com" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://x.com" target="_blank" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="https://instagram.com" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 CarReserve. All rights reserved.</p>
+      </div>
     </div>
-  </section>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.addEventListener("DOMContentLoaded", function () {
+      const menuBtn = document.querySelector(".menu-btn");
+      const navLinks = document.querySelector(".nav-links");
+      if (menuBtn && navLinks) {
+        menuBtn.addEventListener("click", () => {
+          navLinks.classList.toggle("active");
+        });
+      }
+    });
+  </script>
 </body>
 </html>
