@@ -103,6 +103,18 @@ main {
   border-bottom-left-radius: 4px;
 }
 
+.agent-message .chat-link {
+  color: #4a6cf7;
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.agent-message .chat-link:hover {
+  color: #3451d3;
+  text-decoration: underline;
+}
+
 .message-time {
   font-size: 0.75rem;
   color: #888;

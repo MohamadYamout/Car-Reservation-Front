@@ -10,7 +10,14 @@ function appendMessage(sender, message) {
 
   const contentDiv = document.createElement("div");
   contentDiv.classList.add("message-content");
-  contentDiv.textContent = message;
+  
+  // Use innerHTML for agent messages to support HTML like links
+  // Use textContent for user messages for security
+  if (sender === "You") {
+    contentDiv.textContent = message;
+  } else {
+    contentDiv.innerHTML = message;
+  }
 
   const timeDiv = document.createElement("div");
   timeDiv.classList.add("message-time");
@@ -38,7 +45,7 @@ sendChat.addEventListener("click", function () {
 
     setTimeout(() => {
       typingIndicator.classList.remove("active");
-      appendMessage("Agent", "Thank you for reaching out. How can I help you?");
+      appendMessage("Agent", "Thank you for reaching out. Please visit our <a href='contact.html' class='chat-link'>Contact Us page</a>.");
     }, 1000);
   }
 });
