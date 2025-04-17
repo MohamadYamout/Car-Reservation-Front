@@ -7,6 +7,22 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
+  // Add logout functionality
+  const logoutButton = document.querySelector('.logout');
+  if (logoutButton) {
+    logoutButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Clear all auth-related localStorage items
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('current-user');
+      localStorage.removeItem('reservationDetails');
+      localStorage.removeItem('reservationId');
+      // Redirect to landing page
+      window.location.href = "../index.html";
+    });
+  }
+
   // Fetch the user's profile details from the backend
   fetch("http://localhost:5000/api/auth/profile", {
     method: "GET",
@@ -56,6 +72,20 @@ document.addEventListener("DOMContentLoaded", () => {
       if (data.profilePicture) {
         document.getElementById('profile-img').src = data.profilePicture;
       }
+      
+      // Update localStorage with the latest user data including isAdmin status
+      const isAdmin = data.isAdmin !== undefined ? data.isAdmin : 
+                      (JSON.parse(localStorage.getItem('user'))?.isAdmin || false);
+      
+      // Create a new updated user object with isAdmin flag
+      const updatedUser = { 
+        ...data,
+        isAdmin 
+      };
+      
+      // Store only one user object
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      console.log('Profile updated user with isAdmin:', isAdmin);
     })
     .catch(error => {
       console.error("Error fetching profile data:", error);
@@ -85,7 +115,13 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(response => response.json())
         .then(data => {
           if (data.error) console.error("Upload error:", data.error);
-          else console.log("Profile picture updated:", data.profilePicture);
+          else {
+            console.log("Profile picture updated:", data.profilePicture);
+            // Update the user data in localStorage with new profile picture
+            const currentUser = JSON.parse(localStorage.getItem('user')) || {};
+            currentUser.profilePicture = data.profilePicture;
+            localStorage.setItem('user', JSON.stringify(currentUser));
+          }
         })
         .catch(error => console.error("Error uploading file:", error));
     }

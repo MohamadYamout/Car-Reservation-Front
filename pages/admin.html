@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Car Reservation System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .admin-sidebar {
+            min-height: calc(100vh - 56px);
+            background-color: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+        }
+        .admin-content {
+            padding: 20px;
+        }
+        .admin-sidebar .nav-link {
+            color: #333;
+            border-radius: 0;
+            padding: 10px 15px;
+        }
+        .admin-sidebar .nav-link:hover, 
+        .admin-sidebar .nav-link.active {
+            background-color: #e9ecef;
+        }
+        .admin-sidebar .nav-link i {
+            margin-right: 10px;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+        .loading {
+            display: flex;
+            justify-content: center;
+            padding: 50px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">Car Reservation</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link" id="adminUsername">Admin</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="logoutButton">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 admin-sidebar p-0">
+                <div class="nav flex-column">
+                    <a class="nav-link active" href="#dashboard" data-bs-toggle="tab">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a class="nav-link" href="#users" data-bs-toggle="tab">
+                        <i class="fas fa-users"></i> Users
+                    </a>
+                    <a class="nav-link" href="#cars" data-bs-toggle="tab">
+                        <i class="fas fa-car"></i> Cars
+                    </a>
+                    <a class="nav-link" href="#cargroups" data-bs-toggle="tab">
+                        <i class="fas fa-layer-group"></i> Car Groups
+                    </a>
+                    <a class="nav-link" href="#reservations" data-bs-toggle="tab">
+                        <i class="fas fa-calendar-alt"></i> Reservations
+                    </a>
+                    <a class="nav-link" href="#points" data-bs-toggle="tab">
+                        <i class="fas fa-star"></i> Points
+                    </a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 admin-content">
+                <div class="tab-content">
+                    <!-- Dashboard -->
+                    <div class="tab-pane fade show active" id="dashboard">
+                        <h2>Admin Dashboard</h2>
+                        <div class="row mt-4">
+                            <div class="col-md-4 mb-4">
+                                <div class="card text-white bg-primary">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Total Users</h5>
+                                        <p class="card-text" id="totalUsers">Loading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="card text-white bg-success">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Total Cars</h5>
+                                        <p class="card-text" id="totalCars">Loading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="card text-white bg-info">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Total Reservations</h5>
+                                        <p class="card-text" id="totalReservations">Loading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Users Section -->
+                    <div class="tab-pane fade" id="users">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2>User Management</h2>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                                <i class="fas fa-plus"></i> Add User
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Admin</th>
+                                        <th>Points</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="userTableBody">
+                                    <tr>
+                                        <td colspan="6" class="text-center">Loading users...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Cars Section -->
+                    <div class="tab-pane fade" id="cars">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2>Car Management</h2>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCarModal">
+                                <i class="fas fa-plus"></i> Add Car
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Brand</th>
+                                        <th>Model</th>
+                                        <th>Group</th>
+                                        <th>Engine Size</th>
+                                        <th>Fuel Type</th>
+                                        <th>Daily Price</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="carTableBody">
+                                    <tr>
+                                        <td colspan="7" class="text-center">Loading cars...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Car Groups Section -->
+                    <div class="tab-pane fade" id="cargroups">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2>Car Groups</h2>
+                            <button class="btn btn-primary" id="addGroupBtn">
+                                <i class="fas fa-plus"></i> Add Group
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Group Name</th>
+                                        <th>Cars Count</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="groupTableBody">
+                                    <tr>
+                                        <td colspan="3" class="text-center">Loading groups...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Reservations Section -->
+                    <div class="tab-pane fade" id="reservations">
+                        <h2 class="mb-4">Reservation Management</h2>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Reservation ID</th>
+                                        <th>User</th>
+                                        <th>Cars</th>
+                                        <th>Pickup Location</th>
+                                        <th>Pickup Date</th>
+                                        <th>Total Price</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reservationTableBody">
+                                    <tr>
+                                        <td colspan="8" class="text-center">Loading reservations...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Points Section -->
+                    <div class="tab-pane fade" id="points">
+                        <h2 class="mb-4">User Points</h2>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Points</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pointsTableBody">
+                                    <tr>
+                                        <td colspan="3" class="text-center">Loading points data...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Modals -->
+    <!-- Add User Modal -->
+    <div class="modal fade" id="addUserModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addUserForm">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="phone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" required>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" id="isAdmin">
+                            <label class="form-check-label" for="isAdmin">Admin</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveUserBtn">Save User</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div class="modal fade" id="editUserModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editUserForm">
+                        <input type="hidden" id="editUserId">
+                        <div class="mb-3">
+                            <label for="editUsername" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="editUsername" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="editEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPhone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="editPhone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPoints" class="form-label">Points</label>
+                            <input type="number" class="form-control" id="editPoints" required>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" id="editIsAdmin">
+                            <label class="form-check-label" for="editIsAdmin">Admin</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="updateUserBtn">Update User</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Car Modals -->
+    <!-- Add Car Modal -->
+    <div class="modal fade" id="addCarModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Car</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCarForm">
+                        <div class="mb-3">
+                            <label for="carBrand" class="form-label">Brand</label>
+                            <input type="text" class="form-control" id="carBrand" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="carModel" class="form-label">Model</label>
+                            <input type="text" class="form-control" id="carModel" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="carGroup" class="form-label">Group</label>
+                            <select class="form-control" id="carGroup" required>
+                                <option value="">Select a group</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="engineSize" class="form-label">Engine Size</label>
+                            <input type="text" class="form-control" id="engineSize" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="doors" class="form-label">Doors</label>
+                            <input type="number" class="form-control" id="doors" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="passengers" class="form-label">Passengers</label>
+                            <input type="number" class="form-control" id="passengers" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fuelType" class="form-label">Fuel Type</label>
+                            <select class="form-control" id="fuelType" required>
+                                <option value="Gasoline">Gasoline</option>
+                                <option value="Electric">Electric</option>
+                                <option value="Hybrid">Hybrid</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="gearbox" class="form-label">Gearbox</label>
+                            <select class="form-control" id="gearbox" required>
+                                <option value="Manual">Manual</option>
+                                <option value="Automatic">Automatic</option>
+                            </select>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" id="hasAC">
+                            <label class="form-check-label" for="hasAC">Air Conditioning</label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" id="electricWindows">
+                            <label class="form-check-label" for="electricWindows">Electric Windows</label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="carImage" class="form-label">Image URL</label>
+                            <input type="text" class="form-control" id="carImage" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dailyPrice" class="form-label">Daily Price</label>
+                            <input type="number" class="form-control" id="dailyPrice" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveCarBtn">Save Car</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Car Modal -->
+    <div class="modal fade" id="editCarModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Car</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editCarForm">
+                        <input type="hidden" id="editCarId">
+                        <div class="mb-3">
+                            <label for="editCarBrand" class="form-label">Brand</label>
+                            <input type="text" class="form-control" id="editCarBrand" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editCarModel" class="form-label">Model</label>
+                            <input type="text" class="form-control" id="editCarModel" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editCarGroup" class="form-label">Group</label>
+                            <select class="form-control" id="editCarGroup" required>
+                                <option value="">Select a group</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editEngineSize" class="form-label">Engine Size</label>
+                            <input type="text" class="form-control" id="editEngineSize" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDoors" class="form-label">Doors</label>
+                            <input type="number" class="form-control" id="editDoors" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPassengers" class="form-label">Passengers</label>
+                            <input type="number" class="form-control" id="editPassengers" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editFuelType" class="form-label">Fuel Type</label>
+                            <select class="form-control" id="editFuelType" required>
+                                <option value="Gasoline">Gasoline</option>
+                                <option value="Electric">Electric</option>
+                                <option value="Hybrid">Hybrid</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editGearbox" class="form-label">Gearbox</label>
+                            <select class="form-control" id="editGearbox" required>
+                                <option value="Manual">Manual</option>
+                                <option value="Automatic">Automatic</option>
+                            </select>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" id="editHasAC">
+                            <label class="form-check-label" for="editHasAC">Air Conditioning</label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" id="editElectricWindows">
+                            <label class="form-check-label" for="editElectricWindows">Electric Windows</label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editCarImage" class="form-label">Image URL</label>
+                            <input type="text" class="form-control" id="editCarImage" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDailyPrice" class="form-label">Daily Price</label>
+                            <input type="number" class="form-control" id="editDailyPrice" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="updateCarBtn">Update Car</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reservation Detail Modal -->
+    <div class="modal fade" id="reservationDetailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Reservation Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="reservationDetailContent">
+                    <div class="text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="editReservationBtn">Edit Reservation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Reservation Modal -->
+    <div class="modal fade" id="editReservationModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Reservation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editReservationForm">
+                        <input type="hidden" id="editReservationId">
+                        <div class="mb-3">
+                            <label for="editPickupLocation" class="form-label">Pickup Location</label>
+                            <input type="text" class="form-control" id="editPickupLocation" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDropoffLocation" class="form-label">Dropoff Location</label>
+                            <input type="text" class="form-control" id="editDropoffLocation" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDriverName" class="form-label">Driver Name</label>
+                            <input type="text" class="form-control" id="editDriverName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDriverAge" class="form-label">Driver Age</label>
+                            <input type="number" class="form-control" id="editDriverAge" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPickupDateTime" class="form-label">Pickup Date & Time</label>
+                            <input type="datetime-local" class="form-control" id="editPickupDateTime" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDropoffDateTime" class="form-label">Dropoff Date & Time</label>
+                            <input type="datetime-local" class="form-control" id="editDropoffDateTime" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editTotalPrice" class="form-label">Total Price</label>
+                            <input type="number" class="form-control" id="editTotalPrice" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="updateReservationBtn">Update Reservation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/admin.js"></script>
+</body>
+</html> 

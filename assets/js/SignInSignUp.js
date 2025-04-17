@@ -129,12 +129,33 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.error) {
           showMessage("error", data.error || "Login failed", "signin");
         } else {
-          // Save the token and user details for further authenticated requests
+          // Print the fetched user data
+          console.log("Fetched user data:", data);
+          
+          // Make sure the user data has isAdmin property explicitly set
+          const userData = {
+            ...data.user,
+            isAdmin: data.user.isAdmin || false // Ensure isAdmin is explicitly set
+          };
+          
+          // Save the token and user details (with isAdmin)
           localStorage.setItem("token", data.token);
-          localStorage.setItem("current-user", JSON.stringify(data.user));
+          localStorage.setItem("user", JSON.stringify(userData));
+          
+          // Remove any old user data
+          localStorage.removeItem("current-user");
+          
+          console.log("User logged in with isAdmin:", userData.isAdmin);
+          
           showMessage("success", "Login successful! Redirecting...", "signin");
+          
+          // Redirect to admin.html if user is admin, otherwise to index.html
           setTimeout(() => {
-            window.location.href = "../index.html"; // Adjust if your home page path is different
+            if (userData.isAdmin) {
+              window.location.href = "admin.html"; // Admin page is in the same directory as SignInSignUp.html
+            } else {
+              window.location.href = "../index.html"; // Regular users go to home page
+            }
           }, 1500);
         }
       })
