@@ -1,5 +1,3 @@
-// assets/js/checkout.js
-
 document.addEventListener("DOMContentLoaded", () => {
   const currentYear = new Date().getFullYear();
   const expiryYearInput = document.getElementById("expiryYear");
@@ -193,7 +191,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // No change needed to alerts here unless you'd like them styled in the page too
+  saveBtn.addEventListener("click", () => {
+    alert("Transaction saved successfully!");
+  });
+
+  completeBtn.addEventListener("click", () => {
+    alert("Transaction completed!");
+  });
+
+  cancelBtn.addEventListener("click", () => {
+    if (confirm("Are you sure you want to cancel this transaction?")) {
+      alert("Transaction cancelled.");
+    }
+  });
+
+  quoteBtn.addEventListener("click", () => {
+    alert(
+      "Your quotation request has been sent. We will get back to you soon."
+    );
+  });
 
   fetchProfile().then(fetchReservation);
 });
