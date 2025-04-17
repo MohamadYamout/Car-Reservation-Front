@@ -11,9 +11,14 @@ body {
   background-color: #cfe0e7;
   color: #333;
   line-height: 1.6;
-  padding: 20px;
+  padding-top: 30px; 
+  margin: 0;
+}
+
+main {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 50px;
 }
 
 h2 {
@@ -129,19 +134,19 @@ button[type="submit"]:hover {
 
 /* Responsive design */
 @media (max-width: 768px) {
-  body {
+  main {
     padding: 10px;
   }
-  
+
   form {
     padding: 15px;
   }
-  
+
   fieldset {
     padding: 15px;
   }
-  
+
   h2 {
     font-size: 2rem;
   }
-} 
+}
