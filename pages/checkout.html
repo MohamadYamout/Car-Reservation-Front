@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CarReserve - Checkout</title>
-  <link rel="stylesheet" href="assets/css/landing.css">
+  <link rel="stylesheet" href="/assets/css/checkout.css">
 </head>
+
 <body>
   <!-- Header -->
   <header>
@@ -13,13 +15,14 @@
       <nav>
         <div class="logo">CarReserve</div>
         <ul class="nav-links">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="checkout.html">Checkout</a></li>
-          <li><a href="bookings.html">Bookings</a></li>
-          <li><a href="invoices.html">Invoices</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="contact.html">Contact</a></li>
+          <li><a href="../index.html#home">Home</a></li>
+          <li><a href="reservation.html">Reserve a Car</a></li>
+          <li><a href="cargroups.html" class="active">Car Groups</a></li>
+          <li><a href="../index.html#about">About Us</a></li>
+          <li><a href="../index.html#testimonials">Testimonials</a></li>
+          <li><a href="../index.html#contact">Contact Us</a></li>
           <li><a href="chat.html">Chat</a></li>
+          <li><a href="profile.html">Profile</a></li>
         </ul>
         <div class="menu-btn">☰</div>
       </nav>
@@ -29,7 +32,7 @@
   <!-- Main Content -->
   <main>
     <h1>Checkout</h1>
-    
+
     <!-- Order Summary Display -->
     <section id="orderDisplay">
       <h2>Your Rental Order</h2>
@@ -55,12 +58,17 @@
     <section>
       <h2>Payment Method</h2>
       <form id="paymentForm">
-        <input type="radio" id="cc" name="payment" value="Credit Card" required>
-        <label for="cc">Credit Card</label><br>
-        <input type="radio" id="payAtLoc" name="payment" value="Pay at location">
-        <label for="payAtLoc">Pay at Location</label><br>
+        <div>
+          <input type="radio" id="cc" name="payment" value="Credit Card" required>
+          <label for="cc">Credit Card</label>
+        </div>
+        <div>
+          <input type="radio" id="payAtLoc" name="payment" value="Pay at location">
+          <label for="payAtLoc">Pay at Location</label>
+        </div>
       </form>
     </section>
+
 
     <!-- Credit Card Payment Fields -->
     <section id="creditCardSection" style="display: none;">
@@ -68,57 +76,109 @@
       <form id="creditCardForm">
         <label for="cardHolderName">Card Holder Name:</label>
         <input type="text" id="cardHolderName" required placeholder="e.g. John Doe"><br>
-        
+
         <label for="cardNumber">Card Number:</label>
-        <input type="text" id="cardNumber" required
-               pattern="\d{13,19}"
-               title="Enter a valid card number (13 to 19 digits). Only one Visa card is allowed."
-               placeholder="Enter 13-19 digit card number"><br>
-        
+        <input type="text" id="cardNumber" required pattern="\d{13,19}"
+          title="Enter a valid card number (13 to 19 digits). Only one Visa card is allowed."
+          placeholder="Enter 13-19 digit card number"><br>
+
         <label for="expiryMonth">Expiry Month (MM):</label>
-        <input type="number" id="expiryMonth" required 
-               min="1" max="12" 
-               placeholder="01 to 12"><br>
-        
+        <input type="number" id="expiryMonth" required min="1" max="12" placeholder="01 to 12"><br>
+
         <label for="expiryYear">Expiry Year (YYYY):</label>
-        <input type="number" id="expiryYear" required 
-               placeholder="e.g. 2025 or later"><br>
-        
+        <input type="number" id="expiryYear" required placeholder="e.g. 2025 or later"><br>
+
         <label for="cvv">CVV:</label>
-        <input type="password" id="cvv" required
-               pattern="\d{3,4}"
-               placeholder="e.g. 123"><br>
+        <input type="password" id="cvv" required pattern="\d{3,4}" placeholder="e.g. 123"><br>
       </form>
     </section>
 
     <!-- Discount Coupon -->
     <section>
       <h2>Discount Coupon</h2>
-      <input type="text" id="couponCode" placeholder="Enter coupon code">
-      <button id="applyCoupon">Apply Coupon</button>
+      <div id="couponSection">
+        <input type="text" id="couponCode" placeholder="Enter coupon code">
+        <button id="applyCoupon" class="btn">Apply Coupon</button>
+      </div>
       <p id="couponMsg"></p>
     </section>
 
     <!-- Transaction Options -->
     <section>
       <h2>Transaction Options</h2>
-      <button id="saveTransaction">Save Transaction</button>
-      <button id="completeTransaction">Complete Transaction</button>
-      <button id="cancelTransaction">Cancel Transaction</button>
-      <button id="requestQuotation">Request Quotation</button>
+      <div class="button-group">
+        <button id="saveTransaction" class="btn btn-save">Save Transaction</button>
+        <button id="completeTransaction" class="btn btn-complete">Complete Transaction</button>
+        <button id="cancelTransaction" class="btn btn-cancel">Cancel Transaction</button>
+        <button id="requestQuotation" class="btn btn-quote">Request Quotation</button>
+      </div>
     </section>
+
   </main>
 
   <!-- Footer -->
   <footer>
-    <!-- ... unchanged ... -->
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3>CarReserve</h3>
+          <p>The easiest way to book your next car rental for business or pleasure.</p>
+        </div>
+        <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="../index.html#home">Home</a></li>
+            <li><a href="reservation.html">Reservation</a></li>
+            <li><a href="order.html">Order</a></li>
+            <li><a href="checkout.html">Checkout</a></li>
+            <li><a href="bookings.html">Bookings</a></li>
+            <li><a href="invoices.html">Invoices</a></li>
+            <li><a href="../index.html#about">About</a></li>
+            <li><a href="../index.html#testimonials">Testimonials</a></li>
+            <li><a href="../index.html#contact">Contact</a></li>
+            <li><a href="chat.html">Chat</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Services</h3>
+          <ul class="footer-links">
+            <li><a href="#">Economy Cars</a></li>
+            <li><a href="#">Luxury Vehicles</a></li>
+            <li><a href="#">SUVs & Minivans</a></li>
+            <li><a href="#">Special Offers</a></li>
+            <li><a href="#">Corporate Accounts</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Contact Info</h3>
+          <ul class="footer-links">
+            <li>123 Reservation Road</li>
+            <li>Carville, CV 12345</li>
+            <li>Phone: (123) 456-7890</li>
+            <li>Email: info@carreserve.com</li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Follow Us</h3>
+          <div class="social-links">
+            <a href="https://facebook.com" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://x.com" target="_blank" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="https://instagram.com" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 CarReserve. All rights reserved.</p>
+      </div>
+    </div>
   </footer>
 
   <script>
-    document.querySelector('.menu-btn').addEventListener('click', function() {
+    document.querySelector('.menu-btn').addEventListener('click', function () {
       document.querySelector('.nav-links').classList.toggle('active');
     });
   </script>
   <script src="../assets/js/checkout.js"></script>
 </body>
+
 </html>
