@@ -430,6 +430,20 @@ footer {
   margin-bottom: 40px;
 }
 
+.footer-column li {
+  white-space: nowrap;
+}
+
+.footer-column li span {
+  font-weight: normal;
+}
+
+.footer-column .email-text {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
 .footer-column h3 {
   font-size: 1.3rem;
   margin-bottom: 20px;

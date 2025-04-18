@@ -133,6 +133,20 @@ button[type="submit"]:hover {
   font-weight: 500;
 }
 
+.footer-column li {
+  white-space: nowrap;
+}
+
+.footer-column li span {
+  font-weight: normal;
+}
+
+.footer-column .email-text {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   main {
