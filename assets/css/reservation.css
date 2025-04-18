@@ -1,17 +1,18 @@
 /* Car Reservation Styling */
+@import url("landing.css");
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
   background-color: #cfe0e7;
   color: #333;
   line-height: 1.6;
-  padding-top: 30px; 
+  padding-top: 30px;
   margin: 0;
 }
 
