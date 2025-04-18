@@ -2,134 +2,163 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Reservation</title>
-    <link rel="stylesheet" href="../assets/css/reservation.css">
-    <link rel="stylesheet" href="../assets/css/landing.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZXzMrcSSxzL-dxxA7-TrT_EwyaoHLluI&libraries=places&callback=initMap"
-        async defer></script>
-    <script src="../assets/js/reservation.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Car Reservation</title>
+  <link rel="stylesheet" href="../assets/css/reservation.css" />
+  <link rel="stylesheet" href="../assets/css/landing.css" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- 1) Load your JS first (defines initMap) -->
+  <script src="../assets/js/reservation.js" defer></script>
+  <!-- 2) Then load Google Maps API (will call initMap) -->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZXzMrcSSxzL-dxxA7-TrT_EwyaoHLluI&libraries=places&callback=initMap"
+    defer>
+  </script>
 </head>
 
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">CarReserve</div>
-                <ul class="nav-links">
-                    <li><a href="/index.html">Home</a></li>
-                    <li><a href="reservation.html" class="active">Reserve a Car</a></li>
-                    <li><a href="/index.html#about">About Us</a></li>
-                    <li><a href="/pages/reviewPage.html">Testimonials</a></li>
-                    <li><a href="/pages/contact.html">Contact Us</a></li>
-                    <li><a href="/pages/chat.html">Chat</a></li>
-                    <li><a href="/pages/profile.html">Profile</a></li>
-                </ul>
-                <div class="menu-btn">☰</div>
-            </nav>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">CarReserve</div>
+        <ul class="nav-links">
+          <li><a href="/index.html">Home</a></li>
+          <li><a href="reservation.html" class="active">Reserve a Car</a></li>
+          <li><a href="/index.html#about">About Us</a></li>
+          <li><a href="/pages/reviewPage.html">Testimonials</a></li>
+          <li><a href="/pages/contact.html">Contact Us</a></li>
+          <li><a href="/pages/chat.html">Chat</a></li>
+          <li><a href="/pages/profile.html">Profile</a></li>
+        </ul>
+        <div class="menu-btn">☰</div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h2>Car Reservation</h2>
+    <form id="reservation-form">
+      <fieldset>
+        <legend>Pickup & Return Locations</legend>
+
+        <label for="pickup-location">Pickup Location:</label>
+        <input type="text"
+               id="pickup-location"
+               name="pickup-location"
+               placeholder="Select Pickup Location"
+               readonly
+               required />
+        <div id="pickup-map" style="width:100%; height:300px;"></div>
+
+        <label for="return-location">Return Location:</label>
+        <input type="text"
+               id="return-location"
+               name="return-location"
+               placeholder="Select Return Location"
+               readonly
+               required />
+        <div id="return-map" style="width:100%; height:300px;"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Driver Information</legend>
+        <label for="driver-name">Driver Name:</label>
+        <input type="text" id="driver-name" name="driver-name" required />
+
+        <label for="driver-age">Driver Age:</label>
+        <input type="number"
+               id="driver-age"
+               name="driver-age"
+               min="18"
+               max="75"
+               required />
+      </fieldset>
+
+      <fieldset>
+        <legend>Reservation Details</legend>
+        <label for="pickup-datetime">Pickup Date & Time:</label>
+        <input type="datetime-local"
+               id="pickup-datetime"
+               name="pickup-datetime"
+               required />
+
+        <label for="drop-datetime">Drop Date & Time:</label>
+        <input type="datetime-local"
+               id="drop-datetime"
+               name="drop-datetime"
+               required />
+      </fieldset>
+
+      <button type="submit">Reserve</button>
+    </form>
+
+    <div id="message-box"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3>CarReserve</h3>
+          <p>The easiest way to book your next car rental for business or pleasure.</p>
         </div>
-    </header>
-
-    <main>
-        <h2>Car Reservation</h2>
-        <form id="reservation-form">
-            <fieldset>
-                <legend>Pickup & Return Locations</legend>
-                <label for="pickup-location">Pickup Location:</label>
-                <input type="text" id="pickup-location" name="pickup-location" placeholder="Select Pickup Location"
-                    readonly required>
-                <div id="pickup-map" style="width: 100%; height: 300px;"></div>
-
-                <label for="return-location">Return Location:</label>
-                <input type="text" id="return-location" name="return-location" placeholder="Select Return Location"
-                    readonly required>
-                <div id="return-map" style="width: 100%; height: 300px;"></div>
-            </fieldset>
-
-            <fieldset>
-                <legend>Driver Information</legend>
-                <label for="driver-name">Driver Name:</label>
-                <input type="text" id="driver-name" name="driver-name" required>
-
-                <label for="driver-age">Driver Age:</label>
-                <input type="number" id="driver-age" name="driver-age" min="18" max="75" required>
-            </fieldset>
-
-            <fieldset>
-                <legend>Reservation Details</legend>
-                <label for="pickup-datetime">Pickup Date & Time:</label>
-                <input type="datetime-local" id="pickup-datetime" name="pickup-datetime" required>
-
-                <label for="drop-datetime">Drop Date & Time:</label>
-                <input type="datetime-local" id="drop-datetime" name="drop-datetime" required>
-            </fieldset>
-
-            <button type="submit">Reserve</button>
-        </form>
-        <div id="message-box"></div>
-    </main>
-
-    <!-- Footer Copied from index.html -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>CarReserve</h3>
-                    <p>The easiest way to book your next car rental for business or pleasure.</p>
-                </div>
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="/index.html">Home</a></li>
-                        <li><a href="reservation.html">Reserve a Car</a></li>
-                        <li><a href="/index.html#about">About Us</a></li>
-                        <li><a href="/pages/reviewPage.html">Testimonials</a></li>
-                        <li><a href="/pages/contact.html">Contact Us</a></li>
-                        <li><a href="/pages/chat.html">Chat</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Contact Info</h3>
-                    <ul class="footer-links">
-                        <li>American University of Beirut</li>
-                        <li>Beirut, Hamra</li>
-                        <li>Phone: +961 78 904 654</li>
-                        <li><span>Email:</span> <span class="email-text">mohamadyamout2004@gmail.com</span></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Follow Us</h3>
-                    <div class="social-links">
-                        <a href="https://facebook.com" target="_blank" class="social-link"><i
-                                class="fab fa-facebook-f"></i></a>
-                        <a href="https://x.com" target="_blank" class="social-link"><i class="fab fa-twitter"></i></a>
-                        <a href="https://instagram.com" target="_blank" class="social-link"><i
-                                class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 CarReserve. All rights reserved.</p>
-            </div>
+        <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="reservation.html">Reserve a Car</a></li>
+            <li><a href="/index.html#about">About Us</a></li>
+            <li><a href="/pages/reviewPage.html">Testimonials</a></li>
+            <li><a href="/pages/contact.html">Contact Us</a></li>
+            <li><a href="/pages/chat.html">Chat</a></li>
+          </ul>
         </div>
-    </footer>
+        <div class="footer-column">
+          <h3>Contact Info</h3>
+          <ul class="footer-links">
+            <li>American University of Beirut</li>
+            <li>Beirut, Hamra</li>
+            <li>Phone: +961 78 904 654</li>
+            <li><span>Email:</span> <span class="email-text">mohamadyamout2004@gmail.com</span></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Follow Us</h3>
+          <div class="social-links">
+            <a href="https://facebook.com" target="_blank" class="social-link">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://x.com" target="_blank" class="social-link">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://instagram.com" target="_blank" class="social-link">
+              <i class="fab fa-instagram"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 CarReserve. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
-    <script>
-        // Mobile menu toggle
-        document.addEventListener("DOMContentLoaded", function () {
-            const menuBtn = document.querySelector(".menu-btn");
-            const navLinks = document.querySelector(".nav-links");
-            if (menuBtn && navLinks) {
-                menuBtn.addEventListener("click", () => {
-                    navLinks.classList.toggle("active");
-                });
-            }
+  <script>
+    // Mobile menu toggle
+    document.addEventListener("DOMContentLoaded", function () {
+      const menuBtn = document.querySelector(".menu-btn");
+      const navLinks = document.querySelector(".nav-links");
+      if (menuBtn && navLinks) {
+        menuBtn.addEventListener("click", () => {
+          navLinks.classList.toggle("active");
         });
-    </script>
+      }
+    });
+  </script>
 </body>
-
 </html>

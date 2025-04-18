@@ -52,7 +52,9 @@ function initMap() {
     });
     const infoWindow = new google.maps.InfoWindow({
       content: `<b>${branch.name}</b><br>${branch.info}<br>
-                <img src='https://maps.googleapis.com/maps/api/streetview?size=300x200&location=${branch.lat},${branch.lng}&key=AIzaSyCZXzMrcSSxzL-dxxA7-TrT_EwyaoHLluI' alt='Street View' style='width:100%;border-radius:5px;'>`,
+                <img src='https://maps.googleapis.com/maps/api/streetview?size=300x200&location=${branch.lat},${branch.lng}&key=AIzaSyCZXzMrcSSxzL-dxxA7-TrT_EwyaoHLluI'
+                     alt='Street View'
+                     style='width:100%;border-radius:5px;'>`,
     });
     marker.addListener("click", () => {
       infoWindow.open(pickupMap, marker);
@@ -70,7 +72,9 @@ function initMap() {
     });
     const infoWindow = new google.maps.InfoWindow({
       content: `<b>${branch.name}</b><br>${branch.info}<br>
-                <img src='https://maps.googleapis.com/maps/api/streetview?size=300x200&location=${branch.lat},${branch.lng}&key=AIzaSyCZXzMrcSSxzL-dxxA7-TrT_EwyaoHLluI' alt='Street View' style='width:100%;border-radius:5px;'>`,
+                <img src='https://maps.googleapis.com/maps/api/streetview?size=300x200&location=${branch.lat},${branch.lng}&key=AIzaSyCZXzMrcSSxzL-dxxA7-TrT_EwyaoHLluI'
+                     alt='Street View'
+                     style='width:100%;border-radius:5px;'>`,
     });
     marker.addListener("click", () => {
       infoWindow.open(returnMap, marker);
@@ -82,19 +86,24 @@ function initMap() {
 }
 
 function validateReservation() {
-  const driverAge = parseInt(document.getElementById("driver-age").value, 10);
+  const driverAge = parseInt(
+    document.getElementById("driver-age").value,
+    10
+  );
   const messageBox = document.getElementById("message-box");
-  const pickupDate = new Date(document.getElementById("pickup-datetime").value);
-  const dropDate = new Date(document.getElementById("drop-datetime").value);
+  const pickupDate = new Date(
+    document.getElementById("pickup-datetime").value
+  );
+  const dropDate = new Date(
+    document.getElementById("drop-datetime").value
+  );
   const selectedPickupBranch = branches.find(
-    (branch) => branch.name === pickupInput.value
+    (b) => b.name === pickupInput.value
   );
   const selectedReturnBranch = branches.find(
-    (branch) => branch.name === returnInput.value
+    (b) => b.name === returnInput.value
   );
   const currentDate = new Date();
-
-  // Round current time down to the minute
   currentDate.setSeconds(0);
   currentDate.setMilliseconds(0);
 
@@ -106,63 +115,53 @@ function validateReservation() {
     messageBox.classList.add("error");
     return false;
   }
-
   if (!selectedReturnBranch) {
     messageBox.innerHTML = "<p>Please select a valid return location.</p>";
     messageBox.classList.add("error");
     return false;
   }
-
   if (driverAge < 18 || driverAge > 75) {
     messageBox.innerHTML = "<p>Driver age must be between 18 and 75.</p>";
     messageBox.classList.add("error");
     return false;
   }
-
   if (pickupDate < currentDate) {
     messageBox.innerHTML =
       "<p>Pickup date cannot be in the past. Please select a future date and time.</p>";
     messageBox.classList.add("error");
     return false;
   }
-
   if (dropDate < currentDate) {
     messageBox.innerHTML =
       "<p>Return date cannot be in the past. Please select a future date and time.</p>";
     messageBox.classList.add("error");
     return false;
   }
-
   if (dropDate <= pickupDate) {
-    messageBox.innerHTML = "<p>Drop-off date must be after pickup date.</p>";
-    messageBox.classList.add("error");
-    return false;
-  }
-
-  const timeDifference = (dropDate - pickupDate) / (1000 * 60 * 60);
-  if (timeDifference < 2) {
     messageBox.innerHTML =
-      "<p>There must be at least a 2-hour gap between pickup and return time.</p>";
+      "<p>Drop-off date must be after pickup date.</p>";
     messageBox.classList.add("error");
     return false;
   }
 
-  const pickupHour = pickupDate.getHours();
-  if (
-    pickupHour < selectedPickupBranch.openHour ||
-    pickupHour >= selectedPickupBranch.closeHour
-  ) {
-    messageBox.innerHTML = `<p>Pickup time must be between ${selectedPickupBranch.openHour}:00 and ${selectedPickupBranch.closeHour}:00.</p>`;
+  const hoursApart = (dropDate - pickupDate) / (1000 * 60 * 60);
+  if (hoursApart < 2) {
+    messageBox.innerHTML =
+      "<p>There must be at least a 2‑hour gap between pickup and return.</p>";
     messageBox.classList.add("error");
     return false;
   }
 
-  const returnHour = dropDate.getHours();
-  if (
-    returnHour < selectedReturnBranch.openHour ||
-    returnHour >= selectedReturnBranch.closeHour
-  ) {
-    messageBox.innerHTML = `<p>Return time must be between ${selectedReturnBranch.openHour}:00 and ${selectedReturnBranch.closeHour}:00.</p>`;
+  const ph = pickupDate.getHours();
+  if (ph < selectedPickupBranch.openHour || ph >= selectedPickupBranch.closeHour) {
+    messageBox.innerHTML = `<p>Pickup must be between ${selectedPickupBranch.openHour}:00 and ${selectedPickupBranch.closeHour}:00.</p>`;
+    messageBox.classList.add("error");
+    return false;
+  }
+
+  const rh = dropDate.getHours();
+  if (rh < selectedReturnBranch.openHour || rh >= selectedReturnBranch.closeHour) {
+    messageBox.innerHTML = `<p>Return must be between ${selectedReturnBranch.openHour}:00 and ${selectedReturnBranch.closeHour}:00.</p>`;
     messageBox.classList.add("error");
     return false;
   }
@@ -174,10 +173,7 @@ document
   .getElementById("reservation-form")
   .addEventListener("submit", function (event) {
     event.preventDefault();
-
-    if (!validateReservation()) {
-      return;
-    }
+    if (!validateReservation()) return;
 
     const reservationDetails = {
       pickupLocation: pickupInput.value,
@@ -186,7 +182,7 @@ document
       driverAge: document.getElementById("driver-age").value,
       pickupDateTime: document.getElementById("pickup-datetime").value,
       dropoffDateTime: document.getElementById("drop-datetime").value,
-      cars: [], // Initially empty, to be updated when adding cars.
+      cars: [],
     };
 
     const token = localStorage.getItem("token");
@@ -200,24 +196,21 @@ document
       },
       body: JSON.stringify(reservationDetails),
     })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((errData) => Promise.reject(errData));
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((e) => Promise.reject(e));
         }
-        return response.json();
+        return res.json();
       })
       .then((data) => {
         localStorage.setItem("reservationDetails", JSON.stringify(data));
-        // Store the reservation id so that subsequent pages use the correct reservation.
         localStorage.setItem("reservationId", data._id);
-        // Redirect to the car groups page.
         window.location.href = "cargroups.html";
       })
       .catch((err) => {
         console.error("Error saving reservation:", err);
-        const messageBox = document.getElementById("message-box");
-        messageBox.innerHTML =
-          "<p>Error saving reservation. Please try again.</p>";
-        messageBox.classList.add("error");
+        const mb = document.getElementById("message-box");
+        mb.innerHTML = "<p>Error saving reservation. Please try again.</p>";
+        mb.classList.add("error");
       });
   });
