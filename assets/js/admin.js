@@ -646,48 +646,19 @@ async function loadReservations() {
                 <td>${reservation.cars.length} car(s)</td>
                 <td>${reservation.pickupLocation}</td>
                 <td>${pickupDate}</td>
-                <td>${getStatusBadge(reservation.status || 'Active')}</td>
                 <td>
-                    <button class="btn btn-sm btn-info view-reservation-btn" data-id="${reservation._id}">
+                    <button type="button" class="btn btn-sm btn-info" onclick="viewReservationDetails('${reservation._id}')">
                         <i class="fas fa-eye"></i>
                     </button>
                 </td>
             `;
             reservationTableBody.appendChild(row);
         });
-        
-        // Add event listeners to buttons
-        document.querySelectorAll('.view-reservation-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const reservationId = btn.getAttribute('data-id');
-                viewReservationDetails(reservationId);
-            });
-        });
     } catch (error) {
         console.error('Error loading reservations:', error);
     }
 }
 
-function getStatusBadge(status) {
-    let badgeClass = 'bg-secondary';
-    
-    switch (status.toLowerCase()) {
-        case 'active':
-            badgeClass = 'bg-success';
-            break;
-        case 'completed':
-            badgeClass = 'bg-primary';
-            break;
-        case 'cancelled':
-            badgeClass = 'bg-danger';
-            break;
-        case 'pending':
-            badgeClass = 'bg-warning';
-            break;
-    }
-    
-    return `<span class="badge ${badgeClass}">${status}</span>`;
-}
 
 async function viewReservationDetails(reservationId) {
     try {
