@@ -13,13 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
     logoutButton.addEventListener('click', (e) => {
       e.preventDefault();
       // Clear all auth-related localStorage items
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      localStorage.removeItem('current-user');
-      localStorage.removeItem('reservationDetails');
-      localStorage.removeItem('reservationId');
-      // Redirect to landing page
-      window.location.href = "../index.html";
+      localStorage.clear();
+      window.location.href = "SignInSignUp.html";
     });
   }
 
@@ -85,7 +80,6 @@ document.addEventListener("DOMContentLoaded", () => {
       
       // Store only one user object
       localStorage.setItem('user', JSON.stringify(updatedUser));
-      console.log('Profile updated user with isAdmin:', isAdmin);
     })
     .catch(error => {
       console.error("Error fetching profile data:", error);

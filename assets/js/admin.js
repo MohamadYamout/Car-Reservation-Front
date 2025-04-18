@@ -30,6 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Get token from localStorage
     token = localStorage.getItem('token');
     
+    // Remove any standalone isAdmin keys that might exist
+    localStorage.removeItem('isAdmin');
+    
     // Check if token exists
     if (!token) {
         window.location.href = '../pages/SignInSignUp.html';
@@ -40,11 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tokenPayload = parseJwt(token);
     const isAdminFromToken = tokenPayload.isAdmin === true;
     
-    // Store admin status in a dedicated localStorage item
-    localStorage.setItem('isAdmin', isAdminFromToken.toString());
-    
     if (!isAdminFromToken) {
-        console.log('User is not an admin according to token');
         window.location.href = '../pages/SignInSignUp.html';
         return;
     }
@@ -53,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const user = JSON.parse(localStorage.getItem('user')) || {};
     adminUsername.textContent = user.username || 'Admin';
     
-    // Refresh user data from server with correct admin status
+    // Refresh user data from server
     refreshCurrentUserData();
     
     // Initialize dashboard
@@ -65,13 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Logout function
 logoutButton.addEventListener('click', () => {
-    console.log('Logging out and clearing all data...');
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('current-user');
-    localStorage.removeItem('isAdmin'); 
-    localStorage.removeItem('reservationDetails');
-    localStorage.removeItem('reservationId');
+    localStorage.clear(); // Clear all localStorage data
     window.location.href = '../index.html';
 });
 
@@ -139,15 +132,12 @@ async function fetchAPI(endpoint, method = 'GET', body = null) {
         const url = endpoint.startsWith('/') 
             ? `${API_URL}${endpoint}` 
             : `${API_URL}/${endpoint}`;
-            
-        console.log('Fetching:', url); // Debug: log the URL being requested
         
         const response = await fetch(url, options);
         
         // Check if response is ok before trying to parse JSON
         if (!response.ok) {
             const errorText = await response.text();
-            console.error('Server error response:', response.status, errorText);
             throw new Error(`Server returned ${response.status}: ${errorText.substring(0, 100)}`);
         }
         
@@ -156,13 +146,11 @@ async function fetchAPI(endpoint, method = 'GET', body = null) {
         try {
             data = await response.json();
         } catch (jsonError) {
-            console.error('JSON parse error:', jsonError);
             throw new Error('Invalid response format from server');
         }
         
         return data;
     } catch (error) {
-        console.error('API Error:', error);
         showAlert(error.message, 'danger');
         return null;
     }
@@ -850,17 +838,6 @@ async function loadPoints() {
 // Function to refresh current user data from server
 async function refreshCurrentUserData() {
     try {
-        // Decode token to get admin status directly from JWT
-        const tokenPayload = parseJwt(token);
-        console.log('Token payload:', tokenPayload);
-        
-        // Get admin status from token
-        const isAdminFromToken = tokenPayload.isAdmin === true;
-        console.log('isAdmin from token:', isAdminFromToken);
-        
-        // Always store the token-based admin status
-        localStorage.setItem('isAdmin', isAdminFromToken.toString());
-        
         // Fetch fresh user data
         const response = await fetch("http://localhost:5000/api/auth/profile", {
             method: "GET",
@@ -877,7 +854,11 @@ async function refreshCurrentUserData() {
         const data = await response.json();
         
         if (!data.error) {
-            // Use isAdmin from token as the source of truth
+            // Decode token to get admin status
+            const tokenPayload = parseJwt(token);
+            const isAdminFromToken = tokenPayload.isAdmin === true;
+            
+            // Update localStorage with latest user data
             const updatedUser = { ...data, isAdmin: isAdminFromToken };
             localStorage.setItem('user', JSON.stringify(updatedUser));
             
@@ -885,10 +866,6 @@ async function refreshCurrentUserData() {
             if (adminUsername) {
                 adminUsername.textContent = updatedUser.username;
             }
-            
-            console.log('User data refreshed with isAdmin from token:', isAdminFromToken);
-            console.log('localStorage after update:', JSON.parse(localStorage.getItem('user')));
-            console.log('isAdmin localStorage value:', localStorage.getItem('isAdmin'));
         }
     } catch (error) {
         console.error('Error refreshing user data:', error);
@@ -898,16 +875,12 @@ async function refreshCurrentUserData() {
 // Function to decode JWT token
 function parseJwt(token) {
     try {
-        // Get the payload part of the token (second part)
         const base64Url = token.split('.')[1];
-        // Replace characters and create proper base64 string
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        // Decode the base64 string
         const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
         
-        // Return parsed JSON payload
         return JSON.parse(jsonPayload);
     } catch (error) {
         console.error('Error parsing JWT token:', error);

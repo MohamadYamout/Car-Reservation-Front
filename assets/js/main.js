@@ -4,12 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Check if user is logged in
     const token = localStorage.getItem('token');
+    
+    // Remove any standalone isAdmin keys that might exist
+    localStorage.removeItem('isAdmin');
+    
     let user = JSON.parse(localStorage.getItem('user'));
     
     if (token) {
         // Get admin status from token
         const isAdmin = parseJwtForAdmin(token);
-        localStorage.setItem('isAdmin', isAdmin.toString());
         
         // Update user object with admin status from token
         if (user) {
@@ -35,6 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
             if (!data.error) {
+                // Remove any standalone isAdmin keys again (in case they were created)
+                localStorage.removeItem('isAdmin');
+                
                 // Get existing isAdmin value
                 const currentIsAdmin = user ? user.isAdmin : false;
                 
@@ -49,8 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (isAdmin) {
                     adminNavItem.style.display = 'block';
                 }
-                
-                console.log('Updated user profile with isAdmin:', isAdmin);
             }
         })
         .catch(err => console.error("Error fetching user profile:", err));
@@ -73,6 +77,15 @@ document.addEventListener('DOMContentLoaded', () => {
             navLinks.classList.remove('active');
         });
     });
+
+    // Logout functionality
+    const logoutButton = document.getElementById('logoutButton');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            localStorage.clear(); // Clear all localStorage data
+            window.location.href = '../index.html';
+        });
+    }
 });
 
 // JWT parser function for main.js

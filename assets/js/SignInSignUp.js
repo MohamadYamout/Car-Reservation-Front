@@ -129,23 +129,18 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.error) {
           showMessage("error", data.error || "Login failed", "signin");
         } else {
-          // Print the fetched user data
-          console.log("Fetched user data:", data);
-          
           // Make sure the user data has isAdmin property explicitly set
           const userData = {
             ...data.user,
-            isAdmin: data.user.isAdmin || false // Ensure isAdmin is explicitly set
+            isAdmin: data.user.isAdmin === true // Ensure isAdmin is explicitly set as boolean
           };
+          
+          // Clear localStorage first to remove any existing 'isAdmin' key
+          localStorage.clear();
           
           // Save the token and user details (with isAdmin)
           localStorage.setItem("token", data.token);
           localStorage.setItem("user", JSON.stringify(userData));
-          
-          // Remove any old user data
-          localStorage.removeItem("current-user");
-          
-          console.log("User logged in with isAdmin:", userData.isAdmin);
           
           showMessage("success", "Login successful! Redirecting...", "signin");
           
